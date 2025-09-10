@@ -1,0 +1,54 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+pnpm-lock.yaml
+
+# Vite
+dist/
+.vite/
+.cache/
+
+# Browserslist
+.browserslistrc
+
+# Editor configs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Test coverage
+coverage/
+*.lcov
+
+# Environment variables
+.env*
+!.env.example
+
+# Snapshots de testes
+__snapshots__/
+
+# TypeScript
+*.tsbuildinfo
+
+# Build
+build/
+
+# Lint caches
+.eslintcache
+
+# Vitest (ou Jest)
+test-results/
+*.log
+
+# Storybook
+storybook-static/
+
+# MacOS/Linux/Windows
+.DS_Store
+Thumbs.db
+
