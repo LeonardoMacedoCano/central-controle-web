@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { Button } from '..';
 import { FaTimes } from 'react-icons/fa';
+import { Button } from 'lcano-react-ui';
 
 type MessageType = 'error' | 'success' | 'info';
 
@@ -22,7 +22,7 @@ const NotificationBox: React.FC<NotificationBoxProps> = ({ type, message, onClos
     <ComponenteMensagem>
       {message}
       <ButtonContainer>
-        <Button 
+        <Button
           variant={type === 'error' ? 'warning' : type === 'success' ? 'success' : 'info'}
           width={'15px'} 
           height={'15px'} 

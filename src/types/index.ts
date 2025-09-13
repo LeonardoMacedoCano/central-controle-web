@@ -20,9 +20,6 @@ import { Arquivo } from "./Arquivo";
 import { 
   Notificacao
 } from "./Notificacao";
-import { 
-  Tema 
-} from "./Tema";
 
 export type {
   Categoria,
@@ -37,7 +34,6 @@ export type {
   Option,
   Arquivo,
   Notificacao,
-  Tema,
   UsuarioForm,
 };
 

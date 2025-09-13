@@ -1,20 +1,12 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { ThemeContext } from 'styled-components';
-import { 
-  FieldValue,
-  FlexBox,
-  Container,
-  ImagePicker,
-  ThemeSelector,
-  Panel,
-  FloatingButton,
-  Loading
-} from '../../components';
 import { FaCheck } from 'react-icons/fa';
 import { AuthContext, useMessage } from '../../contexts';
 import { TemaBaseService, UsuarioService } from '../../service';
-import { Tema, Usuario, UsuarioForm } from '../../types';
+import { Usuario, UsuarioForm } from '../../types';
 import { IMG_PERFIL_PADRAO } from '../../utils';
+import { ThemeSelector, Tema, Container, Panel, Stack, FieldValue, ImagePicker, ActionButton, Loading } from 'lcano-react-ui';
+import { MdCameraAlt } from 'react-icons/md';
 
 export const UsuarioFormPage: React.FC = () => {
   const [temas, setTemas] = useState<Tema[]>([]);
@@ -124,77 +116,71 @@ export const UsuarioFormPage: React.FC = () => {
 
   return (
     <Container>
-      <Loading isLoading={!usuarioForm}></Loading>
+      <Loading isLoading={!usuarioForm}/>
       {usuarioForm && (
         <>
-          <FloatingButton
-            mainButtonIcon={<FaCheck />}
-            mainButtonHint={'Salvar'}
-            mainAction={handleSubmit} 
+          <ActionButton
+            icon={<FaCheck />}
+            hint={'Salvar'}
+            onClick={handleSubmit} 
           />
-          <Panel maxWidth='800px' title='Usuário'>
-            <FlexBox flexDirection="column" style={{ padding: '20px' }}>
-              <FlexBox flexDirection="row">
-                <FlexBox.Item>
-                  <ImagePicker
-                    currentImage={imagemPerfil}
-                    onImageChange={(file) => update({ file })}
-                    borderColor={theme.colors.tertiary}
-                    isLoading={isLoadingImage}
-                    key={imagemPerfil} 
-                  />
-                </FlexBox.Item>
-              </FlexBox>
+          <Panel maxWidth="800px" title="Usuário">
+            <Stack direction="column" style={{ padding: '20px' }}>
+              <Stack direction="row">
+                <ImagePicker
+                  icon={<MdCameraAlt size={20} />}
+                  imageUrl={imagemPerfil}
+                  onChange={(file) => update({ file })}
+                  borderColor={theme.colors.tertiary}
+                  isLoading={isLoadingImage}
+                  key={imagemPerfil} 
+                />
+              </Stack>
+
               <Panel>
-                <FlexBox flexDirection="column">
-                  <FlexBox.Item borderBottom>
-                    <FieldValue
-                      type="string"
-                      value={usuarioForm.username}
-                      description="Nome"
-                    />
-                  </FlexBox.Item>
-                  <FlexBox.Item borderBottom>
-                    <FieldValue
-                      type="string"
-                      value={usuarioForm.currentPassword}
-                      description="Senha Atual"
-                      editable
-                      onUpdate={(value) => update({ currentPassword: value })}
-                      placeholder="Digite sua senha atual" 
-                    />
-                  </FlexBox.Item>
-                  <FlexBox.Item borderBottom>
-                    <FieldValue
-                      type="string"
-                      value={usuarioForm.newPassword}
-                      description="Nova Senha"
-                      editable
-                      onUpdate={(value) => update({ newPassword: value })}
-                      placeholder="Digite sua nova senha" 
-                    />
-                  </FlexBox.Item>
-                  <FlexBox.Item>
-                    <FieldValue
-                      type="string"
-                      value={confirmPassword}
-                      description="Confirmar Nova Senha"
-                      editable
-                      onUpdate={setConfirmPassword}
-                      placeholder="Confirme sua nova senha"
-                    />
-                  </FlexBox.Item>
-                </FlexBox>
+                <Stack direction="column" divider="top">
+                  <FieldValue
+                    type="string"
+                    value={usuarioForm.username}
+                    description="Nome"
+                  />
+                  <FieldValue
+                    type="string"
+                    value={usuarioForm.currentPassword}
+                    description="Senha Atual"
+                    editable
+                    onUpdate={(v) => update({ currentPassword: v })}
+                    placeholder="Digite sua senha atual"
+                  />
+                  <FieldValue
+                    type="string"
+                    value={usuarioForm.newPassword}
+                    description="Nova Senha"
+                    editable
+                    onUpdate={(v) => update({ newPassword: v })}
+                    placeholder="Digite sua nova senha"
+                  />
+                  <FieldValue
+                    type="string"
+                    value={confirmPassword}
+                    description="Confirmar Nova Senha"
+                    editable
+                    onUpdate={setConfirmPassword}
+                    placeholder="Confirme sua nova senha"
+                  />
+                </Stack>
               </Panel>
-              <Panel maxWidth='1000px' title='Temas' transparent style={{ marginTop: '20px' }}>
+
+              <Panel maxWidth="1000px" title="Temas" transparent style={{ marginTop: '20px' }}>
                 <ThemeSelector
                   themes={temas}
                   currentTheme={usuarioForm.idTema}
-                  onThemeChange={(idTema) => update({ idTema })} 
+                  onThemeChange={(idTema) => update({ idTema })}
                 />
               </Panel>
-            </FlexBox>
+            </Stack>
           </Panel>
+
         </>  
       )}
     </Container>

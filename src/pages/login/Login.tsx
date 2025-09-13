@@ -2,12 +2,7 @@ import styled, { ThemeContext } from 'styled-components';
 import { useContext, useState } from 'react';
 import { MdAccountCircle, MdLock } from 'react-icons/md';
 import { AuthContext } from '../../contexts';
-import { 
-  Button,
-  FieldValue,
-  FlexBox,
-  Container
-} from '../../components';
+import { Button, Container, FieldValue, Stack } from 'lcano-react-ui';
 
 export const Login = () => {
   const auth = useContext(AuthContext);
@@ -48,45 +43,42 @@ export const Login = () => {
       }}
     >
       <StyledBody>
-        <StyledTitle>
-          Central de controle
-        </StyledTitle>
-        <FlexBox style={getInputStyle(theme)}>
-          <FlexBox.Item>
-            <FieldValue
-              type='string'
-              value={username}
-              icon={<MdAccountCircle style={getIconStyle(theme)} />}
-              editable={true}
-              onUpdate={updateUsername}
-              inline={true}
-              padding="0"
-              placeholder="Enter your username"
-            />
-          </FlexBox.Item>
-        </FlexBox>
-        <FlexBox style={getInputStyle(theme)}>
-          <FlexBox.Item>
-            <FieldValue
-              type='string'
-              value={password}
-              icon={<MdLock style={getIconStyle(theme)} />}
-              editable={true}
-              onUpdate={updatePassword}
-              inline={true}
-              padding="0"
-              placeholder="Enter your password"
-              onKeyDown={handleKeyDown}
-            />
-          </FlexBox.Item>
-        </FlexBox>
+        <StyledTitle>Central de controle</StyledTitle>
+        <Stack direction="column" style={getInputStyle(theme)}>
+          <FieldValue
+            type="string"
+            value={username}
+            icon={<MdAccountCircle style={getIconStyle(theme)} />}
+            editable
+            onUpdate={updateUsername}
+            inline
+            padding="0"
+            placeholder="Enter your username"
+          />
+        </Stack>
+        <Stack direction="column" style={getInputStyle(theme)}>
+          <FieldValue
+            type="string"
+            value={password}
+            icon={<MdLock style={getIconStyle(theme)} />}
+            editable
+            onUpdate={updatePassword}
+            inline
+            padding="0"
+            placeholder="Enter your password"
+            onKeyDown={handleKeyDown}
+          />
+        </Stack>
+
         <Button 
-          variant="login" 
+          variant='quaternary'
           description="Login"
           onClick={handleLogin}
+          style={{width: '100%', height: '50px', fontWeight: 700, fontSize: '18px', borderRadius: '5px' }}
         />
+
       </StyledBody>
-    </Container>           
+    </Container>   
   )
 }
 
@@ -123,7 +115,7 @@ const getIconStyle = (theme: any) => ({
 });
 
 const getInputStyle = (theme: any) => ({
-  width: '98%',
+  width: '100%',
   height: '50px',
   marginBottom: '20px',
   display: 'flex',
