@@ -3,17 +3,18 @@ import { AuthService } from "../../service";
 import { AuthContext } from "../auth/AuthContext";
 import { Usuario } from "../../types";
 import { ThemeContext } from "../theme/ThemeControlProvider";
+import { useMessage } from "../message/ContextMessageProvider";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
-  const authService = AuthService();
   const { loadUserTheme } = useContext(ThemeContext);
+  const message = useMessage(); 
 
   useEffect(() => {
     const validateToken = async () => {
       const storageData = localStorage.getItem('authToken');
       if (storageData && !usuario) {
-        const usuario = await authService.validateToken(storageData);
+        const usuario = await AuthService.validateToken(storageData, message);
         if (usuario) {
           setUsuario(usuario);
           
@@ -29,7 +30,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const login = async (username: string, senha: string) => {
-    const usuario = await authService.login(username, senha);
+    const usuario = await AuthService.login(username, senha, message);
     
     if (usuario) {
       setUsuario(usuario);

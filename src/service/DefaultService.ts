@@ -1,35 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 import { ContextMessageProps } from '../contexts/message/ContextMessageProvider';
-
-interface ApiResponse {
-  success?: string;
-  error?: string;
-}
-
-const api = axios.create({
-  baseURL: '/api',
-});
-
-const handleErrorMessage = (
-  contextMessage: ContextMessageProps, 
-  error: any, 
-  defaultMessage: string
-) => {
-  const errorMessage = error.response?.data?.error || defaultMessage;
-  contextMessage.showError(errorMessage);
-};
-
-const handleSuccessMessage = (
-  contextMessage: ContextMessageProps, 
-  response: AxiosResponse<ApiResponse>
-) => {
-  const successMessage = response?.data?.success;
-  if (successMessage) {
-    contextMessage.showSuccess(successMessage);
-  }
-};
+import { MICROSERVICES, MicroserviceKey } from './Api';
 
 export const RequestApi = async <T>(
+  service: MicroserviceKey,
   method: 'get' | 'post' | 'put' | 'delete',
   url: string,
   token?: string,
@@ -37,33 +11,29 @@ export const RequestApi = async <T>(
   data?: Record<string, any>,
   responseType: 'json' | 'blob' = 'json'
 ): Promise<T | undefined> => {
+  const { url: baseUrl } = MICROSERVICES[service];
+  const api = axios.create({ baseURL: baseUrl });
+
   try {
     const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
     const config = { headers, data, responseType };
 
-    const response = await api.request({
-      method,
-      url,
-      ...config,
-    });
+    const response: AxiosResponse<T> = await api.request({ method, url, ...config });
 
-    if (contextMessage) { 
-      handleSuccessMessage(contextMessage, response);
+    if (contextMessage) {
+      const successMessage = (response.data as any)?.success;
+      if (successMessage) contextMessage.showSuccess(successMessage);
     }
-    
-    return response.data as T;
+
+    return response.data;
   } catch (error: any) {
     if (contextMessage) {
-      handleErrorMessage(contextMessage, error, `Erro na requisição ${method.toUpperCase()} para ${url}`);
+      const errorMessage =
+        error.response?.data?.error || `Erro na requisição ${method.toUpperCase()} para ${url}`;
+      contextMessage.showError(errorMessage);
     }
     return undefined;
   }
 };
 
-const DefaultService = () => {
-  return {
-    request: RequestApi
-  };
-};
-
-export default DefaultService;
+export default { request: RequestApi };

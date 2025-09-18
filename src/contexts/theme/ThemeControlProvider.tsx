@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { DefaultTheme, ThemeProvider } from 'styled-components';
-import { TemaBaseService } from '../../service';
-import { Tema } from '../../types';
+import { TemaService } from '../../service';
+import { Tema } from 'lcano-react-ui';
 
 const loadingTheme: DefaultTheme = {
   title: 'loading',
@@ -31,13 +31,12 @@ export const ThemeContext = createContext<ThemeContextType>(null!);
 export const ThemeControlProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<DefaultTheme | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const temaService = TemaBaseService();
 
   useEffect(() => {
     const carregarTemaPadrao = async () => {
       setIsLoading(true);
       try {
-        const temaPadrao = await temaService.getTemaPadrao();
+        const temaPadrao = await TemaService.getTemaPadrao();
         if (temaPadrao) {
           convertAndSetTheme(temaPadrao);
         }
@@ -75,9 +74,9 @@ export const ThemeControlProvider: React.FC<{ children: React.ReactNode }> = ({ 
       let temaUsuario: Tema | undefined;
       
       if (token) {
-        temaUsuario = await temaService.getTema(token, themeId);
+        temaUsuario = await TemaService.getTema(token, themeId);
       } else {
-        temaUsuario = await temaService.getTemaPadrao();
+        temaUsuario = await TemaService.getTemaPadrao();
       }
       
       if (temaUsuario) {
@@ -93,7 +92,7 @@ export const ThemeControlProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const loadUserTheme = async (themeId: number, token: string) => {
     setIsLoading(true);
     try {
-      const temaUsuario = await temaService.getTema(token, themeId);
+      const temaUsuario = await TemaService.getTema(token, themeId);
       if (temaUsuario) {
         convertAndSetTheme(temaUsuario);
       }

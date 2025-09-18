@@ -1,9 +1,12 @@
-import AuthService from "./AuthService";
-import TemaBaseService from "./TemaBaseService";
-import UsuarioService from "./UsuarioService";
+import * as Api from "./Api";
+
+import * as AuthService from "./Usuario/AuthService";
+import * as TemaService from "./Usuario/TemaService";
+import * as UsuarioService from "./Usuario/UsuarioService";
 
 export {
+  Api,
   AuthService,
-  TemaBaseService,
+  TemaService,
   UsuarioService,
-}
+};

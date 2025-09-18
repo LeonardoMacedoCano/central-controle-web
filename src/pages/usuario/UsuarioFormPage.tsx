@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, useRef } from 'react';
 import { ThemeContext } from 'styled-components';
 import { FaCheck } from 'react-icons/fa';
 import { AuthContext, useMessage } from '../../contexts';
-import { TemaBaseService, UsuarioService } from '../../service';
+import { TemaService, UsuarioService } from '../../service';
 import { Usuario, UsuarioForm } from '../../types';
 import { IMG_PERFIL_PADRAO } from '../../utils';
 import { ThemeSelector, Tema, Container, Panel, Stack, FieldValue, ImagePicker, ActionButton, Loading } from 'lcano-react-ui';
@@ -20,9 +20,7 @@ export const UsuarioFormPage: React.FC = () => {
   
   const theme = useContext(ThemeContext);
   const auth = useContext(AuthContext);
-  const message = useMessage();
-  const temaBaseService = TemaBaseService();
-  const usuarioService = UsuarioService();  
+  const message = useMessage(); 
 
   const cleanupBlobUrl = () => {
     if (blobUrlRef.current) {
@@ -72,7 +70,7 @@ export const UsuarioFormPage: React.FC = () => {
     if (!auth.usuario?.token) return;
 
     try {
-      const result = await temaBaseService.getTemas(auth.usuario.token);
+      const result = await TemaService.getTemas(auth.usuario.token);
       if (result) setTemas(result);
     } catch (error) {
       message.showErrorWithLog('Erro ao carregar os temas.', error);
@@ -106,7 +104,7 @@ export const UsuarioFormPage: React.FC = () => {
   
     if (!auth.usuario?.token) return;
   
-    await usuarioService.updateUsuario(auth.usuario.token, usuarioForm);
+    await UsuarioService.updateUsuario(auth.usuario.token, usuarioForm, message);
 };
 
 
