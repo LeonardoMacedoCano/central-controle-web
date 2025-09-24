@@ -1,11 +1,10 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import { ThemeContext } from 'styled-components';
 import { FaCheck } from 'react-icons/fa';
-import { AuthContext, useMessage } from '../../contexts';
+import { AuthContext } from '../../contexts';
 import { TemaService, UsuarioService } from '../../service';
 import { Usuario, UsuarioForm } from '../../types';
 import { IMG_PERFIL_PADRAO } from '../../utils';
-import { ThemeSelector, Tema, Container, Panel, Stack, FieldValue, ImagePicker, ActionButton, Loading } from 'lcano-react-ui';
+import { ThemeSelector, Tema, Container, Panel, Stack, FieldValue, ImagePicker, ActionButton, Loading, useMessage } from 'lcano-react-ui';
 import { MdCameraAlt } from 'react-icons/md';
 
 export const UsuarioFormPage: React.FC = () => {
@@ -18,7 +17,6 @@ export const UsuarioFormPage: React.FC = () => {
   const blobRef = useRef<Blob | null>(null);
   const blobUrlRef = useRef<string | null>(null);
   
-  const theme = useContext(ThemeContext);
   const auth = useContext(AuthContext);
   const message = useMessage(); 
 
@@ -129,7 +127,6 @@ export const UsuarioFormPage: React.FC = () => {
                   icon={<MdCameraAlt size={20} />}
                   imageUrl={imagemPerfil}
                   onChange={(file) => update({ file })}
-                  borderColor={theme.colors.tertiary}
                   isLoading={isLoadingImage}
                   key={imagemPerfil} 
                 />

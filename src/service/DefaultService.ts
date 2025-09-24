@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
-import { ContextMessageProps } from '../contexts/message/ContextMessageProvider';
 import { MICROSERVICES, MicroserviceKey } from './Api';
+import { ContextMessageProps } from 'lcano-react-ui';
 
 export const RequestApi = async <T>(
   service: MicroserviceKey,

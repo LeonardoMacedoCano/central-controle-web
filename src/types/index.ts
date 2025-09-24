@@ -1,45 +1,6 @@
-import { 
-  Categoria,
-  initialCategoriaState
- } from "./Categoria";
-import { PagedResponse } from "./PagedResponse";
-import { SelectValue } from "./SelectValue";
-import { Usuario, UsuarioForm } from "./Usuario";
-import { 
-  Field,
-  Operator,
-  Filters,
-  OPERATORS,
-  PAGE_SIZE_DEFAULT,
-  PAGE_SIZE_COMPACT,
-  FilterItem,
-  FilterDTO,
-  Option
-} from "../types/Filters";
-import { Arquivo } from "./Arquivo";
-import { 
-  Notificacao
-} from "./Notificacao";
+export type { MovimentacaoCategoria } from './fluxocaixa/MovimentacaoCategoria';
+export type { Usuario, UsuarioForm } from './usuario/Usuario';
+export type { Field, Operator, Filters, FilterItem, FilterDTO, Option } from '../types/Filters';
 
-export type {
-  Categoria,
-  PagedResponse,
-  SelectValue,
-  Usuario,
-  Field,
-  Operator,
-  Filters,
-  FilterItem,
-  FilterDTO,
-  Option,
-  Arquivo,
-  Notificacao,
-  UsuarioForm,
-};
-
-export {
-  OPERATORS,
-  PAGE_SIZE_DEFAULT,
-  PAGE_SIZE_COMPACT,
-  initialCategoriaState,
-};
+export { OPERATORS, PAGE_SIZE_DEFAULT, PAGE_SIZE_COMPACT } from '../types/Filters';
+export { initialMovimentacaoCategoriaState } from './fluxocaixa/MovimentacaoCategoria';

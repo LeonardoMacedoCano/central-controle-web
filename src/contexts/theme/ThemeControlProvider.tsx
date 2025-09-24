@@ -1,26 +1,10 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { DefaultTheme, ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import { TemaService } from '../../service';
-import { Tema } from 'lcano-react-ui';
-
-const loadingTheme: DefaultTheme = {
-  title: 'loading',
-  colors: {
-    primary: '#cccccc',
-    secondary: '#999999',
-    tertiary: '#666666',
-    quaternary: '#333333',
-    white: '#ffffffb7',
-    black: '#000000',
-    gray: '#888888',
-    success: '#28a745',
-    info: '#17a2b8',
-    warning: '#ffc107',
-  }
-};
+import { AppTheme, DEFAULT_THEME_SYSTEM, Tema } from 'lcano-react-ui';
 
 type ThemeContextType = {
-  currentTheme: DefaultTheme;
+  currentTheme: AppTheme;
   updateTheme: (themeId: number, token?: string) => Promise<void>;
   loadUserTheme: (userId: number, token: string) => Promise<void>;
   isLoading: boolean;
@@ -29,7 +13,7 @@ type ThemeContextType = {
 export const ThemeContext = createContext<ThemeContextType>(null!);
 
 export const ThemeControlProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<DefaultTheme | null>(null);
+  const [theme, setTheme] = useState<AppTheme | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -103,7 +87,7 @@ export const ThemeControlProvider: React.FC<{ children: React.ReactNode }> = ({ 
     }
   };
 
-  const currentTheme = theme || loadingTheme;
+  const currentTheme = theme || DEFAULT_THEME_SYSTEM;
 
   return (
     <ThemeContext.Provider value={{ currentTheme, updateTheme, loadUserTheme, isLoading }}>

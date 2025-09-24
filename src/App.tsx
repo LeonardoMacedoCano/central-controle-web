@@ -3,13 +3,13 @@ import { BrowserRouter } from 'react-router-dom';
 import GlobalStyles from './GlobalStyles';
 import { 
   AuthProvider,
-  ContextMessageProvider,
   RequireAuth,
   ThemeControlProvider
 } from './contexts';
 import AppLayout from './menus/AppLayout';
 import AppRoutes from './routes';
-import { DynamicFavicon } from './components';
+import { defaultThemeFavicon } from './utils';
+import { ContextMessageProvider, ThemeFavicon } from 'lcano-react-ui';
 
 const App: React.FC = () => {
   return (
@@ -23,7 +23,7 @@ const App: React.FC = () => {
                 <AppRoutes />
               </AppLayout>
             </RequireAuth>
-            <DynamicFavicon />
+            <ThemeFavicon renderSvg={defaultThemeFavicon} />
           </BrowserRouter>
         </AuthProvider>
       </ContextMessageProvider>

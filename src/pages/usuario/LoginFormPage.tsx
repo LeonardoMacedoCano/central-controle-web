@@ -1,35 +1,26 @@
-import styled, { ThemeContext } from 'styled-components';
-import { useContext, useState } from 'react';
+import React, { useContext, useState, KeyboardEvent } from 'react';
+import styled from 'styled-components';
 import { MdAccountCircle, MdLock } from 'react-icons/md';
 import { AuthContext } from '../../contexts';
-import { Button, Container, FieldValue, Stack } from 'lcano-react-ui';
+import { AppTheme, Button, Container, FieldValue, Stack } from 'lcano-react-ui';
+import { useAppTheme } from '../../utils';
 
-export const Login = () => {
+export const LoginFormPage: React.FC = () => {
   const auth = useContext(AuthContext);
-  const theme = useContext(ThemeContext);
+  const theme = useAppTheme();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  const updateUsername = (value: any) => {
-    setUsername(value);
-  }
-
-  const updatePassword = (value: any) => {
-    setPassword(value);
-  }
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      handleLogin();
-    }
-  };
 
   const handleLogin = async () => {
     if (username) {
       await auth.login(username, password);
     }
-  }
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') handleLogin();
+  };
 
   return (
     <Container
@@ -42,27 +33,29 @@ export const Login = () => {
         width: '100vw',
       }}
     >
-      <StyledBody>
-        <StyledTitle>Central de controle</StyledTitle>
-        <Stack direction="column" style={getInputStyle(theme)}>
+      <StyledBody theme={theme}>
+        <StyledTitle theme={theme}>Central de controle</StyledTitle>
+
+        <Stack direction="column" style={inputStyle(theme)}>
           <FieldValue
             type="string"
             value={username}
-            icon={<MdAccountCircle style={getIconStyle(theme)} />}
+            icon={<MdAccountCircle style={iconStyle(theme)} />}
             editable
-            onUpdate={updateUsername}
+            onUpdate={setUsername}
             inline
             padding="0"
             placeholder="Enter your username"
           />
         </Stack>
-        <Stack direction="column" style={getInputStyle(theme)}>
+
+        <Stack direction="column" style={inputStyle(theme)}>
           <FieldValue
             type="string"
             value={password}
-            icon={<MdLock style={getIconStyle(theme)} />}
+            icon={<MdLock style={iconStyle(theme)} />}
             editable
-            onUpdate={updatePassword}
+            onUpdate={setPassword}
             inline
             padding="0"
             placeholder="Enter your password"
@@ -70,19 +63,24 @@ export const Login = () => {
           />
         </Stack>
 
-        <Button 
-          variant='quaternary'
+        <Button
+          variant="quaternary"
           description="Login"
           onClick={handleLogin}
-          style={{width: '100%', height: '50px', fontWeight: 700, fontSize: '18px', borderRadius: '5px' }}
+          style={{
+            width: '100%',
+            height: '50px',
+            fontWeight: 700,
+            fontSize: '18px',
+            borderRadius: '5px',
+          }}
         />
-
       </StyledBody>
-    </Container>   
-  )
-}
+    </Container>
+  );
+};
 
-const StyledBody = styled.div`
+const StyledBody = styled.div<{ theme: AppTheme }>`
   width: 500px;
   height: 500px;
   padding: 20px;
@@ -90,23 +88,24 @@ const StyledBody = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, 
-    ${props => props.theme.colors.tertiary} 50%, 
-    ${props => props.theme.colors.secondary} 50%
+  background: linear-gradient(
+    135deg,
+    ${({ theme }) => theme.colors.tertiary} 50%,
+    ${({ theme }) => theme.colors.secondary} 50%
   );
   border-radius: 5px;
   box-shadow: 0 0 5px 1px;
   max-width: calc(100% - 20px);
 `;
 
-const StyledTitle = styled.h1`
-  color: ${props => props.theme.colors.white};
-  font-family: 'Roboto Slab';
+const StyledTitle = styled.h1<{ theme: AppTheme }>`
+  color: ${({ theme }) => theme.colors.white};
+  font-family: 'Roboto Slab', serif;
   font-size: 40px;
   margin-bottom: 100px;
 `;
 
-const getIconStyle = (theme: any) => ({
+const iconStyle = (theme: AppTheme) => ({
   fontSize: '15px',
   height: '100%',
   width: '50px',
@@ -114,7 +113,7 @@ const getIconStyle = (theme: any) => ({
   borderRight: `2px solid ${theme.colors.quaternary}`,
 });
 
-const getInputStyle = (theme: any) => ({
+const inputStyle = (theme: AppTheme) => ({
   width: '100%',
   height: '50px',
   marginBottom: '20px',
@@ -122,5 +121,5 @@ const getInputStyle = (theme: any) => ({
   alignItems: 'center',
   borderRadius: '5px',
   border: `2px solid ${theme.colors.quaternary}`,
-  backgroundColor: `${theme.colors.secondary}`, 
+  backgroundColor: theme.colors.secondary,
 });

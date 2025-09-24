@@ -1,12 +1,5 @@
-import * as Api from "./Api";
-
-import * as AuthService from "./Usuario/AuthService";
-import * as TemaService from "./Usuario/TemaService";
-import * as UsuarioService from "./Usuario/UsuarioService";
-
-export {
-  Api,
-  AuthService,
-  TemaService,
-  UsuarioService,
-};
+export * as Api from './Api';
+export * as AuthService from './Usuario/AuthService';
+export * as TemaService from './Usuario/TemaService';
+export * as UsuarioService from './Usuario/UsuarioService';
+export * as MovimentacaoCategoriaService from './fluxocaixa/MovimentacaoCategoriaService';

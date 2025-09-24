@@ -1,6 +1,5 @@
 import DefaultService from "../DefaultService";
-import { ContextMessageProps } from "../../contexts/message/ContextMessageProvider";
-import { Tema } from "lcano-react-ui";
+import { ContextMessageProps, Tema } from "lcano-react-ui";
 
 const { request } = DefaultService;
 

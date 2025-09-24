@@ -1,6 +1,6 @@
 import DefaultService from '../DefaultService';
 import { UsuarioForm } from '../../types';
-import { ContextMessageProps } from '../../contexts/message/ContextMessageProvider';
+import { ContextMessageProps } from 'lcano-react-ui';
 
 const { request } = DefaultService;
 

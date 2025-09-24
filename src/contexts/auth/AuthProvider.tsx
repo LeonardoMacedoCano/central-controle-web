@@ -3,7 +3,7 @@ import { AuthService } from "../../service";
 import { AuthContext } from "../auth/AuthContext";
 import { Usuario } from "../../types";
 import { ThemeContext } from "../theme/ThemeControlProvider";
-import { useMessage } from "../message/ContextMessageProvider";
+import { useMessage } from "lcano-react-ui";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
