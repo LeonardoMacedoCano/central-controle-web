@@ -1,6 +1,6 @@
 import React from 'react';
-import { FaHome, FaDollarSign } from 'react-icons/fa';
 import { AppSidebarContainer, AppSidebar, LinkSidebar, MenuItem, SubmenuContainer, SubmenuContent, SubMenuItem } from './styles';
+import { sidebarItems } from './SidebarItem';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -9,40 +9,10 @@ interface SidebarProps {
   handleLinkClick: () => void;
 }
 
-interface SubmenuItem {
-  to: string;
-  Text: string;
-}
-
-interface SidebarItem {
-  to?: string;
-  Icon: React.ComponentType;
-  Text: string;
-  onClick?: () => void;
-  submenu?: SubmenuItem[];
-}
-
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, activeSubmenu, setActiveSubmenu, handleLinkClick }) => {
   const handleSubmenuToggle = (submenu: string) => {
     setActiveSubmenu(prev => (prev === submenu ? null : submenu));
   };
-
-  const sidebarItems: SidebarItem[] = [
-    {
-      to: "/",
-      Icon: FaHome,
-      Text: "Home"
-    },
-    {
-      Icon: FaDollarSign,
-      Text: "Fluxo Caixa",
-      submenu: [
-        { to: "/resumo-fluxo-caixa", Text: "Resumo" },
-        { to: "/lancamentos", Text: "Lançamentos" },
-        { to: "/config-fluxo-caixa", Text: "Configuração" },
-      ],
-    },
-  ];
 
   return (
     <AppSidebarContainer isActive={isOpen}>
