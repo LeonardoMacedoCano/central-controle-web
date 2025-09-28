@@ -18,29 +18,24 @@ const AtivoParametroSectionForm: React.FC<props> = ({ parametros, onUpdate }) =>
 
   return (
     <Stack direction="column" divider="top">
-      <Stack direction="row">
-        <FieldValue 
-          description="Meta Aporte Mensal"
-          hint="Meta valor de aporte mensal."
-          type="number"
-          value={parametros.metaAporteMensal}
-          editable={true}
-          minValue={0}
-          onUpdate={handleMetaAporteMensal}
-        />
-      </Stack>
-
-      <Stack direction="row">
-        <FieldValue 
-          description="Meta Aporte Total"
-          hint="Meta valor de aporte total."
-          type="number"
-          value={parametros.metaAporteTotal}
-          editable={true}
-          minValue={0}
-          onUpdate={handleMetaAporteTotal}
-        />
-      </Stack>
+      <FieldValue 
+        description="Meta Aporte Mensal"
+        hint="Meta valor de aporte mensal."
+        type="number"
+        value={parametros.metaAporteMensal}
+        editable={true}
+        minValue={0}
+        onUpdate={handleMetaAporteMensal}
+      />
+      <FieldValue 
+        description="Meta Aporte Total"
+        hint="Meta valor de aporte total."
+        type="number"
+        value={parametros.metaAporteTotal}
+        editable={true}
+        minValue={0}
+        onUpdate={handleMetaAporteTotal}
+      />
     </Stack>
   );
 };

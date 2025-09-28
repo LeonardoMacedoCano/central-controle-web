@@ -50,7 +50,7 @@ const MovimentacaoCategoriaListPage: React.FC = () => {
       const result = await MovimentacaoCategoriaService.getCategorias(
         usuario.token,
         pageIndex,
-        pageSize
+        pageSize,
       );
       setCategorias(result);
     } catch (error) {

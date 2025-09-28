@@ -5,8 +5,20 @@ import { ContextMessageProps } from "lcano-react-ui/dist/types/contexts/message"
 
 const { request } = DefaultService;
 
-export const getCategorias = (token: string, page: number, size: number, contextMessage?: ContextMessageProps) =>
-  request<PagedResponse<MovimentacaoCategoria>>('fluxocaixa', 'get', `movimentacao-categoria/search?page=${page}&size=${size}`, token, contextMessage);
+export const getCategorias = (
+  token: string,
+  page: number,
+  size: number,
+  filter: string = '',
+  contextMessage?: ContextMessageProps
+) =>
+  request<PagedResponse<MovimentacaoCategoria>>(
+    'fluxocaixa',
+    'get',
+    `movimentacao-categoria/search?page=${page}&size=${size}&filter=${encodeURIComponent(filter)}`,
+    token,
+    contextMessage
+  );
 
 export const saveCategoria = (token: string, categoria: MovimentacaoCategoria, contextMessage?: ContextMessageProps) =>
   request<MovimentacaoCategoria>('fluxocaixa', 'post', 'movimentacao-categoria', token, contextMessage, categoria);

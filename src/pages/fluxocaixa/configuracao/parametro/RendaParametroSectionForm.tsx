@@ -1,50 +1,64 @@
-import React from 'react';
-import { FieldValue, Stack } from 'lcano-react-ui';
+import React, { useCallback, useContext } from 'react';
+import { SearchSelectField, Stack } from 'lcano-react-ui';
 import { MovimentacaoCategoria, Parametro } from '../../../../types';
+import { MovimentacaoCategoriaService } from '../../../../service';
+import { AuthContext } from '../../../../contexts';
 
-interface props {
+interface Props {
   parametros: Parametro;
-  categorias: MovimentacaoCategoria[];
   onUpdate: (parametrosAtualizado: Parametro) => void;
 }
 
-const RendaParametroSectionForm: React.FC<props> = ({ parametros, categorias, onUpdate }) => {
+const RendaParametroSectionForm: React.FC<Props> = ({ parametros, onUpdate }) => {
+  const { usuario } = useContext(AuthContext);
 
-  const handleUpdateCategoriaGanhosAtivo = (value: any) => {
-    const selectedCategoria = categorias.find(c => String(c.id) === String(value)); 
-    onUpdate({ ...parametros, rendaPassivaCategoria: selectedCategoria });
-  };
+  const getOptionFromCategoria = (categoria?: MovimentacaoCategoria) =>
+    categoria ? { key: String(categoria.id), value: categoria.descricao } : undefined;
 
-  const handleUpdateCategoriaPadrao = (value: any) => {
-    const selectedCategoria = categorias.find(c => String(c.id) === String(value)); 
-    onUpdate({ ...parametros, rendaCategoriaPadrao: selectedCategoria });
-  };
+  const mapCategoriaToOption = (categoria: MovimentacaoCategoria) => ({
+    key: String(categoria.id),
+    value: categoria.descricao,
+  });
+
+  const fetchCategorias = useCallback(
+    async (query: string, page: number) => {
+      const pageSize = 10;
+      const response = await MovimentacaoCategoriaService.getCategorias(
+        usuario!.token,
+        page,
+        pageSize,
+        `tipo==RENDA;descricao=ilike='${query}'`
+      );
+
+      return response?.content?.map(mapCategoriaToOption) || [];
+    },
+    [usuario]
+  );
+
+  const createCategoriaHandler = (campo: keyof Parametro) =>
+    (categoriaOption?: { key: string; value: string }) => {
+      const novaCategoria = categoriaOption
+        ? { id: Number(categoriaOption.key), descricao: categoriaOption.value, tipo: 'DESPESA' }
+        : undefined;
+
+      onUpdate({ ...parametros, [campo]: novaCategoria });
+    };
 
   return (
     <Stack direction="column" divider="top">
-      <Stack direction="row">
-        <FieldValue
-          description="Categoria Padrão"
-          hint="Categoria de renda padrão."
-          type="select"
-          value={{ key: String(parametros.rendaCategoriaPadrao?.id), value: parametros.rendaCategoriaPadrao?.descricao }}
-          editable
-          options={categorias.map(categoria => ({ key: String(categoria.id), value: categoria.descricao }))}
-          onUpdate={handleUpdateCategoriaPadrao}
-        />
-      </Stack>
+      <SearchSelectField
+        label="Categoria Padrão"
+        fetchOptions={fetchCategorias}
+        value={getOptionFromCategoria(parametros.rendaCategoriaPadrao)}
+        onSelect={createCategoriaHandler('rendaCategoriaPadrao')}
+      />
 
-      <Stack direction="row">
-        <FieldValue 
-          description="Categoria Renda Passiva"
-          hint="Categoria de renda passiva."
-          type="select"
-          value={{ key: String(parametros.rendaPassivaCategoria?.id), value: parametros.rendaPassivaCategoria?.descricao }}
-          editable
-          options={categorias.map(categoria => ({ key: String(categoria.id), value: categoria.descricao }))}
-          onUpdate={handleUpdateCategoriaGanhosAtivo}
-        />
-      </Stack>
+      <SearchSelectField
+        label="Categoria Renda Passiva"
+        fetchOptions={fetchCategorias}
+        value={getOptionFromCategoria(parametros.rendaPassivaCategoria)}
+        onSelect={createCategoriaHandler('rendaPassivaCategoria')}
+      />
     </Stack>
   );
 };
