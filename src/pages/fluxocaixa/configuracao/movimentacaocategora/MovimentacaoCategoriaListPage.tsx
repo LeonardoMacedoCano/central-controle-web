@@ -1,25 +1,24 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { FaPlus } from "react-icons/fa";
-
 import {
   ActionButton,
   Column,
   ConfirmModal,
   Container,
   Loading,
+  PAGE_SIZE_DEFAULT,
   PagedResponse,
   Panel,
+  SearchFilterRSQL,
   Table,
   useConfirmModal,
   useMessage,
 } from "lcano-react-ui";
-
 import {
   MovimentacaoCategoria,
   initialMovimentacaoCategoriaState,
-  PAGE_SIZE_DEFAULT,
+  tipoMovimentoOptions,
 } from "../../../../types";
-
 import { MovimentacaoCategoriaService } from "../../../../service";
 import { AuthContext } from "../../../../contexts";
 import MovimentacaoCategoriaSectionForm from "./MovimentacaoCategoriaSectionForm";
@@ -36,37 +35,26 @@ const MovimentacaoCategoriaListPage: React.FC = () => {
   const [pageSize, setPageSize] = useState(PAGE_SIZE_DEFAULT);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (usuario?.token) {
-      loadCategorias();
-    }
-  }, [usuario?.token, pageIndex]);
-
-  const loadCategorias = async () => {
+  const loadCategorias = useCallback(async (page = pageIndex, size = pageSize, rsql = "") => {
     if (!usuario?.token) return;
 
     setIsLoading(true);
     try {
-      const result = await MovimentacaoCategoriaService.getCategorias(
-        usuario.token,
-        pageIndex,
-        pageSize,
-      );
+      const result = await MovimentacaoCategoriaService.getCategorias(usuario.token, page, size, rsql);
       setCategorias(result);
     } catch (error) {
       message.showErrorWithLog("Erro ao carregar as categorias.", error);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [usuario?.token, pageIndex, pageSize, message]);
 
-  const handleAddCategoria = () => {
-    setCategoriaAtual({ ...initialMovimentacaoCategoriaState });
-    setModalOpen(true);
-  };
+  useEffect(() => {
+    if (usuario?.token) loadCategorias();
+  }, [usuario?.token, pageIndex, loadCategorias]);
 
-  const handleEditCategoria = (categoria: MovimentacaoCategoria) => {
-    setCategoriaAtual(categoria);
+  const openModal = (categoria?: MovimentacaoCategoria) => {
+    setCategoriaAtual(categoria ? { ...categoria } : { ...initialMovimentacaoCategoriaState });
     setModalOpen(true);
   };
 
@@ -75,20 +63,19 @@ const MovimentacaoCategoriaListPage: React.FC = () => {
       "Exclusão de Categoria",
       "Tem certeza de que deseja excluir esta categoria? Esta ação não pode ser desfeita."
     );
+    if (!confirmado || !usuario?.token) return;
 
-    if (confirmado && usuario?.token) {
-      await MovimentacaoCategoriaService.deleteCategoria(usuario.token, categoria.id, message);
-      loadCategorias();
-    }
+    await MovimentacaoCategoriaService.deleteCategoria(usuario.token, categoria.id, message);
+    loadCategorias();
   };
-  
+
   const isCategoriaValida = (categoria: MovimentacaoCategoria): boolean => {
     if (!categoria.descricao?.trim()) {
-      message.showError('Descrição é obrigatória.');
+      message.showError("Descrição é obrigatória.");
       return false;
     }
     if (!categoria.tipo) {
-      message.showError('Tipo é obrigatório.');
+      message.showError("Tipo é obrigatório.");
       return false;
     }
     return true;
@@ -98,12 +85,7 @@ const MovimentacaoCategoriaListPage: React.FC = () => {
     if (!usuario?.token || !categoriaAtual) return;
     if (!isCategoriaValida(categoriaAtual)) return;
 
-    await MovimentacaoCategoriaService.saveCategoria(
-      usuario.token,
-      categoriaAtual,
-      message
-    );
-
+    await MovimentacaoCategoriaService.saveCategoria(usuario.token, categoriaAtual, message);
     loadCategorias();
     setModalOpen(false);
   };
@@ -113,54 +95,53 @@ const MovimentacaoCategoriaListPage: React.FC = () => {
     setPageSize(size);
   };
 
-  const renderModal = () =>
-    modalOpen && categoriaAtual && (
-      <ConfirmModal
-        variantPrimary="info"
-        isOpen={modalOpen}
-        title={categoriaAtual.id ? "Editar Categoria Despesa" : "Nova Categoria Despesa"}
-        content={
-          <MovimentacaoCategoriaSectionForm
-            categoria={categoriaAtual}
-            onUpdate={(categoriaAtualizada) =>
-              setCategoriaAtual((prev) => ({ ...prev, ...categoriaAtualizada }))
-            }
-          />
-        }
-        onClose={() => setModalOpen(false)}
-        onConfirm={handleSaveCategoria}
-      />
-    );
-
   return (
     <Container>
-      <ActionButton icon={<FaPlus />} hint="Adicionar categoria" onClick={handleAddCategoria} />
+      <ActionButton icon={<FaPlus />} hint="Adicionar categoria" onClick={() => openModal()} />
 
       {ConfirmModalComponent}
-      {renderModal()}
+
+      {modalOpen && categoriaAtual && (
+        <ConfirmModal
+          variantPrimary="info"
+          isOpen={modalOpen}
+          title={categoriaAtual.id ? "Editar Categoria Despesa" : "Nova Categoria Despesa"}
+          content={
+            <MovimentacaoCategoriaSectionForm
+              categoria={categoriaAtual}
+              onUpdate={(categoriaAtualizada) =>
+                setCategoriaAtual(prev => ({ ...prev, ...categoriaAtualizada }))
+              }
+            />
+          }
+          onClose={() => setModalOpen(false)}
+          onConfirm={handleSaveCategoria}
+        />
+      )}
+
       <Loading isLoading={isLoading} />
 
-      <Panel maxWidth="1000px" title="Fluxo Caixa > Categorias">
+      <SearchFilterRSQL
+        maxWidth="1000px"
+        title="Fluxo Caixa > Categorias"
+        fields={[
+          { name: "descricao", label: "Descrição", type: "STRING" },
+          { name: "tipo", label: "Tipo", type: "SELECT", options: tipoMovimentoOptions },
+        ]}
+        onSearch={async (rsqlString) => loadCategorias(0, PAGE_SIZE_DEFAULT, rsqlString)}
+      />
+
+      <Panel maxWidth="1000px">
         <Table<MovimentacaoCategoria>
           values={categorias || []}
           messageEmpty="Nenhuma categoria encontrada."
-          keyExtractor={(item) => item.id.toString()}
-          onEdit={handleEditCategoria}
+          keyExtractor={item => item.id.toString()}
+          onEdit={openModal}
           onDelete={handleDeleteCategoria}
           loadPage={handlePageChange}
           columns={[
-            <Column<MovimentacaoCategoria>
-              key="tipo"
-              header="Tipo"
-              width="100px"
-              align="center"
-              value={(item) => item.tipo}
-            />,
-            <Column<MovimentacaoCategoria>
-              key="descricao"
-              header="Descrição"
-              value={(item) => item.descricao}
-            />,
+            <Column<MovimentacaoCategoria> key="tipo" header="Tipo" width="100px" align="center" value={item => item.tipo} />,
+            <Column<MovimentacaoCategoria> key="descricao" header="Descrição" value={item => item.descricao} />,
           ]}
         />
       </Panel>

@@ -1484,7 +1484,7 @@ keyv@^4.5.3:
 
 "lcano-react-ui@github:LeonardoMacedoCano/lcano-react-ui":
   version "1.0.0"
-  resolved "https://codeload.github.com/LeonardoMacedoCano/lcano-react-ui/tar.gz/ae5bf9c90441756c596aa8f8758dde92d4cdfe59"
+  resolved "https://codeload.github.com/LeonardoMacedoCano/lcano-react-ui/tar.gz/a19e9c79c098beb0fc741cb9023947a6d93fecf2"
   dependencies:
     react-icons "^5.5.0"
     styled-components "^6.1.19"

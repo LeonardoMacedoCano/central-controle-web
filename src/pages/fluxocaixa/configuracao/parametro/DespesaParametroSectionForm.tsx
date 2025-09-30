@@ -59,7 +59,7 @@ const DespesaParametroSectionForm: React.FC<Props> = ({ parametros, onUpdate }) 
       <FieldValue
         description="Valor Teto Meta Mensal"
         hint="Meta máxima para o total de despesas em um mês."
-        type="number"
+        type="NUMBER"
         value={parametros.metaLimiteDespesaMensal}
         editable
         minValue={0}

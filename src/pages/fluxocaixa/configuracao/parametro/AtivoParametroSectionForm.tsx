@@ -21,7 +21,7 @@ const AtivoParametroSectionForm: React.FC<props> = ({ parametros, onUpdate }) =>
       <FieldValue 
         description="Meta Aporte Mensal"
         hint="Meta valor de aporte mensal."
-        type="number"
+        type="NUMBER"
         value={parametros.metaAporteMensal}
         editable={true}
         minValue={0}
@@ -30,7 +30,7 @@ const AtivoParametroSectionForm: React.FC<props> = ({ parametros, onUpdate }) =>
       <FieldValue 
         description="Meta Aporte Total"
         hint="Meta valor de aporte total."
-        type="number"
+        type="NUMBER"
         value={parametros.metaAporteTotal}
         editable={true}
         minValue={0}

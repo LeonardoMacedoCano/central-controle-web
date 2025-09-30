@@ -38,23 +38,22 @@ export const LoginFormPage: React.FC = () => {
 
         <Stack direction="column" style={inputStyle(theme)}>
           <FieldValue
-            type="string"
+            type="STRING"
             value={username}
             icon={<MdAccountCircle style={iconStyle(theme)} />}
-            editable
             onUpdate={setUsername}
             inline
             padding="0"
             placeholder="Enter your username"
+            onKeyDown={handleKeyDown}
           />
         </Stack>
 
         <Stack direction="column" style={inputStyle(theme)}>
           <FieldValue
-            type="string"
+            type="STRING"
             value={password}
             icon={<MdLock style={iconStyle(theme)} />}
-            editable
             onUpdate={setPassword}
             inline
             padding="0"

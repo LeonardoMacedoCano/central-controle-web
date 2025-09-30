@@ -135,31 +135,29 @@ export const UsuarioFormPage: React.FC = () => {
               <Panel>
                 <Stack direction="column" divider="top">
                   <FieldValue
-                    type="string"
+                    type="STRING"
                     value={usuarioForm.username}
                     description="Nome"
+                    editable={false}
                   />
                   <FieldValue
-                    type="string"
+                    type="STRING"
                     value={usuarioForm.currentPassword}
                     description="Senha Atual"
-                    editable
                     onUpdate={(v) => update({ currentPassword: v })}
                     placeholder="Digite sua senha atual"
                   />
                   <FieldValue
-                    type="string"
+                    type="STRING"
                     value={usuarioForm.newPassword}
                     description="Nova Senha"
-                    editable
                     onUpdate={(v) => update({ newPassword: v })}
                     placeholder="Digite sua nova senha"
                   />
                   <FieldValue
-                    type="string"
+                    type="STRING"
                     value={confirmPassword}
                     description="Confirmar Nova Senha"
-                    editable
                     onUpdate={setConfirmPassword}
                     placeholder="Confirme sua nova senha"
                   />

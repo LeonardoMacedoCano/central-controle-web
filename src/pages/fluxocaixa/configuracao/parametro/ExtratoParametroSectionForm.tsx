@@ -17,7 +17,7 @@ const ExtratoParametroSectionForm: React.FC<props> = ({ parametros, onUpdate }) 
       <FieldValue
         description="Dia Vencimento Fatura"
         hint="Dia padrão do vencimento da fatura do cartão."
-        type="number"
+        type="NUMBER"
         value={parametros.diaPadraoVencimentoCartao}
         editable={true}
         minValue={1}
