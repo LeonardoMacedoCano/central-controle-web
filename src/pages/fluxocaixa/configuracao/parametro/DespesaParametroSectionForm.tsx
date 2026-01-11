@@ -1,6 +1,6 @@
 import React, { useContext, useCallback } from 'react';
 import { MovimentacaoCategoria, Parametro } from '../../../../types';
-import { FieldValue, SearchSelectField, Stack } from 'lcano-react-ui';
+import { buildSearchSelectAdapter, FieldValue, SearchSelectField, Stack } from 'lcano-react-ui';
 import { MovimentacaoCategoriaService } from '../../../../service';
 import { AuthContext } from '../../../../contexts';
 
@@ -19,40 +19,25 @@ const DespesaParametroSectionForm: React.FC<Props> = ({ parametros, onUpdate }) 
     [parametros, onUpdate]
   );
 
-  const fetchCategorias = useCallback(
-    async (query: string, page: number) => {
-      const pageSize = 10;
+  const { fetchOptions, onSelect, optionValue } = buildSearchSelectAdapter<MovimentacaoCategoria>({
+    searchOptions: async (query, page, pageSize) => {
       const response = await MovimentacaoCategoriaService.getCategorias(
         usuario!.token,
         page,
         pageSize,
         `tipo==DESPESA;descricao=ilike='${query}'`
       );
-
-      if (!response?.content) return [];
-
-      return response.content.map((categoria) => ({
-        key: String(categoria.id),
-        value: categoria.descricao,
-      }));
+      return response?.content || [];
     },
-    [usuario]
-  );
-
-  const handleCategoriaSelect = useCallback(
-    (categoriaOption?: { key: string; value: string }) => {
-      onUpdate({
-        ...parametros,
-        despesaCategoriaPadrao: categoriaOption
-          ? { id: Number(categoriaOption.key), descricao: categoriaOption.value, tipo: 'DESPESA' }
-          : undefined,
-      });
-    },
-    [parametros, onUpdate]
-  );
-
-    const getOptionFromCategoria = (categoria?: MovimentacaoCategoria) =>
-      categoria ? { key: String(categoria.id), value: categoria.descricao } : undefined;
+    mapToOption: (c) => ({ key: String(c.id), value: c.descricao }),
+    mapFromOption: (opt) => ({
+      id: Number(opt.key),
+      descricao: opt.value,
+      tipo: 'DESPESA',
+    }),
+    value: parametros.despesaCategoriaPadrao,
+    onUpdate: (newValue) => onUpdate({ ...parametros, despesaCategoriaPadrao: newValue }),
+  });
 
   return (
     <Stack direction="column" divider="top">
@@ -67,9 +52,9 @@ const DespesaParametroSectionForm: React.FC<Props> = ({ parametros, onUpdate }) 
       />
       <SearchSelectField
         label="Categoria Padrão"
-        fetchOptions={fetchCategorias}
-        value={getOptionFromCategoria(parametros.despesaCategoriaPadrao)}
-        onSelect={handleCategoriaSelect}
+        fetchOptions={fetchOptions}
+        value={optionValue}
+        onSelect={onSelect}
       />
     </Stack>
   );
