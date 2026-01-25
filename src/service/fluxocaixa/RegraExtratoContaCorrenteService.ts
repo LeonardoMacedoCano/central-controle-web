@@ -19,3 +19,12 @@ export const getRegras = (
     token,
     contextMessage
   );
+
+export const getRegra = (token: string, id: string | number, contextMessage?: ContextMessageProps) =>
+  request<RegraExtratoContaCorrente>('fluxocaixa', 'get', `regra-extrato-conta-corrente/${id}`, token, contextMessage); 
+
+export const saveRegra = (token: string, regra: RegraExtratoContaCorrente, contextMessage?: ContextMessageProps) =>
+  request<RegraExtratoContaCorrente>('fluxocaixa', 'post', 'regra-extrato-conta-corrente', token, contextMessage, regra);
+
+export const deleteRegra = (token: string, id: number, contextMessage?: ContextMessageProps) =>
+  request<RegraExtratoContaCorrente>('fluxocaixa', 'delete', `regra-extrato-conta-corrente/${id}`, token, contextMessage);

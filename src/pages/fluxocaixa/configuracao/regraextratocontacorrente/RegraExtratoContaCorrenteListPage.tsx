@@ -14,11 +14,10 @@ import {
   useMessage,
 } from "lcano-react-ui";
 import {
-  MovimentacaoCategoria,
   RegraExtratoContaCorrente,
   tipoMovimentoOptions,
 } from "../../../../types";
-import { MovimentacaoCategoriaService, RegraExtratoContaCorrenteService } from "../../../../service";
+import { RegraExtratoContaCorrenteService } from "../../../../service";
 import { AuthContext } from "../../../../contexts";
 import { useNavigate } from "react-router-dom";
 
@@ -51,14 +50,14 @@ const RegraExtratoContaCorrenteListPage: React.FC = () => {
     if (usuario?.token) loadRegras();
   }, [usuario?.token, pageIndex, loadRegras]);
 
-  const handleDelete = async (categoria: MovimentacaoCategoria) => {
+  const handleDelete = async (regra: RegraExtratoContaCorrente) => {
     const confirmado = await confirm(
       "Exclusão de Regra",
-      "Tem certeza de que deseja excluir esta categoria? Esta ação não pode ser desfeita."
+      "Tem certeza de que deseja excluir esta regra? Esta ação não pode ser desfeita."
     );
     if (!confirmado || !usuario?.token) return;
 
-    await MovimentacaoCategoriaService.deleteCategoria(usuario.token, categoria.id, message);
+    await RegraExtratoContaCorrenteService.deleteRegra(usuario.token, regra.id, message);
     loadRegras();
   };
 
@@ -69,7 +68,7 @@ const RegraExtratoContaCorrenteListPage: React.FC = () => {
 
   return (
     <Container>
-      <ActionButton icon={<FaPlus />} hint="Adicionar categoria" onClick={() => navigate(`/regra-extrato-conta-corrente/novo`)} />
+      <ActionButton icon={<FaPlus />} hint="Adicionar regra" onClick={() => navigate(`/fluxocaixa/regra-extrato-conta-corrente/novo`)} />
 
       {ConfirmModalComponent}
 
@@ -77,7 +76,7 @@ const RegraExtratoContaCorrenteListPage: React.FC = () => {
 
       <SearchFilterRSQL
         maxWidth="1000px"
-        title="Fluxo Caixa > Categorias"
+        title="Fluxo Caixa > Regras Extrato Conta Corrente"
         fields={[
           { name: "descricao", label: "Descrição", type: "STRING" },
           { name: "tipo", label: "Tipo", type: "SELECT", options: tipoMovimentoOptions },
@@ -88,15 +87,15 @@ const RegraExtratoContaCorrenteListPage: React.FC = () => {
       <Panel maxWidth="1000px">
         <Table<RegraExtratoContaCorrente>
           values={regras || []}
-          messageEmpty="Nenhuma categoria encontrada."
+          messageEmpty="Nenhuma regra encontrada."
           keyExtractor={item => item.id.toString()}
           onView={(item) => navigate(`/regra-extrato-conta-corrente/${item.id}`)}
           onEdit={(item) => navigate(`/regra-extrato-conta-corrente/editar/${item.id}`)}
           onDelete={handleDelete}
           loadPage={handlePageChange}
           columns={[
-            <Column<MovimentacaoCategoria> key="tipo" header="Tipo" width="100px" align="center" value={item => item.tipo} />,
-            <Column<MovimentacaoCategoria> key="descricao" header="Descrição" value={item => item.descricao} />,
+            <Column<RegraExtratoContaCorrente> key="tipo" header="Tipo" width="100px" align="center" value={item => item.tipoRegra} />,
+            <Column<RegraExtratoContaCorrente> key="descricao" header="Descrição" value={item => item.descricao} />,
           ]}
         />
       </Panel>

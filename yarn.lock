@@ -1269,7 +1269,7 @@ keyv@^4.5.3:
 
 "lcano-react-ui@github:LeonardoMacedoCano/lcano-react-ui":
   version "1.0.0"
-  resolved "git+ssh://git@github.com/LeonardoMacedoCano/lcano-react-ui.git#6bb0e4f7132f3c9481bb808bf388cc50d6c23769"
+  resolved "git+ssh://git@github.com/LeonardoMacedoCano/lcano-react-ui.git#5e64b0d27778d1baa73dd7e7d44d14f9bf52faf6"
   dependencies:
     react-icons "^5.5.0"
     styled-components "^6.1.19"

@@ -18,8 +18,8 @@ export const getDescricaoTipoRegraExtratoContaCorrente = (tipo?: TipoRegraExtrat
   return tipo ? TipoRegraExtratoContaCorrente[tipo].descricao : '';
 };
 
-export const getCodigoTipoRegraExtratoContaCorrente = (tipo?: TipoRegraExtratoContaCorrenteEnum): string | undefined => {
-  return tipo ? TipoRegraExtratoContaCorrente[tipo].codigo : undefined;
+export const getCodigoTipoRegraExtratoContaCorrente = (tipo?: TipoRegraExtratoContaCorrenteEnum): string => {
+  return tipo ? TipoRegraExtratoContaCorrente[tipo].codigo : '';
 };
 
 export const getTipoRegraExtratoContaCorrenteByCodigo = (codigo: string): TipoRegraExtratoContaCorrenteEnum | undefined => {
