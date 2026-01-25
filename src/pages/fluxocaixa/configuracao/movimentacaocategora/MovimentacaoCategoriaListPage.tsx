@@ -5,6 +5,7 @@ import {
   Column,
   ConfirmModal,
   Container,
+  HighlightBox,
   Loading,
   PAGE_SIZE_DEFAULT,
   PagedResponse,
@@ -13,15 +14,30 @@ import {
   Table,
   useConfirmModal,
   useMessage,
+  VariantColor,
 } from "lcano-react-ui";
 import {
   MovimentacaoCategoria,
+  TipoMovimentoEnum,
   initialMovimentacaoCategoriaState,
   tipoMovimentoOptions,
 } from "../../../../types";
 import { MovimentacaoCategoriaService } from "../../../../service";
 import { AuthContext } from "../../../../contexts";
 import MovimentacaoCategoriaSectionForm from "./MovimentacaoCategoriaSectionForm";
+
+const getTipoMovimentoVariant = (
+  tipo?: TipoMovimentoEnum
+): VariantColor => {
+  switch (tipo) {
+    case "DESPESA":
+      return "warning";
+    case "RENDA":
+      return "success";
+    default:
+      return "info";
+  }
+};
 
 const MovimentacaoCategoriaListPage: React.FC = () => {
   const { usuario } = useContext(AuthContext);
@@ -140,7 +156,22 @@ const MovimentacaoCategoriaListPage: React.FC = () => {
           onDelete={handleDeleteCategoria}
           loadPage={handlePageChange}
           columns={[
-            <Column<MovimentacaoCategoria> key="tipo" header="Tipo" width="100px" align="center" value={item => item.tipo} />,
+            <Column<MovimentacaoCategoria> 
+              key="tipo" 
+              header="Tipo" 
+              width="100px" 
+              align="center"
+              value={(item) => (
+                <HighlightBox
+                  variant={getTipoMovimentoVariant(item.tipo)}
+                  width='75px'
+                  height='25px'
+                  bordered
+                >
+                  {item.tipo}
+                </HighlightBox>
+              )}
+              />,
             <Column<MovimentacaoCategoria> key="descricao" header="Descrição" value={item => item.descricao} />,
           ]}
         />

@@ -46,7 +46,7 @@ const RegraExtratoContaCorrentePage: React.FC = () => {
       <Loading isLoading={isLoading} />
 
       {regra && (
-        <Panel maxWidth="1000px" title="Regra Extrato Conta Corrente">
+        <Panel maxWidth="1000px" title="Fluxo Caixa > Regra Extrato Conta Corrente">
           <Stack direction="column" divider="y">
             <FieldValue
               description="Descrição"
