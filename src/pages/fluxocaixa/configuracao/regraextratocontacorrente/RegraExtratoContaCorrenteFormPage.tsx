@@ -187,7 +187,7 @@ const RegraExtratoContaCorrenteFormPage: React.FC = () => {
         onClick={saveRegra}
       />
 
-      <Panel maxWidth="1000px" title="Regra Extrato Conta Corrente">
+      <Panel maxWidth="1000px" title="Fluxo Caixa > Regra Extrato Conta Corrente">
         <Stack direction="column" divider="y">
           <FieldValue
             description="Descrição"
@@ -219,7 +219,6 @@ const RegraExtratoContaCorrenteFormPage: React.FC = () => {
                 })
               }
             />
-
             <SearchSelectField
               label="Categoria"
               fetchOptions={fetchOptions}
@@ -237,7 +236,6 @@ const RegraExtratoContaCorrenteFormPage: React.FC = () => {
               editable
               onUpdate={updateField("descricaoMatch")}
             />
-
             <FieldValue
               description="Descrição Destino"
               type="STRING"
@@ -257,7 +255,6 @@ const RegraExtratoContaCorrenteFormPage: React.FC = () => {
               maxValue={99}
               onUpdate={updateField("prioridade")}
             />
-
             <FieldValue
               description="Ativo"
               type="BOOLEAN"

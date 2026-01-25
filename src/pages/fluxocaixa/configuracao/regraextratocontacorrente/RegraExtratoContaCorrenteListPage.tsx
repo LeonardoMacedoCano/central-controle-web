@@ -4,6 +4,7 @@ import {
   ActionButton,
   Column,
   Container,
+  HighlightBox,
   Loading,
   PAGE_SIZE_DEFAULT,
   PagedResponse,
@@ -14,8 +15,10 @@ import {
   useMessage,
 } from "lcano-react-ui";
 import {
+  getDescricaoTipoRegraExtratoContaCorrente,
   RegraExtratoContaCorrente,
   tipoMovimentoOptions,
+  tipoRegraExtratoContaCorrenteOptions,
 } from "../../../../types";
 import { RegraExtratoContaCorrenteService } from "../../../../service";
 import { AuthContext } from "../../../../contexts";
@@ -79,7 +82,8 @@ const RegraExtratoContaCorrenteListPage: React.FC = () => {
         title="Fluxo Caixa > Regras Extrato Conta Corrente"
         fields={[
           { name: "descricao", label: "Descrição", type: "STRING" },
-          { name: "tipo", label: "Tipo", type: "SELECT", options: tipoMovimentoOptions },
+          { name: "tipoRegra", label: "Tipo", type: "SELECT", options: tipoRegraExtratoContaCorrenteOptions },
+          { name: "ativo", label: "Ativo", type: "BOOLEAN"}
         ]}
         onSearch={async (rsqlString) => loadRegras(0, PAGE_SIZE_DEFAULT, rsqlString)}
       />
@@ -89,12 +93,26 @@ const RegraExtratoContaCorrenteListPage: React.FC = () => {
           values={regras || []}
           messageEmpty="Nenhuma regra encontrada."
           keyExtractor={item => item.id.toString()}
-          onView={(item) => navigate(`/regra-extrato-conta-corrente/${item.id}`)}
-          onEdit={(item) => navigate(`/regra-extrato-conta-corrente/editar/${item.id}`)}
+          onView={(item) => navigate(`/fluxocaixa/regra-extrato-conta-corrente/resumo/${item.id}`)}
+          onEdit={(item) => navigate(`/fluxocaixa/regra-extrato-conta-corrente/editar/${item.id}`)}
           onDelete={handleDelete}
           loadPage={handlePageChange}
           columns={[
-            <Column<RegraExtratoContaCorrente> key="tipo" header="Tipo" width="100px" align="center" value={item => item.tipoRegra} />,
+            <Column<RegraExtratoContaCorrente> 
+              header="Ativo" 
+              width="60px"
+              align="center"
+              value={(item) => (
+                <HighlightBox
+                  variant={item.ativo ? 'success' : 'warning'}
+                  width='75px'
+                  height='25px'
+                >
+                  {item.ativo ? 'Sim' : 'Não'}
+                </HighlightBox>
+              )}
+            />,
+            <Column<RegraExtratoContaCorrente> key="tipo" header="Tipo" width="150px" align="center" value={(item) => getDescricaoTipoRegraExtratoContaCorrente(item.tipoRegra)}  />,
             <Column<RegraExtratoContaCorrente> key="descricao" header="Descrição" value={item => item.descricao} />,
           ]}
         />
