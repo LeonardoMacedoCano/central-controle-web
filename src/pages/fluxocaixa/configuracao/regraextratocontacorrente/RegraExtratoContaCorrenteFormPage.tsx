@@ -170,7 +170,7 @@ const RegraExtratoContaCorrenteFormPage: React.FC = () => {
           message
         );
       if (response?.id) {
-        navigate(`/regra-extrato-conta-corrente/${response.id}`);
+        navigate(`/fluxocaixa/regra-extrato-conta-corrente/resumo/${response.id}`);
       }
     } catch (error) {
       message.showErrorWithLog("Erro ao salvar regra.", error);
