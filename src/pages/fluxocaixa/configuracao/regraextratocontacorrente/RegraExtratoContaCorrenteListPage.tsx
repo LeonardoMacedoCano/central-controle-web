@@ -8,7 +8,6 @@ import {
   Loading,
   PAGE_SIZE_DEFAULT,
   PagedResponse,
-  Panel,
   SearchFilterRSQL,
   Table,
   useConfirmModal,
@@ -17,7 +16,6 @@ import {
 import {
   getDescricaoTipoRegraExtratoContaCorrente,
   RegraExtratoContaCorrente,
-  tipoMovimentoOptions,
   tipoRegraExtratoContaCorrenteOptions,
 } from "../../../../types";
 import { RegraExtratoContaCorrenteService } from "../../../../service";
@@ -71,15 +69,13 @@ const RegraExtratoContaCorrenteListPage: React.FC = () => {
 
   return (
     <Container>
-      <ActionButton icon={<FaPlus />} hint="Adicionar regra" onClick={() => navigate(`/fluxocaixa/regra-extrato-conta-corrente/novo`)} />
+      <ActionButton icon={<FaPlus />} hint="Adicionar regra" onClick={() => navigate(`/fluxocaixa/config/regra-extrato-conta-corrente/novo`)} />
 
       {ConfirmModalComponent}
 
       <Loading isLoading={isLoading} />
 
       <SearchFilterRSQL
-        maxWidth="1000px"
-        title="Fluxo Caixa > Regras Extrato Conta Corrente"
         fields={[
           { name: "descricao", label: "Descrição", type: "STRING" },
           { name: "tipoRegra", label: "Tipo", type: "SELECT", options: tipoRegraExtratoContaCorrenteOptions },
@@ -88,35 +84,33 @@ const RegraExtratoContaCorrenteListPage: React.FC = () => {
         onSearch={async (rsqlString) => loadRegras(0, PAGE_SIZE_DEFAULT, rsqlString)}
       />
 
-      <Panel maxWidth="1000px">
-        <Table<RegraExtratoContaCorrente>
-          values={regras || []}
-          messageEmpty="Nenhuma regra encontrada."
-          keyExtractor={item => item.id.toString()}
-          onView={(item) => navigate(`/fluxocaixa/regra-extrato-conta-corrente/resumo/${item.id}`)}
-          onEdit={(item) => navigate(`/fluxocaixa/regra-extrato-conta-corrente/editar/${item.id}`)}
-          onDelete={handleDelete}
-          loadPage={handlePageChange}
-          columns={[
-            <Column<RegraExtratoContaCorrente> 
-              header="Ativo" 
-              width="60px"
-              align="center"
-              value={(item) => (
-                <HighlightBox
-                  variant={item.ativo ? 'success' : 'warning'}
-                  width='75px'
-                  height='25px'
-                >
-                  {item.ativo ? 'Sim' : 'Não'}
-                </HighlightBox>
-              )}
-            />,
-            <Column<RegraExtratoContaCorrente> key="tipo" header="Tipo" width="150px" align="center" value={(item) => getDescricaoTipoRegraExtratoContaCorrente(item.tipoRegra)}  />,
-            <Column<RegraExtratoContaCorrente> key="descricao" header="Descrição" value={item => item.descricao} />,
-          ]}
-        />
-      </Panel>
+      <Table<RegraExtratoContaCorrente>
+        values={regras || []}
+        messageEmpty="Nenhuma regra encontrada."
+        keyExtractor={item => item.id.toString()}
+        onView={(item) => navigate(`/fluxocaixa/config/regra-extrato-conta-corrente/resumo/${item.id}`)}
+        onEdit={(item) => navigate(`/fluxocaixa/config/regra-extrato-conta-corrente/editar/${item.id}`)}
+        onDelete={handleDelete}
+        loadPage={handlePageChange}
+        columns={[
+          <Column<RegraExtratoContaCorrente> 
+            header="Ativo" 
+            width="60px"
+            align="center"
+            value={(item) => (
+              <HighlightBox
+                variant={item.ativo ? 'success' : 'warning'}
+                width='75px'
+                height='25px'
+              >
+                {item.ativo ? 'Sim' : 'Não'}
+              </HighlightBox>
+            )}
+          />,
+          <Column<RegraExtratoContaCorrente> key="tipo" header="Tipo" width="150px" align="center" value={(item) => getDescricaoTipoRegraExtratoContaCorrente(item.tipoRegra)}  />,
+          <Column<RegraExtratoContaCorrente> key="descricao" header="Descrição" value={item => item.descricao} />,
+        ]}
+      />
     </Container>
   );
 };

@@ -1,30 +1,22 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 import GlobalStyles from './GlobalStyles';
 import { 
   AuthProvider,
-  RequireAuth,
   ThemeControlProvider
 } from './contexts';
-import AppLayout from './menus/AppLayout';
-import AppRoutes from './routes';
 import { defaultThemeFavicon } from './utils';
 import { ContextMessageProvider, ThemeFavicon } from 'lcano-react-ui';
+import { router } from './routes';
 
 const App: React.FC = () => {
   return (
     <ThemeControlProvider>
       <ContextMessageProvider>
         <AuthProvider>
-          <BrowserRouter>
-            <GlobalStyles />
-            <RequireAuth>
-              <AppLayout>
-                <AppRoutes />
-              </AppLayout>
-            </RequireAuth>
-            <ThemeFavicon renderSvg={defaultThemeFavicon} />
-          </BrowserRouter>
+          <GlobalStyles />
+          <RouterProvider router={router} />
+          <ThemeFavicon renderSvg={defaultThemeFavicon} />
         </AuthProvider>
       </ContextMessageProvider>
     </ThemeControlProvider>

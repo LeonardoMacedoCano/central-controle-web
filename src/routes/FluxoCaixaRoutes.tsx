@@ -5,15 +5,66 @@ import ParametroPage from '../pages/fluxocaixa/configuracao/parametro/ParametroP
 import RegraExtratoContaCorrenteListPage from '../pages/fluxocaixa/configuracao/regraextratocontacorrente/RegraExtratoContaCorrenteListPage';
 import RegraExtratoContaCorrenteFormPage from '../pages/fluxocaixa/configuracao/regraextratocontacorrente/RegraExtratoContaCorrenteFormPage';
 import RegraExtratoContaCorrentePage from '../pages/fluxocaixa/configuracao/regraextratocontacorrente/RegraExtratoContaCorrentePage';
+import FluxoCaixaResumo from '../pages/fluxocaixa/FluxoCaixaResumo';
+import SimpleModuleLayout from '../layouts/SimpleModuleLayout';
 
 const FluxoCaixaRoutes: RouteObject[] = [
-  { path: "fluxocaixa/config", element: <FluxoCaixaConfigPage /> },
-  { path: "fluxocaixa/categoria", element: <MovimentacaoCategoriaListPage /> },
-  { path: "fluxocaixa/parametro", element: <ParametroPage /> },
-  { path: "fluxocaixa/regra-extrato-conta-corrente", element: <RegraExtratoContaCorrenteListPage /> },
-  { path: "fluxocaixa/regra-extrato-conta-corrente/novo", element: <RegraExtratoContaCorrenteFormPage /> },
-  { path: "fluxocaixa/regra-extrato-conta-corrente/editar/:id", element: <RegraExtratoContaCorrenteFormPage /> },
-  { path: "fluxocaixa/regra-extrato-conta-corrente/resumo/:id", element: <RegraExtratoContaCorrentePage /> },
+    {
+    path: "fluxocaixa",
+    element: <SimpleModuleLayout />,
+    handle: { breadcrumb: "Fluxo Caixa" },
+    children: [
+      { 
+        index: true,
+        element: <FluxoCaixaResumo /> 
+      },
+      {
+        path: "config",
+        handle: { breadcrumb: "Configuração" },
+        children: [
+          {
+            index: true,
+            element: <FluxoCaixaConfigPage />,
+          },
+          {
+            path: "parametro",
+            element: <ParametroPage />,
+            handle: { breadcrumb: "Parâmetros" },
+          },
+          {
+            path: "categoria",
+            element: <MovimentacaoCategoriaListPage />,
+            handle: { breadcrumb: "Categorias" },
+          },
+          {
+            path: "regra-extrato-conta-corrente",
+            handle: { breadcrumb: "Regras de Extrato" },
+            children: [
+              {
+                index: true,
+                element: <RegraExtratoContaCorrenteListPage />,
+              },
+              {
+                path: "novo",
+                element: <RegraExtratoContaCorrenteFormPage />,
+                handle: { breadcrumb: "Novo" },
+              },
+              {
+                path: "editar/:id",
+                element: <RegraExtratoContaCorrenteFormPage />,
+                handle: { breadcrumb: "Editar" },
+              },
+              {
+                path: "resumo/:id",
+                element: <RegraExtratoContaCorrentePage />,
+                handle: { breadcrumb: "Resumo" },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export default FluxoCaixaRoutes;

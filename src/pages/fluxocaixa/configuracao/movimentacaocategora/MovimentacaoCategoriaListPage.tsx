@@ -9,7 +9,6 @@ import {
   Loading,
   PAGE_SIZE_DEFAULT,
   PagedResponse,
-  Panel,
   SearchFilterRSQL,
   Table,
   useConfirmModal,
@@ -138,8 +137,6 @@ const MovimentacaoCategoriaListPage: React.FC = () => {
       <Loading isLoading={isLoading} />
 
       <SearchFilterRSQL
-        maxWidth="1000px"
-        title="Fluxo Caixa > Categorias"
         fields={[
           { name: "descricao", label: "Descrição", type: "STRING" },
           { name: "tipo", label: "Tipo", type: "SELECT", options: tipoMovimentoOptions },
@@ -147,36 +144,34 @@ const MovimentacaoCategoriaListPage: React.FC = () => {
         onSearch={async (rsqlString) => loadCategorias(0, PAGE_SIZE_DEFAULT, rsqlString)}
       />
 
-      <Panel maxWidth="1000px">
-        <Table<MovimentacaoCategoria>
-          values={categorias || []}
-          messageEmpty="Nenhuma categoria encontrada."
-          keyExtractor={item => item.id.toString()}
-          onEdit={openModal}
-          onDelete={handleDeleteCategoria}
-          loadPage={handlePageChange}
-          columns={[
-            <Column<MovimentacaoCategoria> 
-              key="tipo" 
-              header="Tipo" 
-              width="100px" 
-              align="center"
-              value={(item) => (
-                <HighlightBox
-                  variant={getTipoMovimentoVariant(item.tipo)}
-                  width='75px'
-                  height='25px'
-                  bordered
-                >
-                  {item.tipo}
-                </HighlightBox>
-              )}
-              />,
-            <Column<MovimentacaoCategoria> key="descricao" header="Descrição" value={item => item.descricao} />,
-          ]}
-        />
-      </Panel>
-    </Container>
+      <Table<MovimentacaoCategoria>
+        values={categorias || []}
+        messageEmpty="Nenhuma categoria encontrada."
+        keyExtractor={item => item.id.toString()}
+        onEdit={openModal}
+        onDelete={handleDeleteCategoria}
+        loadPage={handlePageChange}
+        columns={[
+          <Column<MovimentacaoCategoria> 
+            key="tipo" 
+            header="Tipo" 
+            width="100px" 
+            align="center"
+            value={(item) => (
+              <HighlightBox
+                variant={getTipoMovimentoVariant(item.tipo)}
+                width='75px'
+                height='25px'
+                bordered
+              >
+                {item.tipo}
+              </HighlightBox>
+            )}
+            />,
+          <Column<MovimentacaoCategoria> key="descricao" header="Descrição" value={item => item.descricao} />,
+        ]}
+      />
+    </ Container>
   );
 };
 

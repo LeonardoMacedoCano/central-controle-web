@@ -23,7 +23,7 @@ export const sidebarItems: SidebarItem[] = [
     Icon: FaDollarSign,
     Text: "Fluxo Caixa",
     submenu: [
-      { to: "/fluxocaixa/resumo", Text: "Resumo" },
+      { to: "/fluxocaixa", Text: "Resumo" },
       { to: "/fluxocaixa/lancamento", Text: "Lançamentos" },
       { to: "/fluxocaixa/config", Text: "Configuração" },
     ],

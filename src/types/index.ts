@@ -3,6 +3,7 @@ export type { Usuario, UsuarioForm } from './usuario/Usuario';
 export type { TipoMovimentoEnum, TipoMovimentoInfo } from './fluxocaixa/TipoMovimentacaoEnum';
 export type { Parametro } from './fluxocaixa/Parametro';
 export type { RegraExtratoContaCorrente } from './fluxocaixa/RegraExtratoContaCorrente';
+export type { RouteHandle } from './RouteHandle'
 
 export { initialMovimentacaoCategoriaState } from './fluxocaixa/MovimentacaoCategoria';
 export {

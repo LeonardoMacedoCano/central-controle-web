@@ -3,7 +3,7 @@ import { getDescricaoTipoRegraExtratoContaCorrente, RegraExtratoContaCorrente } 
 import { useContext, useEffect, useState } from "react";
 import { RegraExtratoContaCorrenteService } from "../../../../service";
 import { AuthContext } from "../../../../contexts";
-import { Container, FieldValue, Loading, Panel, Stack, useMessage } from "lcano-react-ui";
+import { Container, FieldValue, Loading, Stack, useMessage } from "lcano-react-ui";
 
 const RegraExtratoContaCorrentePage: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
@@ -46,61 +46,59 @@ const RegraExtratoContaCorrentePage: React.FC = () => {
       <Loading isLoading={isLoading} />
 
       {regra && (
-        <Panel maxWidth="1000px" title="Fluxo Caixa > Regra Extrato Conta Corrente">
-          <Stack direction="column" divider="y">
+        <Stack direction="column" divider="y">
+          <FieldValue
+            description="Descrição"
+            type="STRING"
+            value={regra.descricao}
+            editable={false}
+          />
+
+          <Stack direction="row" divider="x">
             <FieldValue
-              description="Descrição"
+              description="Tipo"
               type="STRING"
-              value={regra.descricao}
+              value={getDescricaoTipoRegraExtratoContaCorrente(regra.tipoRegra)}
               editable={false}
             />
-
-            <Stack direction="row" divider="x">
-              <FieldValue
-                description="Tipo"
-                type="STRING"
-                value={getDescricaoTipoRegraExtratoContaCorrente(regra.tipoRegra)}
-                editable={false}
-              />
-              <FieldValue
-                description="Categoria"
-                type="STRING"
-                value={getDescricaoCategoria()}
-                editable={false}
-              />
-            </Stack>
-
-            <Stack direction="row" divider="x">
-              <FieldValue
-                description="Descrição Match"
-                type="STRING"
-                value={regra.descricaoMatch}
-                editable={false}
-              />
-              <FieldValue
-                description="Descrição Destino"
-                type="STRING"
-                value={regra.descricaoDestino}
-                editable={false}
-              />
-            </Stack>
-
-            <Stack direction="row" divider="x">
-              <FieldValue
-                description="Prioridade"
-                type="STRING"
-                value={regra.prioridade}
-                editable={false}
-              />
-              <FieldValue
-                description="Ativo"
-                type="STRING"
-                value={regra.ativo ? "Sim" : "Não"}
-                editable={false}
-              />
-            </Stack>
+            <FieldValue
+              description="Categoria"
+              type="STRING"
+              value={getDescricaoCategoria()}
+              editable={false}
+            />
           </Stack>
-        </Panel>
+
+          <Stack direction="row" divider="x">
+            <FieldValue
+              description="Descrição Match"
+              type="STRING"
+              value={regra.descricaoMatch}
+              editable={false}
+            />
+            <FieldValue
+              description="Descrição Destino"
+              type="STRING"
+              value={regra.descricaoDestino}
+              editable={false}
+            />
+          </Stack>
+
+          <Stack direction="row" divider="x">
+            <FieldValue
+              description="Prioridade"
+              type="STRING"
+              value={regra.prioridade}
+              editable={false}
+            />
+            <FieldValue
+              description="Ativo"
+              type="STRING"
+              value={regra.ativo ? "Sim" : "Não"}
+              editable={false}
+            />
+          </Stack>
+        </Stack>
       )}
     </Container>
   );

@@ -2,9 +2,7 @@ import React, { useContext, useEffect, useState, useCallback } from "react";
 import { FaCheck } from "react-icons/fa";
 import {
   ActionButton,
-  Container,
   Loading,
-  Panel,
   Tabs,
   useMessage
 } from "lcano-react-ui";
@@ -72,7 +70,7 @@ const ParametroPage: React.FC = () => {
   ];
 
   return (
-    <Container>
+    <>
       <Loading isLoading={isLoading} />
       
       <ActionButton
@@ -81,10 +79,8 @@ const ParametroPage: React.FC = () => {
         onClick={salvarParametros}
       />
 
-      <Panel maxWidth="1000px" title="Fluxo Caixa > Parâmetros">
-        <Tabs tabs={tabs} />
-      </Panel>
-    </Container>
+      <Tabs tabs={tabs} />
+    </>
   );
 };
 

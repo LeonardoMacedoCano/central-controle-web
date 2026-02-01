@@ -120,60 +120,57 @@ export const UsuarioFormPage: React.FC = () => {
             hint={'Salvar'}
             onClick={handleSubmit} 
           />
-          <Panel maxWidth="800px" title="Usuário">
-            <Stack direction="column" style={{ padding: '20px' }}>
-              <Stack direction="row">
-                <ImagePicker
-                  icon={<MdCameraAlt size={20} />}
-                  imageUrl={imagemPerfil}
-                  onChange={(file) => update({ file })}
-                  isLoading={isLoadingImage}
-                  key={imagemPerfil} 
+          <Stack direction="column" style={{ padding: '20px' }}>
+            <Stack direction="row">
+              <ImagePicker
+                icon={<MdCameraAlt size={20} />}
+                imageUrl={imagemPerfil}
+                onChange={(file) => update({ file })}
+                isLoading={isLoadingImage}
+                key={imagemPerfil} 
+              />
+            </Stack>
+
+            <Panel>
+              <Stack direction="column" divider="top">
+                <FieldValue
+                  type="STRING"
+                  value={usuarioForm.username}
+                  description="Nome"
+                  editable={false}
+                />
+                <FieldValue
+                  type="STRING"
+                  value={usuarioForm.currentPassword}
+                  description="Senha Atual"
+                  onUpdate={(v) => update({ currentPassword: v })}
+                  placeholder="Digite sua senha atual"
+                />
+                <FieldValue
+                  type="STRING"
+                  value={usuarioForm.newPassword}
+                  description="Nova Senha"
+                  onUpdate={(v) => update({ newPassword: v })}
+                  placeholder="Digite sua nova senha"
+                />
+                <FieldValue
+                  type="STRING"
+                  value={confirmPassword}
+                  description="Confirmar Nova Senha"
+                  onUpdate={setConfirmPassword}
+                  placeholder="Confirme sua nova senha"
                 />
               </Stack>
+            </Panel>
 
-              <Panel>
-                <Stack direction="column" divider="top">
-                  <FieldValue
-                    type="STRING"
-                    value={usuarioForm.username}
-                    description="Nome"
-                    editable={false}
-                  />
-                  <FieldValue
-                    type="STRING"
-                    value={usuarioForm.currentPassword}
-                    description="Senha Atual"
-                    onUpdate={(v) => update({ currentPassword: v })}
-                    placeholder="Digite sua senha atual"
-                  />
-                  <FieldValue
-                    type="STRING"
-                    value={usuarioForm.newPassword}
-                    description="Nova Senha"
-                    onUpdate={(v) => update({ newPassword: v })}
-                    placeholder="Digite sua nova senha"
-                  />
-                  <FieldValue
-                    type="STRING"
-                    value={confirmPassword}
-                    description="Confirmar Nova Senha"
-                    onUpdate={setConfirmPassword}
-                    placeholder="Confirme sua nova senha"
-                  />
-                </Stack>
-              </Panel>
-
-              <Panel maxWidth="1000px" title="Temas" transparent style={{ marginTop: '20px' }}>
-                <ThemeSelector
-                  themes={temas}
-                  currentTheme={usuarioForm.idTema}
-                  onThemeChange={(idTema) => update({ idTema })}
-                />
-              </Panel>
-            </Stack>
-          </Panel>
-
+            <Panel title="Temas" transparent style={{ marginTop: '20px' }}>
+              <ThemeSelector
+                themes={temas}
+                currentTheme={usuarioForm.idTema}
+                onThemeChange={(idTema) => update({ idTema })}
+              />
+            </Panel>
+          </Stack>
         </>  
       )}
     </Container>

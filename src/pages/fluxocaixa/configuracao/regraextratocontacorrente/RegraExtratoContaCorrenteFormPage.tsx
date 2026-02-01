@@ -19,7 +19,6 @@ import {
   Container,
   FieldValue,
   Loading,
-  Panel,
   SearchSelectField,
   Stack,
   useMessage,
@@ -187,84 +186,82 @@ const RegraExtratoContaCorrenteFormPage: React.FC = () => {
         onClick={saveRegra}
       />
 
-      <Panel maxWidth="1000px" title="Fluxo Caixa > Regra Extrato Conta Corrente">
-        <Stack direction="column" divider="y">
+      <Stack direction="column" divider="y">
+        <FieldValue
+          description="Descrição"
+          type="STRING"
+          value={regra.descricao}
+          editable
+          onUpdate={updateField("descricao")}
+        />
+
+        <Stack direction="row" divider="x">
           <FieldValue
-            description="Descrição"
-            type="STRING"
-            value={regra.descricao}
+            description="Tipo"
+            type="SELECT"
+            value={{
+              key: getCodigoTipoRegraExtratoContaCorrente(regra.tipoRegra),
+              value: getDescricaoTipoRegraExtratoContaCorrente(
+                regra.tipoRegra
+              ),
+            }}
             editable
-            onUpdate={updateField("descricao")}
+            options={tipoRegraExtratoContaCorrenteOptions}
+            onUpdate={(v) =>
+              updateRegra({
+                tipoRegra:
+                  getTipoRegraExtratoContaCorrenteByCodigo(String(v)),
+                despesaCategoriaDestino: undefined,
+                rendaCategoriaDestino: undefined,
+                ativoCategoriaDestino: undefined,
+              })
+            }
           />
-
-          <Stack direction="row" divider="x">
-            <FieldValue
-              description="Tipo"
-              type="SELECT"
-              value={{
-                key: getCodigoTipoRegraExtratoContaCorrente(regra.tipoRegra),
-                value: getDescricaoTipoRegraExtratoContaCorrente(
-                  regra.tipoRegra
-                ),
-              }}
-              editable
-              options={tipoRegraExtratoContaCorrenteOptions}
-              onUpdate={(v) =>
-                updateRegra({
-                  tipoRegra:
-                    getTipoRegraExtratoContaCorrenteByCodigo(String(v)),
-                  despesaCategoriaDestino: undefined,
-                  rendaCategoriaDestino: undefined,
-                  ativoCategoriaDestino: undefined,
-                })
-              }
-            />
-            <SearchSelectField
-              label="Categoria"
-              fetchOptions={fetchOptions}
-              value={optionValue}
-              onSelect={onSelect}
-              disabled={!categoriaEnabled}
-            />
-          </Stack>
-
-          <Stack direction="row" divider="x">
-            <FieldValue
-              description="Descrição Match"
-              type="STRING"
-              value={regra.descricaoMatch}
-              editable
-              onUpdate={updateField("descricaoMatch")}
-            />
-            <FieldValue
-              description="Descrição Destino"
-              type="STRING"
-              value={regra.descricaoDestino}
-              editable
-              onUpdate={updateField("descricaoDestino")}
-            />
-          </Stack>
-
-          <Stack direction="row" divider="x">
-            <FieldValue
-              description="Prioridade"
-              type="NUMBER"
-              value={regra.prioridade}
-              editable
-              minValue={0}
-              maxValue={99}
-              onUpdate={updateField("prioridade")}
-            />
-            <FieldValue
-              description="Ativo"
-              type="BOOLEAN"
-              value={regra.ativo}
-              editable
-              onUpdate={updateField("ativo")}
-            />
-          </Stack>
+          <SearchSelectField
+            label="Categoria"
+            fetchOptions={fetchOptions}
+            value={optionValue}
+            onSelect={onSelect}
+            disabled={!categoriaEnabled}
+          />
         </Stack>
-      </Panel>
+
+        <Stack direction="row" divider="x">
+          <FieldValue
+            description="Descrição Match"
+            type="STRING"
+            value={regra.descricaoMatch}
+            editable
+            onUpdate={updateField("descricaoMatch")}
+          />
+          <FieldValue
+            description="Descrição Destino"
+            type="STRING"
+            value={regra.descricaoDestino}
+            editable
+            onUpdate={updateField("descricaoDestino")}
+          />
+        </Stack>
+
+        <Stack direction="row" divider="x">
+          <FieldValue
+            description="Prioridade"
+            type="NUMBER"
+            value={regra.prioridade}
+            editable
+            minValue={0}
+            maxValue={99}
+            onUpdate={updateField("prioridade")}
+          />
+          <FieldValue
+            description="Ativo"
+            type="BOOLEAN"
+            value={regra.ativo}
+            editable
+            onUpdate={updateField("ativo")}
+          />
+        </Stack>
+      </Stack>
     </Container>
   );
 };

@@ -2,12 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MainContent, PageContent } from './styles';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
+import { Outlet } from 'react-router-dom';
+import { Panel } from 'lcano-react-ui';
+import { Breadcrumb } from '../components';
 
 interface AppLayoutProps {
-  children: React.ReactNode;
 }
 
-export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
+export const AppLayout: React.FC<AppLayoutProps> = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
@@ -47,7 +49,11 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       </div>
       <MainContent isMenuOpen={isMenuOpen}>
         <Header toggleMenu={toggleMenu} unreadMessages={0} menuButtonRef={menuButtonRef} />
-        <PageContent>{children}</PageContent>
+        <PageContent>
+          <Panel maxWidth="1000px" title={<Breadcrumb />}>
+            <Outlet />
+          </Panel>
+        </PageContent>
       </MainContent>
     </div>
   );

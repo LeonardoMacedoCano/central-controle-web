@@ -1,24 +1,29 @@
-import { Routes, Route } from 'react-router-dom';
-import { Home } from '../pages/home/Home';
-import UsuarioFormPage from '../pages/usuario/UsuarioFormPage';
-import FluxoCaixaRoutes from './FluxoCaixaRoutes';
+import { createBrowserRouter } from "react-router-dom";
+import FluxoCaixaRoutes from "./FluxoCaixaRoutes";
+import { Home } from "../pages/home/Home";
+import UsuarioFormPage from "../pages/usuario/UsuarioFormPage";
+import AppLayout from "../layouts/AppLayout";
+import { RequireAuth } from "../contexts";
 
-const defaultRoutes = [
-  { path: "/", element: <Home /> },
-  { path: "/usuario", element: <UsuarioFormPage /> },
-];
-
-const combinedRoutes = [
-  ...defaultRoutes,
-  ...FluxoCaixaRoutes,
-];
-
-const AppRoutes: React.FC = () => (
-  <Routes>
-    {combinedRoutes.map((route, index) => (
-      <Route key={index} path={route.path} element={route.element} />
-    ))}
-  </Routes>
-);
-
-export default AppRoutes;
+export const router = createBrowserRouter([
+  {
+    handle: { breadcrumb: "Home" },
+    element: (
+      <RequireAuth>
+        <AppLayout />
+      </RequireAuth>
+    ),
+    children: [
+      {
+        index: true,
+        element: <Home />
+      },
+      {
+        path: "usuario",
+        element: <UsuarioFormPage />,
+        handle: { breadcrumb: "Usuário" }
+      },
+      ...FluxoCaixaRoutes
+    ]
+  }
+]);
