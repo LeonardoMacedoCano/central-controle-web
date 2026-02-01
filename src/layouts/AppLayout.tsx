@@ -3,8 +3,8 @@ import { MainContent, PageContent } from './styles';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
 import { Outlet } from 'react-router-dom';
+import { RouterBreadcrumb } from '../routes/RouterBreadcrumb';
 import { Panel } from 'lcano-react-ui';
-import { Breadcrumb } from '../components';
 
 interface AppLayoutProps {
 }
@@ -50,7 +50,7 @@ export const AppLayout: React.FC<AppLayoutProps> = () => {
       <MainContent isMenuOpen={isMenuOpen}>
         <Header toggleMenu={toggleMenu} unreadMessages={0} menuButtonRef={menuButtonRef} />
         <PageContent>
-          <Panel maxWidth="1000px" title={<Breadcrumb />}>
+          <Panel maxWidth="1000px" title={<RouterBreadcrumb />}>
             <Outlet />
           </Panel>
         </PageContent>

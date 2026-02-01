@@ -38,7 +38,7 @@ const FluxoCaixaRoutes: RouteObject[] = [
           },
           {
             path: "regra-extrato-conta-corrente",
-            handle: { breadcrumb: "Regras de Extrato" },
+            handle: { breadcrumb: "Regras Extrato" },
             children: [
               {
                 index: true,
