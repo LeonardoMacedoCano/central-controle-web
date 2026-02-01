@@ -47,7 +47,7 @@ export const AppLayout: React.FC<AppLayoutProps> = () => {
           handleLinkClick={() => { setIsMenuOpen(false); setActiveSubmenu(null); }}
         />
       </div>
-      <MainContent isMenuOpen={isMenuOpen}>
+      <MainContent $isMenuOpen={isMenuOpen}>
         <Header toggleMenu={toggleMenu} unreadMessages={0} menuButtonRef={menuButtonRef} />
         <PageContent>
           <Panel maxWidth="1000px" title={<RouterBreadcrumb />}>

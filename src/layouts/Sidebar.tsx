@@ -15,7 +15,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, activeSubmenu, setActi
   };
 
   return (
-    <AppSidebarContainer isActive={isOpen}>
+    <AppSidebarContainer $isActive={isOpen}>
       <AppSidebar>
         {sidebarItems.map((item, index) => (
           item.submenu ? (

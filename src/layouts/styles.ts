@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
 
-export const MainContent = styled.div<{ isMenuOpen: boolean }>`
+export const MainContent = styled.div<{ $isMenuOpen: boolean }>`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -37,13 +37,13 @@ export const UserMenuDropdown = styled.div`position: absolute; top: 40px; right:
 export const UserMenuItem = styled.div`padding: 10px 20px; cursor: pointer; &:hover{ background-color: ${({ theme }) => theme.colors.tertiary}; }`;
 export const TitleHeader = styled.div`font-size: 18px; font-weight: bold; color: ${({ theme }) => theme.colors.white};`;
 
-export const AppSidebarContainer = styled.div<{ isActive: boolean }>`
+export const AppSidebarContainer = styled.div<{ $isActive: boolean }>`
   z-index: 1000;
   position: fixed;
   left: 0;
   top: 60px;
   height: 100%;
-  width: ${({ isActive }) => isActive ? '250px' : '0'};
+  width: ${({ $isActive }) => ($isActive ? '250px' : '0')};
   color: ${({ theme }) => theme.colors.tertiary};
   background-color: ${({ theme }) => theme.colors.secondary};
   box-shadow: 0 2px 5px ${({ theme }) => theme.colors.tertiary};
