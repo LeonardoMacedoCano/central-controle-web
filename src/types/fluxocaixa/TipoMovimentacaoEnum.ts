@@ -1,12 +1,12 @@
 export const TiposMovimentos = {
+  ATIVO: { tipo: 'ATIVO', descricao: 'Ativo' },
   DESPESA: { tipo: 'DESPESA', descricao: 'Despesa'},
   RENDA: { tipo: 'RENDA', descricao: 'Renda'},
-  ATIVO: { tipo: 'ATIVO', descricao: 'Ativo' },
 } as const;
 
 export type TipoMovimentoEnum = keyof typeof TiposMovimentos;
 
-export interface TipoMovimentoInfo {
+interface TipoMovimentoInfo {
   tipo: TipoMovimentoEnum;
   descricao: string;
 }

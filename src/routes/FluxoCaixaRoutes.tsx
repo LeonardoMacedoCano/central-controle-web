@@ -7,6 +7,8 @@ import RegraExtratoContaCorrenteFormPage from '../pages/fluxocaixa/configuracao/
 import RegraExtratoContaCorrentePage from '../pages/fluxocaixa/configuracao/regraextratocontacorrente/RegraExtratoContaCorrentePage';
 import FluxoCaixaResumo from '../pages/fluxocaixa/FluxoCaixaResumo';
 import SimpleModuleLayout from '../layouts/SimpleModuleLayout';
+import LancamentoListPage from '../pages/fluxocaixa/lancamento/LancamentoListPage';
+import LancamentoFormPage from '../pages/fluxocaixa/lancamento/LancamentoFormPage';
 
 const FluxoCaixaRoutes: RouteObject[] = [
     {
@@ -60,6 +62,27 @@ const FluxoCaixaRoutes: RouteObject[] = [
                 handle: { breadcrumb: "Resumo" },
               },
             ],
+          },
+        ],
+      },
+
+      {
+        path: "lancamento",
+        handle: { breadcrumb: "Lançamento" },
+        children: [
+          {
+            index: true,
+            element: <LancamentoListPage />,
+          },
+          {
+            path: "novo",
+            element: <LancamentoFormPage />,
+            handle: { breadcrumb: "Novo" },
+          },
+          {
+            path: "editar/:id",
+            element: <LancamentoFormPage />,
+            handle: { breadcrumb: "Editar" },
           },
         ],
       },
