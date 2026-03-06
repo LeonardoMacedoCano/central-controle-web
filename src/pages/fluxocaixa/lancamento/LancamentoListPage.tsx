@@ -3,7 +3,7 @@ import { FaBars, FaFileImport, FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts';
 import { LancamentoService } from '../../../service';
-import { ActionButton, Column, Container, formatDateToYMDString, HighlightBox, Loading, PAGE_SIZE_DEFAULT, PagedResponse, SearchFilterRSQL, Stack, Table, useConfirmModal, useMessage, VariantColor } from 'lcano-react-ui';
+import { ActionButton, Column, Container, formatDateToBrString, HighlightBox, Loading, PAGE_SIZE_DEFAULT, PagedResponse, SearchFilterRSQL, Stack, Table, useConfirmModal, useMessage, VariantColor } from 'lcano-react-ui';
 import { Lancamento } from '../../../types/fluxocaixa/Lancamento';
 import { getDescricaoTipoMovimento, TipoMovimentoEnum, tipoMovimentoFilters } from '../../../types';
 
@@ -100,7 +100,7 @@ const LancamentoListPage: React.FC = () => {
               align="center"
               width="100px"
               value={(item) =>
-                formatDateToYMDString(item.dataLancamento)
+                formatDateToBrString(item.dataLancamento)
               }
             />,
             <Column<Lancamento>

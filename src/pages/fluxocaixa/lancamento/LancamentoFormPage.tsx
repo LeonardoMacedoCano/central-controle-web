@@ -113,7 +113,7 @@ const LancamentoFormPage: React.FC = () => {
       );
 
       if (response?.id) {
-        navigate(`/lancamento/${response.id}`);
+        navigate(`/fluxocaixa/lancamento/${response.id}`);
       }
     } catch (error) {
       message.showErrorWithLog('Erro ao salvar o lançamento.', error);
