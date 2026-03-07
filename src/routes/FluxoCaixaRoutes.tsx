@@ -9,6 +9,7 @@ import FluxoCaixaResumo from '../pages/fluxocaixa/FluxoCaixaResumo';
 import SimpleModuleLayout from '../layouts/SimpleModuleLayout';
 import LancamentoListPage from '../pages/fluxocaixa/lancamento/LancamentoListPage';
 import LancamentoFormPage from '../pages/fluxocaixa/lancamento/LancamentoFormPage';
+import LancamentoPage from '../pages/fluxocaixa/lancamento/LancamentoPage';
 
 const FluxoCaixaRoutes: RouteObject[] = [
     {
@@ -78,6 +79,11 @@ const FluxoCaixaRoutes: RouteObject[] = [
             path: "novo",
             element: <LancamentoFormPage />,
             handle: { breadcrumb: "Novo" },
+          },
+          {
+            path: "resumo/:id",
+            element: <LancamentoPage />,
+            handle: { breadcrumb: "Resumo" },
           },
           {
             path: "editar/:id",
