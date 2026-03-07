@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { FaPlus } from "react-icons/fa";
 import {
   ActionButton,
@@ -22,7 +22,7 @@ import {
   tipoMovimentoOptions,
 } from "../../../../types";
 import { MovimentacaoCategoriaService } from "../../../../service";
-import { AuthContext } from "../../../../contexts";
+import { useAuth } from "../../../../contexts";
 import MovimentacaoCategoriaSectionForm from "./MovimentacaoCategoriaSectionForm";
 
 const getTipoMovimentoVariant = (
@@ -39,7 +39,7 @@ const getTipoMovimentoVariant = (
 };
 
 const MovimentacaoCategoriaListPage: React.FC = () => {
-  const { usuario } = useContext(AuthContext);
+  const { usuario } = useAuth();
   const message = useMessage();
   const { confirm, ConfirmModalComponent } = useConfirmModal();
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { FaCheck } from "react-icons/fa";
 import {
   ActionButton,
@@ -6,7 +6,7 @@ import {
   Tabs,
   useMessage
 } from "lcano-react-ui";
-import { AuthContext } from "../../../../contexts";
+import { useAuth } from "../../../../contexts";
 import { ParametroService } from "../../../../service";
 import { Parametro, initialParametroState } from "../../../../types";
 import DespesaParametroSectionForm from "./DespesaParametroSectionForm";
@@ -18,7 +18,7 @@ const ParametroPage: React.FC = () => {
   const [parametros, setParametros] = useState<Parametro>(initialParametroState);
   const [isLoading, setIsLoading] = useState(false);
 
-  const auth = useContext(AuthContext);
+  const auth = useAuth();
   const message = useMessage();
 
   const loadParametros = useCallback(async () => {

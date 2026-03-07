@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { TemaService } from '../../service';
 import { AppTheme, DEFAULT_THEME_SYSTEM, Tema } from 'lcano-react-ui';
@@ -10,7 +10,13 @@ type ThemeContextType = {
   isLoading: boolean;
 }
 
-export const ThemeContext = createContext<ThemeContextType>(null!);
+export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+export const useThemeControl = (): ThemeContextType => {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error('useThemeControl deve ser usado dentro de ThemeControlProvider');
+  return ctx;
+};
 
 export const ThemeControlProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<AppTheme | null>(null);

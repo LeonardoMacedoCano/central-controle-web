@@ -1,8 +1,8 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback } from 'react';
 import { SearchSelectField, Stack } from 'lcano-react-ui';
 import { MovimentacaoCategoria, Parametro } from '../../../../types';
 import { MovimentacaoCategoriaService } from '../../../../service';
-import { AuthContext } from '../../../../contexts';
+import { useAuth } from '../../../../contexts';
 
 interface Props {
   parametros: Parametro;
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const RendaParametroSectionForm: React.FC<Props> = ({ parametros, onUpdate }) => {
-  const { usuario } = useContext(AuthContext);
+  const { usuario } = useAuth();
 
   const getOptionFromCategoria = (categoria?: MovimentacaoCategoria) =>
     categoria ? { key: String(categoria.id), value: categoria.descricao } : undefined;

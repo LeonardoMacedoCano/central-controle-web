@@ -8,11 +8,11 @@ interface props {
 }
 
 const AtivoParametroSectionForm: React.FC<props> = ({ parametros, onUpdate }) => {
-  const handleMetaAporteMensal = (value: any) => {
+  const handleMetaAporteMensal = (value: number) => {
     onUpdate({ ...parametros, metaAporteMensal: value });
   };
 
-  const handleMetaAporteTotal = (value: any) => {
+  const handleMetaAporteTotal = (value: number) => {
     onUpdate({ ...parametros, metaAporteTotal: value });
   };
 

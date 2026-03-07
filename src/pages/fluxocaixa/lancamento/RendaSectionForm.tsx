@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Renda,
   MovimentacaoCategoria
@@ -13,7 +13,7 @@ import {
 } from 'lcano-react-ui';
 
 import { MovimentacaoCategoriaService } from '../../../service';
-import { AuthContext } from '../../../contexts';
+import { useAuth } from '../../../contexts';
 
 interface RendaSectionFormProps {
   renda: Renda;
@@ -24,7 +24,7 @@ const RendaSectionForm: React.FC<RendaSectionFormProps> = ({
   renda,
   onUpdate
 }) => {
-  const { usuario } = useContext(AuthContext);
+  const { usuario } = useAuth();
 
   const updateRenda = (updatedFields: Partial<Renda>) => {
     onUpdate({
@@ -39,7 +39,7 @@ const RendaSectionForm: React.FC<RendaSectionFormProps> = ({
     }
   };
 
-  const handleUpdateValor = (value: any) => {
+  const handleUpdateValor = (value: unknown) => {
     const numericValue = Number(value);
 
     if (!isNaN(numericValue)) {

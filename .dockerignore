@@ -1,0 +1,7 @@
+node_modules
+dist
+.vite
+.cache
+coverage
+.env*
+!.env.example

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Ativo, getCodigoTipoOperacaoExtratoMovimentacaoB3, getDescricaoTipoOperacaoExtratoMovimentacaoB3, getTipoOperacaoExtratoMovimentacaoB3ByCodigo, MovimentacaoCategoria, tipoOperacaoExtratoMovimentacaoB3Options } from '../../../types';
 import {
   buildSearchSelectAdapter,
@@ -8,7 +8,7 @@ import {
   Stack
 } from 'lcano-react-ui';
 import { MovimentacaoCategoriaService } from '../../../service';
-import { AuthContext } from '../../../contexts';
+import { useAuth } from '../../../contexts';
 
 interface AtivoSectionFormProps {
   ativo: Ativo;
@@ -16,7 +16,7 @@ interface AtivoSectionFormProps {
 }
 
 const AtivoSectionForm: React.FC<AtivoSectionFormProps> = ({ ativo, onUpdate }) => {
-  const { usuario } = useContext(AuthContext);
+  const { usuario } = useAuth();
 
   const updateAtivo = (updatedFields: Partial<Ativo>) => {
     onUpdate({
@@ -31,7 +31,7 @@ const AtivoSectionForm: React.FC<AtivoSectionFormProps> = ({ ativo, onUpdate }) 
     }
   };
 
-  const handleUpdateValor = (value: any) => {
+  const handleUpdateValor = (value: unknown) => {
     const numericValue = Number(value);
 
     if (!isNaN(numericValue)) {
@@ -39,9 +39,9 @@ const AtivoSectionForm: React.FC<AtivoSectionFormProps> = ({ ativo, onUpdate }) 
     }
   };
 
-  const handleUpdateOperacao = (value: any) => {
+  const handleUpdateOperacao = (value: unknown) => {
     const selectedOperacao =
-      getTipoOperacaoExtratoMovimentacaoB3ByCodigo(value);
+      getTipoOperacaoExtratoMovimentacaoB3ByCodigo(String(value));
     updateAtivo({ operacao: selectedOperacao });
   };
 

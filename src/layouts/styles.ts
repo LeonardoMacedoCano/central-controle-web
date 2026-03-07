@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
 
+export const AppContainer = styled.div`
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+`;
+
 export const MainContent = styled.div<{ $isMenuOpen: boolean }>`
   flex: 1;
   display: flex;

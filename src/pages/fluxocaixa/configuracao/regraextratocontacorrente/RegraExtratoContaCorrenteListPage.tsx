@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { FaPlus } from "react-icons/fa";
 import {
   ActionButton,
@@ -19,11 +19,11 @@ import {
   tipoRegraExtratoContaCorrenteOptions,
 } from "../../../../types";
 import { RegraExtratoContaCorrenteService } from "../../../../service";
-import { AuthContext } from "../../../../contexts";
+import { useAuth } from "../../../../contexts";
 import { useNavigate } from "react-router-dom";
 
 const RegraExtratoContaCorrenteListPage: React.FC = () => {
-  const { usuario } = useContext(AuthContext);
+  const { usuario } = useAuth();
   const message = useMessage();
   const { confirm, ConfirmModalComponent } = useConfirmModal();
   const navigate = useNavigate();

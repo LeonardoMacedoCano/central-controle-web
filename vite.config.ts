@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { MICROSERVICES } from './src/service/Api';
+import { resolve } from 'path';
 
 const proxy = Object.keys(MICROSERVICES).reduce((acc, key) => {
   const config = MICROSERVICES[key as keyof typeof MICROSERVICES];
@@ -14,6 +15,11 @@ const proxy = Object.keys(MICROSERVICES).reduce((acc, key) => {
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+    },
+  },
   server: {
     host: '0.0.0.0',
     allowedHosts: ['web'],

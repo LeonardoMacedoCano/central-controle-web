@@ -1,14 +1,13 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaBars, FaEnvelope } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../contexts';
+import { useAuth } from '../contexts';
 import { IMG_PERFIL_PADRAO } from '../utils';
 import { AppHeader, MenuIconContainer, TitleHeaderContainer, UserMenuContainer, MenuIcon, MessageIconWrapper, UnreadBadge, UserAvatar, UserMenuDropdown, UserMenuItem, TitleHeader } from './styles';
 
 interface HeaderProps {
   toggleMenu: () => void;
   unreadMessages: number;
-  menuButtonRef: React.RefObject<HTMLDivElement>;
 }
 
 export const Header: React.FC<HeaderProps> = ({ toggleMenu, unreadMessages }) => {
@@ -16,7 +15,7 @@ export const Header: React.FC<HeaderProps> = ({ toggleMenu, unreadMessages }) =>
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
 
-  const auth = useContext(AuthContext);
+  const auth = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {

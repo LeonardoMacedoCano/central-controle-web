@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { getDescricaoTipoRegraExtratoContaCorrente, RegraExtratoContaCorrente } from "../../../../types";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { RegraExtratoContaCorrenteService } from "../../../../service";
-import { AuthContext } from "../../../../contexts";
+import { useAuth } from "../../../../contexts";
 import { Container, FieldValue, Loading, Stack, useMessage } from "lcano-react-ui";
 
 const RegraExtratoContaCorrentePage: React.FC = () => {
@@ -10,7 +10,7 @@ const RegraExtratoContaCorrentePage: React.FC = () => {
   const [regra, setRegra] = useState<RegraExtratoContaCorrente>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const auth = useContext(AuthContext);
+  const auth = useAuth();
   const message = useMessage();
 
   useEffect(() => {

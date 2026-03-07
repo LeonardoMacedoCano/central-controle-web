@@ -1,12 +1,12 @@
-import React, { useContext, useState, KeyboardEvent } from 'react';
+import React, { useState, KeyboardEvent } from 'react';
 import styled from 'styled-components';
 import { MdAccountCircle, MdLock } from 'react-icons/md';
-import { AuthContext } from '../../contexts';
+import { useAuth } from '../../contexts';
 import { AppTheme, Button, Container, FieldValue, Stack } from 'lcano-react-ui';
 import { useAppTheme } from '../../utils';
 
 export const LoginFormPage: React.FC = () => {
-  const auth = useContext(AuthContext);
+  const auth = useAuth();
   const theme = useAppTheme();
 
   const [username, setUsername] = useState('');

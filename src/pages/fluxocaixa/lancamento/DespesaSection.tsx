@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Despesa,
   despesaFormaPagamentoOptions,
@@ -17,7 +17,7 @@ import {
 } from 'lcano-react-ui';
 
 import { MovimentacaoCategoriaService } from '../../../service';
-import { AuthContext } from '../../../contexts';
+import { useAuth } from '../../../contexts';
 
 interface DespesaSectionFormProps {
   despesa: Despesa;
@@ -28,7 +28,7 @@ const DespesaSectionForm: React.FC<DespesaSectionFormProps> = ({
   despesa,
   onUpdate
 }) => {
-  const { usuario } = useContext(AuthContext);
+  const { usuario } = useAuth();
 
   const updateDespesa = (updatedFields: Partial<Despesa>) => {
     onUpdate({
@@ -43,7 +43,7 @@ const DespesaSectionForm: React.FC<DespesaSectionFormProps> = ({
     }
   };
 
-  const handleUpdateValor = (value: any) => {
+  const handleUpdateValor = (value: unknown) => {
     const numericValue = Number(value);
 
     if (!isNaN(numericValue)) {
@@ -51,10 +51,8 @@ const DespesaSectionForm: React.FC<DespesaSectionFormProps> = ({
     }
   };
 
-  const handleUpdateFormaPagamento = (value: any) => {
-    const selected =
-      getDespesaFormaPagamentoByCodigo(value);
-
+  const handleUpdateFormaPagamento = (value: unknown) => {
+    const selected = getDespesaFormaPagamentoByCodigo(String(value));
     updateDespesa({ formaPagamento: selected });
   };
 

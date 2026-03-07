@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaCheck } from 'react-icons/fa';
 import { Despesa, initialDespesaState } from '../../../types/fluxocaixa/Despesa';
 import AtivoSectionForm from './AtivoSectionForm';
 import { Lancamento } from '../../../types/fluxocaixa/Lancamento';
 import { ActionButton, Container, FieldValue, formatDateToYMDString, formatIsoDateToBrDate, getCurrentDate, isDateValid, Stack, useMessage } from 'lcano-react-ui';
-import { AuthContext } from '../../../contexts';
+import { useAuth } from '../../../contexts';
 import { LancamentoService } from '../../../service';
 import { Ativo, getCodigoTipoMovimento, getDescricaoTipoMovimento, getTipoMovimentoByCodigo, initialAtivoState, initialRendaState, Renda, tipoMovimentoOptions } from '../../../types';
 import DespesaSectionForm from './DespesaSection';
@@ -20,7 +20,7 @@ const LancamentoFormPage: React.FC = () => {
     descricao: ""
   });
 
-  const auth = useContext(AuthContext);
+  const auth = useAuth();
   const message = useMessage();
   const navigate = useNavigate();
 
@@ -51,7 +51,7 @@ const LancamentoFormPage: React.FC = () => {
     }));
   };
 
-  const handleUpdateTipo = (value: any) => {
+  const handleUpdateTipo = (value: unknown) => {
     const selectedTipo = getTipoMovimentoByCodigo(String(value));
     update({
       tipo: selectedTipo,
@@ -59,13 +59,13 @@ const LancamentoFormPage: React.FC = () => {
     });
   };
 
-  const handleUpdateDescricao = (value: any) => {
+  const handleUpdateDescricao = (value: unknown) => {
     if (typeof value === 'string') {
       update({ descricao: value });
     }
   };
 
-  const handleUpdateItem = (value: any) => {
+  const handleUpdateItem = (value: Ativo | Despesa | Renda) => {
     update({ itemDTO: value });
   };
 

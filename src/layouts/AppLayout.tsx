@@ -1,20 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MainContent, PageContent } from './styles';
+import { AppContainer, MainContent, PageContent } from './styles';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
 import { Outlet } from 'react-router-dom';
 import { RouterBreadcrumb } from '../routes/RouterBreadcrumb';
 import { Panel } from 'lcano-react-ui';
 
-interface AppLayoutProps {
-}
-
-export const AppLayout: React.FC<AppLayoutProps> = () => {
+export const AppLayout: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const menuButtonRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
     setIsMenuOpen(prev => !prev);
@@ -38,7 +34,7 @@ export const AppLayout: React.FC<AppLayoutProps> = () => {
   }, []);
 
   return (
-    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+    <AppContainer>
       <div ref={sidebarRef}>
         <Sidebar
           isOpen={isMenuOpen}
@@ -48,14 +44,14 @@ export const AppLayout: React.FC<AppLayoutProps> = () => {
         />
       </div>
       <MainContent $isMenuOpen={isMenuOpen}>
-        <Header toggleMenu={toggleMenu} unreadMessages={0} menuButtonRef={menuButtonRef} />
+        <Header toggleMenu={toggleMenu} unreadMessages={0} />
         <PageContent>
           <Panel maxWidth="1000px" title={<RouterBreadcrumb />}>
             <Outlet />
           </Panel>
         </PageContent>
       </MainContent>
-    </div>
+    </AppContainer>
   );
 };
 

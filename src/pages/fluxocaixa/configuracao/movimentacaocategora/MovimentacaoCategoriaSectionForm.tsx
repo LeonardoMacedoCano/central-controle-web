@@ -28,7 +28,7 @@ const MovimentacaoCategoriaSectionForm: React.FC<CategoriaSectionSectionFormProp
           type="STRING"
           value={categoria.descricao}
           editable
-          onUpdate={(value: any) => {
+          onUpdate={(value: unknown) => {
             if (typeof value === "string") updateCategoria({ descricao: value });
           }}
         />
@@ -41,8 +41,8 @@ const MovimentacaoCategoriaSectionForm: React.FC<CategoriaSectionSectionFormProp
             value: getDescricaoTipoMovimento(categoria.tipo),
           }}
           editable
-          onUpdate={(value: any) => {
-            const tipo = getTipoMovimentoByCodigo(value);
+          onUpdate={(value: unknown) => {
+            const tipo = getTipoMovimentoByCodigo(String(value));
             if (tipo) updateCategoria({ tipo });
           }}
         />

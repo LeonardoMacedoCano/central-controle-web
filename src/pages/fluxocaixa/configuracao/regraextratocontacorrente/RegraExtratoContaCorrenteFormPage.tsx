@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 
-import { AuthContext } from "../../../../contexts";
+import { useAuth } from "../../../../contexts";
 import {
   getCodigoTipoRegraExtratoContaCorrente,
   getDescricaoTipoRegraExtratoContaCorrente,
@@ -52,7 +52,7 @@ type CategoriaConfig = {
 
 const RegraExtratoContaCorrenteFormPage: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
-  const { usuario } = useContext(AuthContext);
+  const { usuario } = useAuth();
   const navigate = useNavigate();
   const message = useMessage();
 

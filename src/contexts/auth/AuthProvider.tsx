@@ -1,33 +1,36 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AuthService } from "../../service";
 import { AuthContext } from "../auth/AuthContext";
 import { Usuario } from "../../types";
-import { ThemeContext } from "../theme/ThemeControlProvider";
+import { useThemeControl } from "../theme/ThemeControlProvider";
 import { useMessage } from "lcano-react-ui";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
-  const { loadUserTheme } = useContext(ThemeContext);
-  const message = useMessage(); 
+  const { loadUserTheme } = useThemeControl();
+  const message = useMessage();
+
+  const loadUserThemeRef = useRef(loadUserTheme);
+  loadUserThemeRef.current = loadUserTheme;
+  const messageRef = useRef(message);
+  messageRef.current = message;
 
   useEffect(() => {
+    // executa apenas no mount para validar token armazenado
     const validateToken = async () => {
       const storageData = localStorage.getItem('authToken');
-      if (storageData && !usuario) {
-        const usuario = await AuthService.validateToken(storageData, message);
-        if (usuario) {
-          setUsuario(usuario);
-          
-          if (usuario.idTema) {
-            loadUserTheme(usuario.idTema, usuario.token);
-          }
-        } else {
-          clearToken(); 
-        }
-      } 
-    }
+      if (!storageData) return;
+
+      const u = await AuthService.validateToken(storageData, messageRef.current);
+      if (u) {
+        setUsuario(u);
+        if (u.idTema) loadUserThemeRef.current(u.idTema, u.token);
+      } else {
+        clearToken();
+      }
+    };
     validateToken();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const login = async (username: string, senha: string) => {
     const usuario = await AuthService.login(username, senha, message);

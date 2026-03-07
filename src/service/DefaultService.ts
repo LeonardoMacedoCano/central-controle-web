@@ -8,7 +8,7 @@ export const RequestApi = async <T>(
   url: string,
   token?: string,
   contextMessage?: ContextMessageProps,
-  data?: Record<string, any>,
+  data?: Record<string, unknown>,
   responseType: 'json' | 'blob' = 'json'
 ): Promise<T | undefined> => {
   const { url: baseUrl } = MICROSERVICES[service];

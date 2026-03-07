@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FaCheck } from 'react-icons/fa';
-import { AuthContext } from '../../contexts';
+import { useAuth } from '../../contexts';
 import { TemaService, UsuarioService } from '../../service';
 import { Usuario, UsuarioForm } from '../../types';
 import { IMG_PERFIL_PADRAO } from '../../utils';
@@ -17,7 +17,7 @@ export const UsuarioFormPage: React.FC = () => {
   const blobRef = useRef<Blob | null>(null);
   const blobUrlRef = useRef<string | null>(null);
   
-  const auth = useContext(AuthContext);
+  const auth = useAuth();
   const message = useMessage(); 
 
   const cleanupBlobUrl = () => {

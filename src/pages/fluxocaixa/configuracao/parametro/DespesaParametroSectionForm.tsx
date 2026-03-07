@@ -1,8 +1,8 @@
-import React, { useContext, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { MovimentacaoCategoria, Parametro } from '../../../../types';
 import { buildSearchSelectAdapter, FieldValue, SearchSelectField, Stack } from 'lcano-react-ui';
 import { MovimentacaoCategoriaService } from '../../../../service';
-import { AuthContext } from '../../../../contexts';
+import { useAuth } from '../../../../contexts';
 
 interface Props {
   parametros: Parametro;
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const DespesaParametroSectionForm: React.FC<Props> = ({ parametros, onUpdate }) => {
-  const { usuario } = useContext(AuthContext);
+  const { usuario } = useAuth();
 
   const handleMetaLimiteDespesaMensal = useCallback(
     (value: number) => {

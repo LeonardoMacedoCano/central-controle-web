@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React from 'react';
 import { Parametro} from '../../../../types';
 import { FieldValue, Stack } from 'lcano-react-ui';
 
@@ -8,7 +8,7 @@ interface props {
 }
 
 const ExtratoParametroSectionForm: React.FC<props> = ({ parametros, onUpdate }) => {
-  const handleDiaPadraoVencimentoCartao = (value: any) => {
+  const handleDiaPadraoVencimentoCartao = (value: number) => {
     onUpdate({ ...parametros, diaPadraoVencimentoCartao: value });
   };
 
