@@ -8,7 +8,7 @@ import { ActionButton, Container, FieldValue, formatDateToYMDString, formatIsoDa
 import { useAuth } from '../../../contexts';
 import { LancamentoService } from '../../../service';
 import { Ativo, getCodigoTipoMovimento, getDescricaoTipoMovimento, getTipoMovimentoByCodigo, initialAtivoState, initialRendaState, Renda, tipoMovimentoOptions } from '../../../types';
-import DespesaSectionForm from './DespesaSection';
+import DespesaSectionForm from './DespesaSectionForm';
 import RendaSectionForm from './RendaSectionForm';
 
 const LancamentoFormPage: React.FC = () => {

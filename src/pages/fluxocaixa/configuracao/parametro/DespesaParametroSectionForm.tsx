@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
-import { MovimentacaoCategoria, Parametro } from '../../../../types';
-import { buildSearchSelectAdapter, FieldValue, SearchSelectField, Stack } from 'lcano-react-ui';
-import { MovimentacaoCategoriaService } from '../../../../service';
+import React from 'react';
+import { Parametro } from '../../../../types';
+import { FieldValue, SearchSelectField, Stack } from 'lcano-react-ui';
 import { useAuth } from '../../../../contexts';
+import { useCategoriaSelectAdapter } from '../../../../utils';
 
 interface Props {
   parametros: Parametro;
@@ -12,32 +12,12 @@ interface Props {
 const DespesaParametroSectionForm: React.FC<Props> = ({ parametros, onUpdate }) => {
   const { usuario } = useAuth();
 
-  const handleMetaLimiteDespesaMensal = useCallback(
-    (value: number) => {
-      onUpdate({ ...parametros, metaLimiteDespesaMensal: value });
-    },
-    [parametros, onUpdate]
+  const { fetchOptions, onSelect, optionValue } = useCategoriaSelectAdapter(
+    'DESPESA',
+    usuario?.token,
+    parametros.despesaCategoriaPadrao,
+    (newValue) => onUpdate({ ...parametros, despesaCategoriaPadrao: newValue })
   );
-
-  const { fetchOptions, onSelect, optionValue } = buildSearchSelectAdapter<MovimentacaoCategoria>({
-    searchOptions: async (query, page, pageSize) => {
-      const response = await MovimentacaoCategoriaService.getCategorias(
-        usuario!.token,
-        page,
-        pageSize,
-        `tipo==DESPESA;descricao=ilike='${query}'`
-      );
-      return response?.content || [];
-    },
-    mapToOption: (c) => ({ key: String(c.id), value: c.descricao }),
-    mapFromOption: (opt) => ({
-      id: Number(opt.key),
-      descricao: opt.value,
-      tipo: 'DESPESA',
-    }),
-    value: parametros.despesaCategoriaPadrao,
-    onUpdate: (newValue) => onUpdate({ ...parametros, despesaCategoriaPadrao: newValue }),
-  });
 
   return (
     <Stack direction="column" divider="top">
@@ -48,7 +28,7 @@ const DespesaParametroSectionForm: React.FC<Props> = ({ parametros, onUpdate }) 
         value={parametros.metaLimiteDespesaMensal}
         editable
         minValue={0}
-        onUpdate={handleMetaLimiteDespesaMensal}
+        onUpdate={(value: number) => onUpdate({ ...parametros, metaLimiteDespesaMensal: value })}
       />
       <SearchSelectField
         label="Categoria Padrão"

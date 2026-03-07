@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import {
   ActionButton,
@@ -8,7 +8,6 @@ import {
   HighlightBox,
   Loading,
   PAGE_SIZE_DEFAULT,
-  PagedResponse,
   SearchFilterRSQL,
   Table,
   useConfirmModal,
@@ -23,18 +22,14 @@ import {
 } from "../../../../types";
 import { MovimentacaoCategoriaService } from "../../../../service";
 import { useAuth } from "../../../../contexts";
+import { usePagedData } from "../../../../utils";
 import MovimentacaoCategoriaSectionForm from "./MovimentacaoCategoriaSectionForm";
 
-const getTipoMovimentoVariant = (
-  tipo?: TipoMovimentoEnum
-): VariantColor => {
+const getTipoMovimentoVariant = (tipo?: TipoMovimentoEnum): VariantColor => {
   switch (tipo) {
-    case "DESPESA":
-      return "warning";
-    case "RENDA":
-      return "success";
-    default:
-      return "info";
+    case "DESPESA": return "warning";
+    case "RENDA":   return "success";
+    default:        return "info";
   }
 };
 
@@ -43,30 +38,14 @@ const MovimentacaoCategoriaListPage: React.FC = () => {
   const message = useMessage();
   const { confirm, ConfirmModalComponent } = useConfirmModal();
 
-  const [categorias, setCategorias] = useState<PagedResponse<MovimentacaoCategoria>>();
   const [modalOpen, setModalOpen] = useState(false);
   const [categoriaAtual, setCategoriaAtual] = useState<MovimentacaoCategoria | undefined>();
-  const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(PAGE_SIZE_DEFAULT);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const loadCategorias = useCallback(async (page = pageIndex, size = pageSize, rsql = "") => {
-    if (!usuario?.token) return;
-
-    setIsLoading(true);
-    try {
-      const result = await MovimentacaoCategoriaService.getCategorias(usuario.token, page, size, rsql);
-      setCategorias(result);
-    } catch (error) {
-      message.showErrorWithLog("Erro ao carregar as categorias.", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [usuario?.token, pageIndex, pageSize, message]);
-
-  useEffect(() => {
-    if (usuario?.token) loadCategorias();
-  }, [usuario?.token, pageIndex, loadCategorias]);
+  const { data: categorias, isLoading, load, loadPage } = usePagedData(
+    usuario?.token,
+    MovimentacaoCategoriaService.getCategorias,
+    "Erro ao carregar as categorias."
+  );
 
   const openModal = (categoria?: MovimentacaoCategoria) => {
     setCategoriaAtual(categoria ? { ...categoria } : { ...initialMovimentacaoCategoriaState });
@@ -81,7 +60,7 @@ const MovimentacaoCategoriaListPage: React.FC = () => {
     if (!confirmado || !usuario?.token) return;
 
     await MovimentacaoCategoriaService.deleteCategoria(usuario.token, categoria.id, message);
-    loadCategorias();
+    load();
   };
 
   const isCategoriaValida = (categoria: MovimentacaoCategoria): boolean => {
@@ -101,13 +80,8 @@ const MovimentacaoCategoriaListPage: React.FC = () => {
     if (!isCategoriaValida(categoriaAtual)) return;
 
     await MovimentacaoCategoriaService.saveCategoria(usuario.token, categoriaAtual, message);
-    loadCategorias();
+    load();
     setModalOpen(false);
-  };
-
-  const handlePageChange = (page: number, size: number) => {
-    setPageIndex(page);
-    setPageSize(size);
   };
 
   return (
@@ -120,7 +94,7 @@ const MovimentacaoCategoriaListPage: React.FC = () => {
         <ConfirmModal
           variantPrimary="info"
           isOpen={modalOpen}
-          title={categoriaAtual.id ? "Editar Categoria Despesa" : "Nova Categoria Despesa"}
+          title={categoriaAtual.id ? "Editar Categoria" : "Nova Categoria"}
           content={
             <MovimentacaoCategoriaSectionForm
               categoria={categoriaAtual}
@@ -141,7 +115,7 @@ const MovimentacaoCategoriaListPage: React.FC = () => {
           { name: "descricao", label: "Descrição", type: "STRING" },
           { name: "tipo", label: "Tipo", type: "SELECT", options: tipoMovimentoOptions },
         ]}
-        onSearch={async (rsqlString) => loadCategorias(0, PAGE_SIZE_DEFAULT, rsqlString)}
+        onSearch={async (rsqlString) => load(0, PAGE_SIZE_DEFAULT, rsqlString)}
       />
 
       <Table<MovimentacaoCategoria>
@@ -150,12 +124,12 @@ const MovimentacaoCategoriaListPage: React.FC = () => {
         keyExtractor={item => item.id.toString()}
         onEdit={openModal}
         onDelete={handleDeleteCategoria}
-        loadPage={handlePageChange}
+        loadPage={loadPage}
         columns={[
-          <Column<MovimentacaoCategoria> 
-            key="tipo" 
-            header="Tipo" 
-            width="100px" 
+          <Column<MovimentacaoCategoria>
+            key="tipo"
+            header="Tipo"
+            width="100px"
             align="center"
             value={(item) => (
               <HighlightBox
@@ -167,11 +141,11 @@ const MovimentacaoCategoriaListPage: React.FC = () => {
                 {item.tipo}
               </HighlightBox>
             )}
-            />,
+          />,
           <Column<MovimentacaoCategoria> key="descricao" header="Descrição" value={item => item.descricao} />,
         ]}
       />
-    </ Container>
+    </Container>
   );
 };
 

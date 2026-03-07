@@ -1,3 +1,4 @@
+import React from "react";
 import { FieldValue, Panel, Stack } from "lcano-react-ui";
 import {
   getCodigoTipoMovimento,

@@ -1,43 +1,29 @@
+import React from "react";
 import { useParams } from "react-router-dom";
 import { getDescricaoTipoRegraExtratoContaCorrente, RegraExtratoContaCorrente } from "../../../../types";
-import { useEffect, useState } from "react";
 import { RegraExtratoContaCorrenteService } from "../../../../service";
 import { useAuth } from "../../../../contexts";
-import { Container, FieldValue, Loading, Stack, useMessage } from "lcano-react-ui";
+import { Container, FieldValue, Loading, Stack } from "lcano-react-ui";
+import { useFetchById } from "../../../../utils";
 
 const RegraExtratoContaCorrentePage: React.FC = () => {
-  const { id } = useParams<{ id?: string }>();
-  const [regra, setRegra] = useState<RegraExtratoContaCorrente>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { id } = useParams<{ id: string }>();
+  const { usuario } = useAuth();
 
-  const auth = useAuth();
-  const message = useMessage();
-
-  useEffect(() => {
-    if (!auth.usuario?.token) return;
-    loadRegra(id!);
-  }, [auth.usuario?.token, id]);
-
-  const loadRegra = async (id: string) => {
-    setIsLoading(true);
-    try {
-      const result = await RegraExtratoContaCorrenteService.getRegra(auth.usuario?.token!, id);
-      if (result) setRegra(result);
-    } catch (error) {
-      message.showErrorWithLog("Erro ao carregar a regra.", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { data: regra, isLoading } = useFetchById<RegraExtratoContaCorrente>(
+    usuario?.token,
+    id,
+    RegraExtratoContaCorrenteService.getRegra,
+    "Erro ao carregar a regra."
+  );
 
   const getDescricaoCategoria = () => {
-    switch (regra!.tipoRegra) {
-      case "CLASSIFICAR_DESPESA":
-        return regra?.despesaCategoriaDestino?.descricao ?? "";
-      case "CLASSIFICAR_RENDA":
-        return regra?.rendaCategoriaDestino?.descricao ?? "";
-      default:
-        return "";
+    if (!regra) return "";
+    switch (regra.tipoRegra) {
+      case "CLASSIFICAR_DESPESA": return regra.despesaCategoriaDestino?.descricao ?? "";
+      case "CLASSIFICAR_RENDA":   return regra.rendaCategoriaDestino?.descricao ?? "";
+      case "CLASSIFICAR_ATIVO":   return regra.ativoCategoriaDestino?.descricao ?? "";
+      default:                    return "";
     }
   };
 

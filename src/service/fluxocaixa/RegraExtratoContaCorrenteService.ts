@@ -1,7 +1,7 @@
 import DefaultService from "../DefaultService";
 import { RegraExtratoContaCorrente } from "../../types";
 import { PagedResponse } from "lcano-react-ui";
-import { ContextMessageProps } from "lcano-react-ui/dist/types/contexts/message";
+import { ContextMessageProps } from "lcano-react-ui";
 
 const { request } = DefaultService;
 

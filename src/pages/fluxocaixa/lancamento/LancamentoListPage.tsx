@@ -1,41 +1,46 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React from 'react';
 import { FaBars, FaFileImport, FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts';
 import { LancamentoService } from '../../../service';
-import { ActionButton, Column, Container, formatDateToBrString, HighlightBox, Loading, PAGE_SIZE_DEFAULT, PagedResponse, SearchFilterRSQL, Stack, Table, useConfirmModal, useMessage, VariantColor } from 'lcano-react-ui';
+import {
+  ActionButton,
+  Column,
+  Container,
+  formatDateToBrString,
+  HighlightBox,
+  Loading,
+  PAGE_SIZE_DEFAULT,
+  SearchFilterRSQL,
+  Stack,
+  Table,
+  useConfirmModal,
+  useMessage,
+  VariantColor,
+} from 'lcano-react-ui';
 import { Lancamento } from '../../../types/fluxocaixa/Lancamento';
 import { getDescricaoTipoMovimento, TipoMovimentoEnum, tipoMovimentoFilters } from '../../../types';
+import { usePagedData } from '../../../utils';
+
+const getTipoVariant = (tipo: TipoMovimentoEnum): VariantColor => {
+  switch (tipo) {
+    case 'DESPESA': return 'warning';
+    case 'RENDA':   return 'success';
+    case 'ATIVO':   return 'info';
+  }
+};
 
 const LancamentoListPage: React.FC = () => {
-  const [lancamentos, setLancamentos] = useState<PagedResponse<Lancamento>>();
-  const [pageIndex, setPageIndex] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(PAGE_SIZE_DEFAULT);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const { confirm, ConfirmModalComponent } = useConfirmModal();
   const { usuario } = useAuth();
   const message = useMessage();
   const navigate = useNavigate();
 
-  const loadLancamentos = useCallback(async (page = pageIndex, size = pageSize, rsql = "") => {
-    if (!usuario?.token) return;
-
-    setIsLoading(true);
-    try {
-      const result = await LancamentoService.getLancamentos(usuario.token, page, size, rsql);
-      setLancamentos(result);
-    } catch (error) {
-      message.showErrorWithLog("Erro ao carregar os lançamentos.", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [usuario?.token, pageIndex, pageSize, message]);
-
-
-  useEffect(() => {
-    if (usuario?.token) loadLancamentos();
-  }, [usuario?.token, pageIndex, loadLancamentos]);
+  const { data: lancamentos, isLoading, load, loadPage } = usePagedData(
+    usuario?.token,
+    LancamentoService.getLancamentos,
+    'Erro ao carregar os lançamentos.'
+  );
 
   const handleNavigation = (path: string) => navigate(path);
 
@@ -47,12 +52,7 @@ const LancamentoListPage: React.FC = () => {
     if (!confirmado || !usuario?.token) return;
 
     await LancamentoService.deleteLancamento(usuario.token, lancamento.id, message);
-    loadLancamentos();
-  };
-
-  const loadPage = (pageIndex: number, pageSize: number) => {
-    setPageIndex(pageIndex);
-    setPageSize(pageSize);
+    load();
   };
 
   return (
@@ -61,14 +61,13 @@ const LancamentoListPage: React.FC = () => {
       <Loading isLoading={isLoading} />
 
       <Stack direction="column" divider="top">
-
         <SearchFilterRSQL
           fields={[
             { label: 'Data', name: 'dataLancamento', type: 'DATE' },
             { label: 'Tipo', name: 'tipo', type: 'SELECT', options: tipoMovimentoFilters },
             { label: 'Descrição', name: 'descricao', type: 'STRING' }
           ]}
-        onSearch={async (rsqlString) => loadLancamentos(0, PAGE_SIZE_DEFAULT, rsqlString)}
+          onSearch={async (rsqlString) => load(0, PAGE_SIZE_DEFAULT, rsqlString)}
         />
 
         <Table<Lancamento>
@@ -99,9 +98,7 @@ const LancamentoListPage: React.FC = () => {
               header="Data"
               align="center"
               width="100px"
-              value={(item) =>
-                formatDateToBrString(item.dataLancamento)
-              }
+              value={(item) => formatDateToBrString(item.dataLancamento)}
             />,
             <Column<Lancamento>
               header="Descrição"
@@ -109,7 +106,6 @@ const LancamentoListPage: React.FC = () => {
             />
           ]}
         />
-
       </Stack>
 
       <ActionButton
@@ -132,14 +128,3 @@ const LancamentoListPage: React.FC = () => {
 };
 
 export default LancamentoListPage;
-
-const getTipoVariant = (tipo: TipoMovimentoEnum): VariantColor => {
-  switch (tipo) {
-    case 'DESPESA':
-      return 'warning';
-    case 'RENDA':
-      return 'success';
-    case 'ATIVO':
-      return 'info';
-  }
-};

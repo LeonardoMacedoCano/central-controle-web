@@ -11,6 +11,7 @@ export const AppLayout: React.FC = () => {
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
     setIsMenuOpen(prev => !prev);
@@ -44,7 +45,9 @@ export const AppLayout: React.FC = () => {
         />
       </div>
       <MainContent $isMenuOpen={isMenuOpen}>
-        <Header toggleMenu={toggleMenu} unreadMessages={0} />
+        <div ref={menuButtonRef}>
+          <Header toggleMenu={toggleMenu} unreadMessages={0} />
+        </div>
         <PageContent>
           <Panel maxWidth="1000px" title={<RouterBreadcrumb />}>
             <Outlet />

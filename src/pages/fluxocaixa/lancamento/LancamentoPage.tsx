@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../../contexts';
 import { LancamentoService } from '../../../service';
@@ -18,34 +18,19 @@ import {
   formatIsoDateToBrDate,
   Loading,
   Stack,
-  useMessage,
 } from 'lcano-react-ui';
+import { useFetchById } from '../../../utils';
 
 const LancamentoPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [lancamento, setLancamento] = useState<Lancamento | undefined>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { usuario } = useAuth();
 
-  const auth = useAuth();
-  const message = useMessage();
-
-  useEffect(() => {
-    if (!auth.usuario?.token || !id) return;
-
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const result = await LancamentoService.getLancamento(auth.usuario!.token, id);
-        if (result) setLancamento(result);
-      } catch (error) {
-        message.showErrorWithLog('Erro ao carregar o lançamento.', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [auth.usuario?.token, id, message]);
+  const { data: lancamento, isLoading } = useFetchById<Lancamento>(
+    usuario?.token,
+    id,
+    LancamentoService.getLancamento,
+    'Erro ao carregar o lançamento.'
+  );
 
   const renderItemSection = () => {
     if (!lancamento?.tipo || !lancamento.itemDTO) return null;

@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
+import React from 'react';
+import { Parametro } from '../../../../types';
 import { SearchSelectField, Stack } from 'lcano-react-ui';
-import { MovimentacaoCategoria, Parametro } from '../../../../types';
-import { MovimentacaoCategoriaService } from '../../../../service';
 import { useAuth } from '../../../../contexts';
+import { useCategoriaSelectAdapter } from '../../../../utils';
 
 interface Props {
   parametros: Parametro;
@@ -12,52 +12,33 @@ interface Props {
 const RendaParametroSectionForm: React.FC<Props> = ({ parametros, onUpdate }) => {
   const { usuario } = useAuth();
 
-  const getOptionFromCategoria = (categoria?: MovimentacaoCategoria) =>
-    categoria ? { key: String(categoria.id), value: categoria.descricao } : undefined;
-
-  const mapCategoriaToOption = (categoria: MovimentacaoCategoria) => ({
-    key: String(categoria.id),
-    value: categoria.descricao,
-  });
-
-  const fetchCategorias = useCallback(
-    async (query: string, page: number) => {
-      const pageSize = 10;
-      const response = await MovimentacaoCategoriaService.getCategorias(
-        usuario!.token,
-        page,
-        pageSize,
-        `tipo==RENDA;descricao=ilike='${query}'`
-      );
-
-      return response?.content?.map(mapCategoriaToOption) || [];
-    },
-    [usuario]
+  const categoriaAdapter = useCategoriaSelectAdapter(
+    'RENDA',
+    usuario?.token,
+    parametros.rendaCategoriaPadrao,
+    (newValue) => onUpdate({ ...parametros, rendaCategoriaPadrao: newValue })
   );
 
-  const createCategoriaHandler = (campo: keyof Parametro) =>
-    (categoriaOption?: { key: string; value: string }) => {
-      const novaCategoria = categoriaOption
-        ? { id: Number(categoriaOption.key), descricao: categoriaOption.value, tipo: 'DESPESA' }
-        : undefined;
-
-      onUpdate({ ...parametros, [campo]: novaCategoria });
-    };
+  const categoriaPassivaAdapter = useCategoriaSelectAdapter(
+    'RENDA',
+    usuario?.token,
+    parametros.rendaPassivaCategoria,
+    (newValue) => onUpdate({ ...parametros, rendaPassivaCategoria: newValue })
+  );
 
   return (
     <Stack direction="column" divider="top">
       <SearchSelectField
         label="Categoria Padrão"
-        fetchOptions={fetchCategorias}
-        value={getOptionFromCategoria(parametros.rendaCategoriaPadrao)}
-        onSelect={createCategoriaHandler('rendaCategoriaPadrao')}
+        fetchOptions={categoriaAdapter.fetchOptions}
+        value={categoriaAdapter.optionValue}
+        onSelect={categoriaAdapter.onSelect}
       />
-
       <SearchSelectField
         label="Categoria Renda Passiva"
-        fetchOptions={fetchCategorias}
-        value={getOptionFromCategoria(parametros.rendaPassivaCategoria)}
-        onSelect={createCategoriaHandler('rendaPassivaCategoria')}
+        fetchOptions={categoriaPassivaAdapter.fetchOptions}
+        value={categoriaPassivaAdapter.optionValue}
+        onSelect={categoriaPassivaAdapter.onSelect}
       />
     </Stack>
   );
