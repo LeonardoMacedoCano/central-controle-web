@@ -6,3 +6,5 @@ export * as MovimentacaoCategoriaService from './fluxocaixa/MovimentacaoCategori
 export * as ParametroService from './fluxocaixa/ParametroService';
 export * as RegraExtratoContaCorrenteService from './fluxocaixa/RegraExtratoContaCorrenteService';
 export * as LancamentoService from './fluxocaixa/LancamentoService';
+export * as ExtratoFluxoCaixaService from './fluxocaixa/ExtratoFluxoCaixaService';
+export * as NotificacaoService from './Usuario/NotificacaoService';

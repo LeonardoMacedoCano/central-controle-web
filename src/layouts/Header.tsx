@@ -1,16 +1,28 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaBars, FaEnvelope } from 'react-icons/fa';
+import { FaBars, FaBell } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts';
 import { IMG_PERFIL_PADRAO } from '../utils';
-import { AppHeader, MenuIconContainer, TitleHeaderContainer, UserMenuContainer, MenuIcon, MessageIconWrapper, UnreadBadge, UserAvatar, UserMenuDropdown, UserMenuItem, TitleHeader } from './styles';
+import {
+  AppHeader,
+  MenuIconContainer,
+  TitleHeaderContainer,
+  UserMenuContainer,
+  MenuIcon,
+  MessageIconWrapper,
+  UnreadBadge,
+  UserAvatar,
+  UserMenuDropdown,
+  UserMenuItem,
+  TitleHeader,
+} from './styles';
 
 interface HeaderProps {
   toggleMenu: () => void;
-  unreadMessages: number;
+  unreadCount: number;
 }
 
-export const Header: React.FC<HeaderProps> = ({ toggleMenu, unreadMessages }) => {
+export const Header: React.FC<HeaderProps> = ({ toggleMenu, unreadCount }) => {
   const [imagemPerfil, setImagemPerfil] = useState<string>(IMG_PERFIL_PADRAO);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
@@ -20,22 +32,13 @@ export const Header: React.FC<HeaderProps> = ({ toggleMenu, unreadMessages }) =>
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        userMenuRef.current &&
-        !userMenuRef.current.contains(event.target as Node)
-      ) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
         setIsUserMenuOpen(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  const toggleUserMenu = () => setIsUserMenuOpen(!isUserMenuOpen);
-  const handleLogout = () => auth.signout();
-  const handleProfileClick = () => navigate('/usuario');
-  const handleNotificationClick = () => navigate('/notificacoes');
 
   useEffect(() => {
     if (auth.usuario?.icone) {
@@ -44,7 +47,12 @@ export const Header: React.FC<HeaderProps> = ({ toggleMenu, unreadMessages }) =>
       setImagemPerfil(IMG_PERFIL_PADRAO);
     }
   }, [auth.usuario?.icone]);
-  
+
+  const toggleUserMenu = () => setIsUserMenuOpen(!isUserMenuOpen);
+  const handleLogout = () => auth.signout();
+  const handleProfileClick = () => navigate('/usuario');
+  const handleNotificationClick = () => navigate('/notificacoes');
+
   return (
     <AppHeader>
       <MenuIconContainer>
@@ -57,8 +65,10 @@ export const Header: React.FC<HeaderProps> = ({ toggleMenu, unreadMessages }) =>
 
       <UserMenuContainer>
         <MessageIconWrapper onClick={handleNotificationClick}>
-          <FaEnvelope />
-          {unreadMessages > 0 && <UnreadBadge>{unreadMessages}</UnreadBadge>}
+          <FaBell />
+          <UnreadBadge $hasUnread={unreadCount > 0}>
+            {unreadCount > 0 ? unreadCount : ''}
+          </UnreadBadge>
         </MessageIconWrapper>
 
         <UserAvatar onClick={toggleUserMenu}>

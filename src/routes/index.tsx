@@ -2,6 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import FluxoCaixaRoutes from "./FluxoCaixaRoutes";
 import { Home } from "../pages/home/Home";
 import UsuarioFormPage from "../pages/usuario/UsuarioFormPage";
+import NotificacaoListPage from "../pages/usuario/NotificacaoListPage";
+import NotificacaoViewPage from "../pages/usuario/NotificacaoViewPage";
 import AppLayout from "../layouts/AppLayout";
 import { RequireAuth } from "../contexts";
 
@@ -22,6 +24,21 @@ export const router = createBrowserRouter([
         path: "usuario",
         element: <UsuarioFormPage />,
         handle: { breadcrumb: "Usuário" }
+      },
+      {
+        path: "notificacoes",
+        handle: { breadcrumb: "Notificações" },
+        children: [
+          {
+            index: true,
+            element: <NotificacaoListPage />
+          },
+          {
+            path: "resumo/:id",
+            element: <NotificacaoViewPage />,
+            handle: { breadcrumb: "Visualizar" }
+          }
+        ]
       },
       ...FluxoCaixaRoutes
     ]

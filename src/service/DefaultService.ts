@@ -4,11 +4,11 @@ import { ContextMessageProps } from 'lcano-react-ui';
 
 export const RequestApi = async <T>(
   service: MicroserviceKey,
-  method: 'get' | 'post' | 'put' | 'delete',
+  method: 'get' | 'post' | 'put' | 'delete' | 'patch',
   url: string,
   token?: string,
   contextMessage?: ContextMessageProps,
-  data?: Record<string, unknown>,
+  data?: unknown,
   responseType: 'json' | 'blob' = 'json'
 ): Promise<T | undefined> => {
   const { url: baseUrl } = MICROSERVICES[service];

@@ -1,17 +1,36 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { AppContainer, MainContent, PageContent } from './styles';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
 import { Outlet } from 'react-router-dom';
 import { RouterBreadcrumb } from '../routes/RouterBreadcrumb';
 import { Panel } from 'lcano-react-ui';
+import { useAuth } from '../contexts';
+import { NotificacaoService } from '../service';
+
+const POLLING_INTERVAL_MS = 10000;
 
 export const AppLayout: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const sidebarRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLDivElement>(null);
+
+  const { usuario } = useAuth();
+
+  const fetchUnreadCount = useCallback(async () => {
+    if (!usuario?.token) return;
+    const result = await NotificacaoService.getNaoLidasCount(usuario.token);
+    if (result) setUnreadCount(result.total);
+  }, [usuario?.token]);
+
+  useEffect(() => {
+    fetchUnreadCount();
+    const interval = setInterval(fetchUnreadCount, POLLING_INTERVAL_MS);
+    return () => clearInterval(interval);
+  }, [fetchUnreadCount]);
 
   const toggleMenu = () => {
     setIsMenuOpen(prev => !prev);
@@ -46,7 +65,10 @@ export const AppLayout: React.FC = () => {
       </div>
       <MainContent $isMenuOpen={isMenuOpen}>
         <div ref={menuButtonRef}>
-          <Header toggleMenu={toggleMenu} unreadMessages={0} />
+          <Header
+            toggleMenu={toggleMenu}
+            unreadCount={unreadCount}
+          />
         </div>
         <PageContent>
           <Panel maxWidth="1000px" title={<RouterBreadcrumb />}>

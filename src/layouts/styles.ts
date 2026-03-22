@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
+import { getVariantColor } from 'lcano-react-ui';
 
 export const AppContainer = styled.div`
   display: flex;
@@ -71,16 +72,18 @@ export const MessageIconWrapper = styled.div`
   top: 5px;
 `;
 
-export const UnreadBadge = styled.div`
+export const UnreadBadge = styled.div<{ $hasUnread: boolean }>`
   position: absolute;
   top: -5px;
-  right: -5px;
-  background-color: ${({ theme }) => theme.colors.success};
-  color: white;
+  right: -2px;
+  background-color: ${({ theme, $hasUnread }) =>
+    $hasUnread ? theme.colors.quaternary : getVariantColor(theme, 'primary')};
+  color: ${({ theme, $hasUnread }) =>
+    $hasUnread ? theme.colors.black : theme.colors.white};
   border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  font-size: 12px;
+  font-size: 10px;
+  width: 12px;
+  height: 12px;
   display: flex;
   align-items: center;
   justify-content: center;

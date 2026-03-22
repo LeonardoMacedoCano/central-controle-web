@@ -10,6 +10,7 @@ import SimpleModuleLayout from '../layouts/SimpleModuleLayout';
 import LancamentoListPage from '../pages/fluxocaixa/lancamento/LancamentoListPage';
 import LancamentoFormPage from '../pages/fluxocaixa/lancamento/LancamentoFormPage';
 import LancamentoPage from '../pages/fluxocaixa/lancamento/LancamentoPage';
+import ImportacaoExtratoPage from '../pages/fluxocaixa/lancamento/ImportacaoExtratoPage';
 
 const FluxoCaixaRoutes: RouteObject[] = [
     {
@@ -65,6 +66,12 @@ const FluxoCaixaRoutes: RouteObject[] = [
             ],
           },
         ],
+      },
+
+      {
+        path: "extrato-fluxo-caixa",
+        element: <ImportacaoExtratoPage />,
+        handle: { breadcrumb: "Importação de Extrato" },
       },
 
       {
