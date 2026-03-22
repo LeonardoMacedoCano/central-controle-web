@@ -6,6 +6,7 @@ import {
   DragDropFile,
   FieldValue,
   formatDateToYMDString,
+  isDateValid,
   Loading,
   Stack,
   useMessage,
@@ -65,6 +66,14 @@ const ImportacaoExtratoFormPage: React.FC = () => {
     setDataVencimento(undefined);
   };
 
+  const isRequiredFieldsFilled = (): boolean => {
+      if (tipoExtrato === 'FATURA_CARTAO') {
+        return !!arquivo && isDateValid(dataVencimento);
+      }
+  
+      return !!arquivo;
+    };
+
   return (
     <Container>
       <Loading isLoading={isUploading} />
@@ -72,7 +81,7 @@ const ImportacaoExtratoFormPage: React.FC = () => {
         icon={<FaUpload />}
         hint="Importar"
         onClick={handleImportar}
-        disabled={!arquivo || isUploading}
+        disabled={isUploading || !isRequiredFieldsFilled()}
       />
       <Stack direction="column" divider="top">
         <Stack direction="row" divider="x">
@@ -86,7 +95,7 @@ const ImportacaoExtratoFormPage: React.FC = () => {
           />
           {tipoExtrato === 'FATURA_CARTAO' && (
             <FieldValue
-              description="Data Vencimento (opcional)"
+              description="Data Vencimento"
               type="DATE"
               value={dataVencimento ? formatDateToYMDString(dataVencimento) : ''}
               editable
