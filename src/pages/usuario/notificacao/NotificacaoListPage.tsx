@@ -7,16 +7,16 @@ import {
   Column,
   Container,
   FieldValue,
-  formatDateToBrString,
+  formatDateTimeToBrString,
   Loading,
   Stack,
   Table,
   useMessage,
 } from 'lcano-react-ui';
-import { useAuth } from '../../contexts';
-import { NotificacaoService } from '../../service';
-import { NotificacaoDTO } from '../../types';
-import { usePagedData } from '../../utils';
+import { useAuth } from '../../../contexts';
+import { NotificacaoService } from '../../../service';
+import { NotificacaoDTO } from '../../../types';
+import { usePagedData } from '../../../utils';
 
 const filtroOptions = [
   { key: 'false', value: 'Todas' },
@@ -97,9 +97,9 @@ const NotificacaoListPage: React.FC = () => {
           columns={[
             <Column<NotificacaoDTO>
               header="Data"
-              width="100px"
+              width="150px"
               align="center"
-              value={(item) => cellBold(item, formatDateToBrString(item.dataCriacao))}
+              value={(item) => cellBold(item, formatDateTimeToBrString(item.dataCriacao))}
             />,
             <Column<NotificacaoDTO>
               header="Título"

@@ -1,4 +1,3 @@
-import { getCurrentDate } from "lcano-react-ui";
 import { MovimentacaoCategoria } from "./MovimentacaoCategoria";
 
 export type Renda = {
@@ -10,5 +9,5 @@ export type Renda = {
 
 export const initialRendaState: Renda = {
   valor: 0,
-  dataRecebimento: getCurrentDate(),
+  dataRecebimento: new Date(),
 };

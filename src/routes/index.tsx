@@ -2,8 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import FluxoCaixaRoutes from "./FluxoCaixaRoutes";
 import { Home } from "../pages/home/Home";
 import UsuarioFormPage from "../pages/usuario/UsuarioFormPage";
-import NotificacaoListPage from "../pages/usuario/NotificacaoListPage";
-import NotificacaoViewPage from "../pages/usuario/NotificacaoViewPage";
+import NotificacaoListPage from "../pages/usuario/notificacao/NotificacaoListPage";
+import NotificacaoViewPage from "../pages/usuario/notificacao/NotificacaoViewPage";
 import AppLayout from "../layouts/AppLayout";
 import { RequireAuth } from "../contexts";
 

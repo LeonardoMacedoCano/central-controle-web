@@ -1,4 +1,3 @@
-import { getCurrentDate } from "lcano-react-ui";
 import { MovimentacaoCategoria } from "./MovimentacaoCategoria";
 import { TipoOperacaoExtratoMovimentacaoB3Enum } from "./TipoOperacaoExtratoMovimentacaoB3";
 
@@ -11,6 +10,6 @@ export type Ativo = {
 }
 
 export const initialAtivoState: Ativo = {
-  dataMovimento: getCurrentDate(),
+  dataMovimento: new Date(),
   valor: 0
 };

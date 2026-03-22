@@ -4,7 +4,7 @@ import { FaCheck } from 'react-icons/fa';
 import { Despesa, initialDespesaState } from '../../../types/fluxocaixa/Despesa';
 import AtivoSectionForm from './AtivoSectionForm';
 import { Lancamento } from '../../../types/fluxocaixa/Lancamento';
-import { ActionButton, Container, FieldValue, formatDateToYMDString, formatIsoDateToBrDate, getCurrentDate, isDateValid, Stack, useMessage } from 'lcano-react-ui';
+import { ActionButton, Container, FieldValue, formatDateToYMDString, formatIsoDateToBrDate, isDateValid, Stack, useMessage } from 'lcano-react-ui';
 import { useAuth } from '../../../contexts';
 import { LancamentoService } from '../../../service';
 import { Ativo, getCodigoTipoMovimento, getDescricaoTipoMovimento, getTipoMovimentoByCodigo, initialAtivoState, initialRendaState, Renda, tipoMovimentoOptions } from '../../../types';
@@ -16,7 +16,7 @@ const LancamentoFormPage: React.FC = () => {
 
   const [lancamento, setLancamento] = useState<Lancamento>({
     id: 0,
-    dataLancamento: getCurrentDate(),
+    dataLancamento: new Date(),
     descricao: ""
   });
 

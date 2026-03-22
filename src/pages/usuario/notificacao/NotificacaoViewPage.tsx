@@ -1,16 +1,16 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useAuth } from '../../contexts';
-import { NotificacaoService } from '../../service';
-import { NotificacaoDTO, TipoNotificacaoEnum } from '../../types';
+import { useAuth } from '../../../contexts';
+import { NotificacaoService } from '../../../service';
+import { NotificacaoDTO, TipoNotificacaoEnum } from '../../../types';
 import {
   Container,
   FieldValue,
-  formatDateToBrString,
+  formatDateTimeToBrString,
   Loading,
   Stack,
 } from 'lcano-react-ui';
-import { useFetchById } from '../../utils';
+import { useFetchById } from '../../../utils';
 
 const getDescricaoTipoNotificacao = (tipo: TipoNotificacaoEnum): string => {
   switch (tipo) {
@@ -41,7 +41,7 @@ const NotificacaoViewPage: React.FC = () => {
             <FieldValue
               description="Data"
               type="STRING"
-              value={formatDateToBrString(notificacao.dataCriacao)}
+              value={formatDateTimeToBrString(notificacao.dataCriacao)}
               editable={false}
             />
             <FieldValue
