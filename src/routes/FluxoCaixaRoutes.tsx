@@ -1,16 +1,16 @@
 import { RouteObject } from 'react-router-dom';
 import FluxoCaixaConfigPage from '../pages/fluxocaixa/configuracao/FluxoCaixaConfigPage';
 import MovimentacaoCategoriaListPage from '../pages/fluxocaixa/configuracao/movimentacaocategoria/MovimentacaoCategoriaListPage';
-import ParametroPage from '../pages/fluxocaixa/configuracao/parametro/ParametroPage';
+import ParametroFormPage from '../pages/fluxocaixa/configuracao/parametro/ParametroFormPage';
 import RegraExtratoContaCorrenteListPage from '../pages/fluxocaixa/configuracao/regraextratocontacorrente/RegraExtratoContaCorrenteListPage';
 import RegraExtratoContaCorrenteFormPage from '../pages/fluxocaixa/configuracao/regraextratocontacorrente/RegraExtratoContaCorrenteFormPage';
-import RegraExtratoContaCorrentePage from '../pages/fluxocaixa/configuracao/regraextratocontacorrente/RegraExtratoContaCorrentePage';
+import RegraExtratoContaCorrenteViewPage from '../pages/fluxocaixa/configuracao/regraextratocontacorrente/RegraExtratoContaCorrenteViewPage';
 import FluxoCaixaResumo from '../pages/fluxocaixa/FluxoCaixaResumo';
 import SimpleModuleLayout from '../layouts/SimpleModuleLayout';
 import LancamentoListPage from '../pages/fluxocaixa/lancamento/LancamentoListPage';
 import LancamentoFormPage from '../pages/fluxocaixa/lancamento/LancamentoFormPage';
-import LancamentoPage from '../pages/fluxocaixa/lancamento/LancamentoPage';
-import ImportacaoExtratoPage from '../pages/fluxocaixa/lancamento/ImportacaoExtratoPage';
+import LancamentoViewPage from '../pages/fluxocaixa/lancamento/LancamentoViewPage';
+import ImportacaoExtratoFormPage from '../pages/fluxocaixa/lancamento/ImportacaoExtratoFormPage';
 
 const FluxoCaixaRoutes: RouteObject[] = [
     {
@@ -18,9 +18,9 @@ const FluxoCaixaRoutes: RouteObject[] = [
     element: <SimpleModuleLayout />,
     handle: { breadcrumb: "Fluxo Caixa" },
     children: [
-      { 
+      {
         index: true,
-        element: <FluxoCaixaResumo /> 
+        element: <FluxoCaixaResumo />
       },
       {
         path: "config",
@@ -32,7 +32,7 @@ const FluxoCaixaRoutes: RouteObject[] = [
           },
           {
             path: "parametro",
-            element: <ParametroPage />,
+            element: <ParametroFormPage />,
             handle: { breadcrumb: "Parâmetros" },
           },
           {
@@ -60,7 +60,7 @@ const FluxoCaixaRoutes: RouteObject[] = [
               },
               {
                 path: "resumo/:id",
-                element: <RegraExtratoContaCorrentePage />,
+                element: <RegraExtratoContaCorrenteViewPage />,
                 handle: { breadcrumb: "Resumo" },
               },
             ],
@@ -70,7 +70,7 @@ const FluxoCaixaRoutes: RouteObject[] = [
 
       {
         path: "extrato-fluxo-caixa",
-        element: <ImportacaoExtratoPage />,
+        element: <ImportacaoExtratoFormPage />,
         handle: { breadcrumb: "Importação de Extrato" },
       },
 
@@ -89,7 +89,7 @@ const FluxoCaixaRoutes: RouteObject[] = [
           },
           {
             path: "resumo/:id",
-            element: <LancamentoPage />,
+            element: <LancamentoViewPage />,
             handle: { breadcrumb: "Resumo" },
           },
           {

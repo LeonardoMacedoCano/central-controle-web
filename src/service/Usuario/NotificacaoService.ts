@@ -25,8 +25,8 @@ export const getNaoLidasCount = (token: string) =>
 export const getNotificacao = (token: string, id: string, contextMessage?: ContextMessageProps) =>
   request<NotificacaoDTO>('usuario', 'get', `notificacao/${id}`, token, contextMessage);
 
-export const markAsRead = (token: string, id: number, isUnread: boolean, contextMessage?: ContextMessageProps) =>
-  request<void>('usuario', 'patch', `notificacao/${id}/lida/${isUnread}`, token, contextMessage);
+export const marcarComoLida = (token: string, id: number, naoLida: boolean, contextMessage?: ContextMessageProps) =>
+  request<void>('usuario', 'patch', `notificacao/${id}/lida/${naoLida}`, token, contextMessage);
 
-export const markAllAsRead = (token: string, contextMessage?: ContextMessageProps) =>
+export const marcarTodasComoLidas = (token: string, contextMessage?: ContextMessageProps) =>
   request<void>('usuario', 'patch', `notificacao/todas/lida`, token, contextMessage);

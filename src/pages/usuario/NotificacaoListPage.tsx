@@ -53,13 +53,13 @@ const NotificacaoListPage: React.FC = () => {
 
   const handleMarkAsRead = async (id: number, isUnread: boolean) => {
     if (!usuario?.token) return;
-    await NotificacaoService.markAsRead(usuario.token, id, isUnread, message);
+    await NotificacaoService.marcarComoLida(usuario.token, id, isUnread, message);
     load();
   };
 
   const handleMarkAllAsRead = async () => {
     if (!usuario?.token) return;
-    await NotificacaoService.markAllAsRead(usuario.token, message);
+    await NotificacaoService.marcarTodasComoLidas(usuario.token, message);
     load();
   };
 

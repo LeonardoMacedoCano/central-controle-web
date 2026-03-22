@@ -18,7 +18,7 @@ import {
   TipoExtratoEnum,
 } from '../../../types';
 
-const ImportacaoExtratoPage: React.FC = () => {
+const ImportacaoExtratoFormPage: React.FC = () => {
   const { usuario } = useAuth();
   const message = useMessage();
 
@@ -106,4 +106,4 @@ const ImportacaoExtratoPage: React.FC = () => {
   );
 };
 
-export default ImportacaoExtratoPage;
+export default ImportacaoExtratoFormPage;

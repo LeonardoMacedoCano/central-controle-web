@@ -21,7 +21,7 @@ import {
 } from 'lcano-react-ui';
 import { useFetchById } from '../../../utils';
 
-const LancamentoPage: React.FC = () => {
+const LancamentoViewPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { usuario } = useAuth();
 
@@ -177,4 +177,4 @@ const LancamentoPage: React.FC = () => {
   );
 };
 
-export default LancamentoPage;
+export default LancamentoViewPage;

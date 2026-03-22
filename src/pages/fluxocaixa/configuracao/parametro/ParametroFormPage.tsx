@@ -14,7 +14,7 @@ import RendaParametroSectionForm from "./RendaParametroSectionForm";
 import ExtratoParametroSectionForm from "./ExtratoParametroSectionForm";
 import AtivoParametroSectionForm from "./AtivoParametroSectionForm";
 
-const ParametroPage: React.FC = () => {
+const ParametroFormPage: React.FC = () => {
   const [parametros, setParametros] = useState<Parametro>(initialParametroState);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -84,4 +84,4 @@ const ParametroPage: React.FC = () => {
   );
 };
 
-export default ParametroPage;
+export default ParametroFormPage;

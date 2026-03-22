@@ -6,7 +6,7 @@ import { useAuth } from "../../../../contexts";
 import { Container, FieldValue, Loading, Stack } from "lcano-react-ui";
 import { useFetchById } from "../../../../utils";
 
-const RegraExtratoContaCorrentePage: React.FC = () => {
+const RegraExtratoContaCorrenteViewPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { usuario } = useAuth();
 
@@ -90,4 +90,4 @@ const RegraExtratoContaCorrentePage: React.FC = () => {
   );
 };
 
-export default RegraExtratoContaCorrentePage;
+export default RegraExtratoContaCorrenteViewPage;
