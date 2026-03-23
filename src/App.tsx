@@ -1,8 +1,9 @@
 import React from 'react';
 import { RouterProvider } from 'react-router-dom';
 import GlobalStyles from './GlobalStyles';
-import { 
+import {
   AuthProvider,
+  ParametroProvider,
   ThemeControlProvider
 } from './contexts';
 import { defaultThemeFavicon } from './utils';
@@ -14,9 +15,11 @@ const App: React.FC = () => {
     <ThemeControlProvider>
       <ContextMessageProvider>
         <AuthProvider>
-          <GlobalStyles />
-          <RouterProvider router={router} />
-          <ThemeFavicon renderSvg={defaultThemeFavicon} />
+          <ParametroProvider>
+            <GlobalStyles />
+            <RouterProvider router={router} />
+            <ThemeFavicon renderSvg={defaultThemeFavicon} />
+          </ParametroProvider>
         </AuthProvider>
       </ContextMessageProvider>
     </ThemeControlProvider>

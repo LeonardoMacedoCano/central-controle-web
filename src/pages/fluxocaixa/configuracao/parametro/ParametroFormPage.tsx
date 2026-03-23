@@ -6,7 +6,7 @@ import {
   Tabs,
   useMessage
 } from "lcano-react-ui";
-import { useAuth } from "../../../../contexts";
+import { useAuth, useParametro } from "../../../../contexts";
 import { ParametroService } from "../../../../service";
 import { Parametro, initialParametroState } from "../../../../types";
 import DespesaParametroSectionForm from "./DespesaParametroSectionForm";
@@ -19,6 +19,7 @@ const ParametroFormPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const auth = useAuth();
+  const { reloadParametros } = useParametro();
   const message = useMessage();
 
   const loadParametros = useCallback(async () => {
@@ -40,7 +41,8 @@ const ParametroFormPage: React.FC = () => {
 
     await ParametroService.saveParametros(auth.usuario.token, parametros, message);
     await loadParametros();
-  }, [auth.usuario?.token, parametros, message, loadParametros]);
+    await reloadParametros();
+  }, [auth.usuario?.token, parametros, message, loadParametros, reloadParametros]);
 
   const updateParametros = useCallback((parametrosAtualizado: Parametro) => {
     setParametros(parametrosAtualizado);

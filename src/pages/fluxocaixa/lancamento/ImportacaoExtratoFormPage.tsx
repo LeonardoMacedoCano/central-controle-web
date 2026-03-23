@@ -11,7 +11,7 @@ import {
   Stack,
   useMessage,
 } from 'lcano-react-ui';
-import { useAuth } from '../../../contexts';
+import { useAuth, useParametro } from '../../../contexts';
 import { ExtratoFluxoCaixaService } from '../../../service';
 import {
   getDescricaoTipoExtrato,
@@ -21,6 +21,7 @@ import {
 
 const ImportacaoExtratoFormPage: React.FC = () => {
   const { usuario } = useAuth();
+  const { parametros } = useParametro();
   const message = useMessage();
 
   const [tipoExtrato, setTipoExtrato] = useState<TipoExtratoEnum>('CONTA_CORRENTE');
@@ -29,9 +30,14 @@ const ImportacaoExtratoFormPage: React.FC = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [dropzoneKey, setDropzoneKey] = useState(0);
 
+  const buildDataVencimentoPadrao = (): Date => {
+    const hoje = new Date();
+    return new Date(hoje.getFullYear(), hoje.getMonth(), parametros.diaPadraoVencimentoCartao);
+  };
+
   const handleReset = () => {
     setArquivo(null);
-    setDataVencimento(undefined);
+    setDataVencimento(tipoExtrato === 'FATURA_CARTAO' ? buildDataVencimentoPadrao() : undefined);
     setDropzoneKey(k => k + 1);
   };
 
@@ -62,8 +68,9 @@ const ImportacaoExtratoFormPage: React.FC = () => {
   };
 
   const handleTipoChange = (value: unknown) => {
-    setTipoExtrato(String(value) as TipoExtratoEnum);
-    setDataVencimento(undefined);
+    const tipo = String(value) as TipoExtratoEnum;
+    setTipoExtrato(tipo);
+    setDataVencimento(tipo === 'FATURA_CARTAO' ? buildDataVencimentoPadrao() : undefined);
   };
 
   const isRequiredFieldsFilled = (): boolean => {
