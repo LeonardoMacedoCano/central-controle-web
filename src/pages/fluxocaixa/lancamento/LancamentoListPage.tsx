@@ -114,7 +114,7 @@ const LancamentoListPage: React.FC = () => {
           {
             icon: <FaFileImport />,
             hint: 'Importar Extrato',
-            action: () => handleNavigation('/fluxocaixa/extrato-fluxo-caixa')
+            action: () => handleNavigation('/fluxocaixa/lancamento/extrato-fluxo-caixa')
           },
           {
             icon: <FaPlus />,

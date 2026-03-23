@@ -67,13 +67,6 @@ const FluxoCaixaRoutes: RouteObject[] = [
           },
         ],
       },
-
-      {
-        path: "extrato-fluxo-caixa",
-        element: <ImportacaoExtratoFormPage />,
-        handle: { breadcrumb: "Importação de Extrato" },
-      },
-
       {
         path: "lancamento",
         handle: { breadcrumb: "Lançamento" },
@@ -96,6 +89,11 @@ const FluxoCaixaRoutes: RouteObject[] = [
             path: "editar/:id",
             element: <LancamentoFormPage />,
             handle: { breadcrumb: "Editar" },
+          },
+          {
+            path: "extrato-fluxo-caixa",
+            element: <ImportacaoExtratoFormPage />,
+            handle: { breadcrumb: "Importação de Extrato" },
           },
         ],
       },
