@@ -5,6 +5,7 @@ import { NotificacaoService } from '../../../service';
 import { NotificacaoDTO, TipoNotificacaoEnum } from '../../../types';
 import {
   Container,
+  FieldTextArea,
   FieldValue,
   formatDateTimeToBrString,
   Loading,
@@ -63,12 +64,11 @@ const NotificacaoViewPage: React.FC = () => {
             value={notificacao.titulo}
             editable={false}
           />
-          <FieldValue
-            description="Mensagem"
-            type="STRING"
+          <FieldTextArea                                                                                                                                                                                                                                     
+            description="Mensagem"     
             value={notificacao.mensagem}
-            editable={false}
-          />
+            maxLength={500}                                                                                                                                                                                                                                     
+          />  
         </Stack>
       )}
     </Container>
