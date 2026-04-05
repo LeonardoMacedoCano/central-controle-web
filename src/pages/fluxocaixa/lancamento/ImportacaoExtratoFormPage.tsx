@@ -115,7 +115,7 @@ const ImportacaoExtratoFormPage: React.FC = () => {
         <DragDropFile
           key={dropzoneKey}
           onFileChange={setArquivo}
-          acceptedFileFormats={['text/csv']}
+          acceptedFileFormats={tipoExtrato === 'MOVIMENTACAO_B3' ? ['xlsx'] : ['csv']}
         />
       </Stack>
     </Container>
