@@ -6,6 +6,7 @@ export type Parametro = {
   metaLimiteDespesaMensal?: number;
   rendaCategoriaPadrao?: MovimentacaoCategoria;
   rendaPassivaCategoria?: MovimentacaoCategoria;
+  categoriaPadraoMovimentacaoB3?: MovimentacaoCategoria;
   metaAporteMensal?: number;
   metaAporteTotal?: number;
   diaPadraoVencimentoCartao: number;
