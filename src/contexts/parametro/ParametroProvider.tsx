@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ParametroContext } from './ParametroContext';
 import { ParametroService } from '../../service';
 import { Parametro, initialParametroState } from '../../types';
@@ -8,27 +8,21 @@ export const ParametroProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [parametros, setParametros] = useState<Parametro>(initialParametroState);
   const { usuario } = useAuth();
 
-  const loadParametros = useCallback(async (token: string) => {
-    const result = await ParametroService.getParametros(token);
-    if (result) setParametros(result);
-  }, []);
-
-  const loadParametrosRef = useRef(loadParametros);
-  loadParametrosRef.current = loadParametros;
-
   useEffect(() => {
     if (usuario?.token) {
-      loadParametrosRef.current(usuario.token);
+      ParametroService.getParametros(usuario.token)
+        .then(result => { if (result) setParametros(result); });
     } else {
       setParametros(initialParametroState);
     }
-  }, [usuario?.token]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [usuario?.token]);
 
-  const reloadParametros = useCallback(async () => {
+  const reloadParametros = async () => {
     if (usuario?.token) {
-      await loadParametros(usuario.token);
+      const result = await ParametroService.getParametros(usuario.token);
+      if (result) setParametros(result);
     }
-  }, [usuario?.token, loadParametros]);
+  };
 
   return (
     <ParametroContext.Provider value={{ parametros, reloadParametros }}>

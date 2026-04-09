@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCheck, FaEnvelope, FaEnvelopeOpen } from 'react-icons/fa';
 import {
@@ -32,12 +32,10 @@ const NotificacaoListPage: React.FC = () => {
   const message = useMessage();
   const navigate = useNavigate();
   const [apenasNaoLidas, setApenasNaoLidas] = useState(false);
+  const apenasNaoLidasRef = useRef(false);
 
-  const fetcher = useCallback(
-    (token: string, page: number, size: number) =>
-      NotificacaoService.getNotificacoes(token, page, size, apenasNaoLidas),
-    [apenasNaoLidas]
-  );
+  const fetcher = (token: string, page: number, size: number) =>
+    NotificacaoService.getNotificacoes(token, page, size, apenasNaoLidasRef.current);
 
   const { data, isLoading, load, loadPage } = usePagedData<NotificacaoDTO>(
     usuario?.token,
@@ -48,7 +46,10 @@ const NotificacaoListPage: React.FC = () => {
   const notificacoes = data?.content ?? [];
 
   const handleFiltroChange = (value: unknown) => {
-    setApenasNaoLidas(String(value) === 'true');
+    const novoValor = String(value) === 'true';
+    apenasNaoLidasRef.current = novoValor;
+    setApenasNaoLidas(novoValor);
+    load();
   };
 
   const handleMarkAsRead = async (id: number, isUnread: boolean) => {

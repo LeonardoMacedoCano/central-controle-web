@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { PAGE_SIZE_DEFAULT, PagedResponse, useMessage } from 'lcano-react-ui';
 
 type PagedFetcher<T> = (
@@ -19,22 +19,34 @@ export function usePagedData<T>(
   const [isLoading, setIsLoading] = useState(false);
   const message = useMessage();
 
-  const load = useCallback(async (page = pageIndex, size = pageSize, rsql = '') => {
+  const fetcherRef = useRef(fetcher);
+  fetcherRef.current = fetcher;
+  const messageRef = useRef(message);
+  messageRef.current = message;
+  const errorMessageRef = useRef(errorMessage);
+  errorMessageRef.current = errorMessage;
+
+  const load = async (page = pageIndex, size = pageSize, rsql = '') => {
     if (!token) return;
     setIsLoading(true);
     try {
-      const result = await fetcher(token, page, size, rsql);
+      const result = await fetcherRef.current(token, page, size, rsql);
       setData(result);
     } catch (error) {
-      message.showErrorWithLog(errorMessage, error);
+      messageRef.current.showErrorWithLog(errorMessageRef.current, error);
     } finally {
       setIsLoading(false);
     }
-  }, [token, fetcher, pageIndex, pageSize, errorMessage, message]);
+  };
 
   useEffect(() => {
-    if (token) load();
-  }, [token, pageIndex, load]);
+    if (!token) return;
+    setIsLoading(true);
+    fetcherRef.current(token, pageIndex, pageSize)
+      .then(result => setData(result))
+      .catch(error => messageRef.current.showErrorWithLog(errorMessageRef.current, error))
+      .finally(() => setIsLoading(false));
+  }, [token, pageIndex, pageSize]);
 
   const loadPage = (page: number, size: number) => {
     setPageIndex(page);

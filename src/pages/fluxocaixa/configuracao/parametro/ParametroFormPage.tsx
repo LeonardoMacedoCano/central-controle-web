@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import {
   ActionButton,
@@ -22,52 +22,39 @@ const ParametroFormPage: React.FC = () => {
   const { reloadParametros } = useParametro();
   const message = useMessage();
 
-  const loadParametros = useCallback(async () => {
+  useEffect(() => {
     if (!auth.usuario?.token) return;
-
     setIsLoading(true);
-    try {
-      const result = await ParametroService.getParametros(auth.usuario.token);
-      if (result) setParametros(result);
-    } catch (error) {
-      message.showErrorWithLog("Erro ao carregar os parâmetros do usuário.", error);
-    } finally {
-      setIsLoading(false);
-    }
+    ParametroService.getParametros(auth.usuario.token)
+      .then(result => { if (result) setParametros(result); })
+      .catch(error => message.showErrorWithLog("Erro ao carregar os parâmetros do usuário.", error))
+      .finally(() => setIsLoading(false));
   }, [auth.usuario?.token, message]);
 
-  const salvarParametros = useCallback(async () => {
+  const salvarParametros = async () => {
     if (!auth.usuario?.token) return;
-
     await ParametroService.saveParametros(auth.usuario.token, parametros, message);
-    await loadParametros();
+    const result = await ParametroService.getParametros(auth.usuario.token);
+    if (result) setParametros(result);
     await reloadParametros();
-  }, [auth.usuario?.token, parametros, message, loadParametros, reloadParametros]);
-
-  const updateParametros = useCallback((parametrosAtualizado: Parametro) => {
-    setParametros(parametrosAtualizado);
-  }, []);
-
-  useEffect(() => {
-    loadParametros();
-  }, [loadParametros]);
+  };
 
   const tabs = [
     {
       label: "Despesa",
-      content: <DespesaParametroSectionForm parametros={parametros} onUpdate={updateParametros} />,
+      content: <DespesaParametroSectionForm parametros={parametros} onUpdate={setParametros} />,
     },
     {
       label: "Renda",
-      content: <RendaParametroSectionForm parametros={parametros} onUpdate={updateParametros} />,
+      content: <RendaParametroSectionForm parametros={parametros} onUpdate={setParametros} />,
     },
     {
       label: "Ativo",
-      content: <AtivoParametroSectionForm parametros={parametros} onUpdate={updateParametros} />,
+      content: <AtivoParametroSectionForm parametros={parametros} onUpdate={setParametros} />,
     },
     {
       label: "Extrato",
-      content: <ExtratoParametroSectionForm parametros={parametros} onUpdate={updateParametros} />,
+      content: <ExtratoParametroSectionForm parametros={parametros} onUpdate={setParametros} />,
     },
   ];
 

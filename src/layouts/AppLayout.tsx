@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { AppContainer, MainContent, PageContent } from './styles';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
@@ -20,17 +20,17 @@ export const AppLayout: React.FC = () => {
 
   const { usuario } = useAuth();
 
-  const fetchUnreadCount = useCallback(async () => {
-    if (!usuario?.token) return;
-    const result = await NotificacaoService.getNaoLidasCount(usuario.token);
-    if (result) setUnreadCount(result.total);
-  }, [usuario?.token]);
-
   useEffect(() => {
-    fetchUnreadCount();
-    const interval = setInterval(fetchUnreadCount, POLLING_INTERVAL_MS);
+    if (!usuario?.token) return;
+    const token = usuario.token;
+    const fetchCount = async () => {
+      const result = await NotificacaoService.getNaoLidasCount(token);
+      if (result) setUnreadCount(result.total);
+    };
+    fetchCount();
+    const interval = setInterval(fetchCount, POLLING_INTERVAL_MS);
     return () => clearInterval(interval);
-  }, [fetchUnreadCount]);
+  }, [usuario?.token]);
 
   const toggleMenu = () => {
     setIsMenuOpen(prev => !prev);

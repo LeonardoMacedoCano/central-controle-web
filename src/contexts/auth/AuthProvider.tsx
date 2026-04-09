@@ -16,7 +16,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   messageRef.current = message;
 
   useEffect(() => {
-    // executa apenas no mount para validar token armazenado
     const validateToken = async () => {
       const storageData = localStorage.getItem('authToken');
       if (!storageData) return;
@@ -30,7 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
     validateToken();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const login = async (username: string, senha: string) => {
     const usuario = await AuthService.login(username, senha, message);
