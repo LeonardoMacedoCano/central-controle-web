@@ -5,7 +5,7 @@ import ParametroFormPage from '../pages/fluxocaixa/configuracao/parametro/Parame
 import RegraExtratoContaCorrenteListPage from '../pages/fluxocaixa/configuracao/regraextratocontacorrente/RegraExtratoContaCorrenteListPage';
 import RegraExtratoContaCorrenteFormPage from '../pages/fluxocaixa/configuracao/regraextratocontacorrente/RegraExtratoContaCorrenteFormPage';
 import RegraExtratoContaCorrenteViewPage from '../pages/fluxocaixa/configuracao/regraextratocontacorrente/RegraExtratoContaCorrenteViewPage';
-import FluxoCaixaResumo from '../pages/fluxocaixa/FluxoCaixaResumo';
+import FluxoCaixaResumo from '../pages/fluxocaixa/resumo/FluxoCaixaResumo';
 import SimpleModuleLayout from '../layouts/SimpleModuleLayout';
 import LancamentoListPage from '../pages/fluxocaixa/lancamento/LancamentoListPage';
 import LancamentoFormPage from '../pages/fluxocaixa/lancamento/LancamentoFormPage';

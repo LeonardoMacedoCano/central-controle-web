@@ -1,4 +1,5 @@
 export type { MovimentacaoCategoria } from './fluxocaixa/MovimentacaoCategoria';
+export type { Dashboard, CategoriaTotais } from './fluxocaixa/Dashboard';
 export type { Usuario, UsuarioForm } from './usuario/Usuario';
 export type { TipoMovimentoEnum } from './fluxocaixa/TipoMovimentacaoEnum';
 export type { Parametro } from './fluxocaixa/Parametro';
