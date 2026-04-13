@@ -37,13 +37,11 @@ const NotificacaoListPage: React.FC = () => {
   const fetcher = (token: string, page: number, size: number) =>
     NotificacaoService.getNotificacoes(token, page, size, apenasNaoLidasRef.current);
 
-  const { data, isLoading, load, loadPage } = usePagedData<NotificacaoDTO>(
+  const { data: notificacoes, isLoading, load, loadPage } = usePagedData<NotificacaoDTO>(
     usuario?.token,
     fetcher,
     'Erro ao carregar as notificações.'
   );
-
-  const notificacoes = data?.content ?? [];
 
   const handleFiltroChange = (value: unknown) => {
     const novoValor = String(value) === 'true';
@@ -64,7 +62,7 @@ const NotificacaoListPage: React.FC = () => {
     load();
   };
 
-  const temNaoLidas = notificacoes.some(n => !n.lida);
+  const temNaoLidas = notificacoes?.content?.some(n => !n.lida) ?? false;
 
   return (
     <Container>
@@ -81,7 +79,7 @@ const NotificacaoListPage: React.FC = () => {
         />
 
         <Table<NotificacaoDTO>
-          values={notificacoes}
+          values={notificacoes || []}
           messageEmpty="Nenhuma notificação encontrada."
           keyExtractor={(item) => item.id.toString()}
           onView={(item) => navigate(`/notificacoes/resumo/${item.id}`)}
