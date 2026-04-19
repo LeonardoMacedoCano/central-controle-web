@@ -1,9 +1,9 @@
 import { MovimentacaoCategoria } from "./MovimentacaoCategoria";
-import { TipoRegraExtratoContaCorrenteEnum } from "./TipoRegraExtratoContaCorrenteEnum";
+import { TipoMapeamentoExtratoBancarioEnum } from "./TipoMapeamentoExtratoBancarioEnum";
 
-export type RegraExtratoContaCorrente = {
+export type MapeamentoExtratoBancario = {
   id: number;
-  tipoRegra: TipoRegraExtratoContaCorrenteEnum;
+  tipoRegra: TipoMapeamentoExtratoBancarioEnum;
   descricao: string;
   descricaoMatch: string;
   descricaoDestino?: string;
@@ -14,7 +14,7 @@ export type RegraExtratoContaCorrente = {
   ativo: boolean;
 }
 
-export const initialRegraExtratoContaCorrenteState: RegraExtratoContaCorrente = {
+export const initialMapeamentoExtratoBancarioState: MapeamentoExtratoBancario = {
   id: 0,
   tipoRegra: "CLASSIFICAR_DESPESA",
   descricao: "",

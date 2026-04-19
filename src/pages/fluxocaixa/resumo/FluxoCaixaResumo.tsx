@@ -52,7 +52,7 @@ const FluxoCaixaResumo: React.FC = () => {
     DashboardService.getDashboard(usuario.token, ano, mesFiltro, message)
       .then(resultado => setDados(resultado ?? null))
       .finally(() => setIsLoading(false));
-  }, [usuario?.token, ano, mes, modo, message]);
+  }, [usuario?.token, ano, mes, modo]);
 
   return (
     <Container padding="10px">

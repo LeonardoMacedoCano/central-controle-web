@@ -1,28 +1,28 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { getDescricaoTipoRegraExtratoContaCorrente, RegraExtratoContaCorrente } from "../../../../types";
-import { RegraExtratoContaCorrenteService } from "../../../../service";
+import { getDescricaoTipoMapeamentoExtratoBancario, MapeamentoExtratoBancario } from "../../../../types";
+import { MapeamentoExtratoBancarioService } from "../../../../service";
 import { useAuth } from "../../../../contexts";
 import { Container, FieldValue, Loading, Stack } from "lcano-react-ui";
 import { useFetchById } from "../../../../utils";
 
-const RegraExtratoContaCorrenteViewPage: React.FC = () => {
+const MapeamentoExtratoBancarioViewPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { usuario } = useAuth();
 
-  const { data: regra, isLoading } = useFetchById<RegraExtratoContaCorrente>(
+  const { data: mapeamento, isLoading } = useFetchById<MapeamentoExtratoBancario>(
     usuario?.token,
     id,
-    RegraExtratoContaCorrenteService.getRegra,
-    "Erro ao carregar a regra."
+    MapeamentoExtratoBancarioService.getMapeamento,
+    "Erro ao carregar o mapeamento."
   );
 
   const getDescricaoCategoria = () => {
-    if (!regra) return "";
-    switch (regra.tipoRegra) {
-      case "CLASSIFICAR_DESPESA": return regra.despesaCategoriaDestino?.descricao ?? "";
-      case "CLASSIFICAR_RENDA":   return regra.rendaCategoriaDestino?.descricao ?? "";
-      case "CLASSIFICAR_ATIVO":   return regra.ativoCategoriaDestino?.descricao ?? "";
+    if (!mapeamento) return "";
+    switch (mapeamento.tipoRegra) {
+      case "CLASSIFICAR_DESPESA": return mapeamento.despesaCategoriaDestino?.descricao ?? "";
+      case "CLASSIFICAR_RENDA":   return mapeamento.rendaCategoriaDestino?.descricao ?? "";
+      case "CLASSIFICAR_ATIVO":   return mapeamento.ativoCategoriaDestino?.descricao ?? "";
       default:                    return "";
     }
   };
@@ -31,12 +31,12 @@ const RegraExtratoContaCorrenteViewPage: React.FC = () => {
     <Container>
       <Loading isLoading={isLoading} />
 
-      {regra && (
+      {mapeamento && (
         <Stack direction="column" divider="y">
           <FieldValue
             description="Descrição"
             type="STRING"
-            value={regra.descricao}
+            value={mapeamento.descricao}
             editable={false}
           />
 
@@ -44,7 +44,7 @@ const RegraExtratoContaCorrenteViewPage: React.FC = () => {
             <FieldValue
               description="Tipo"
               type="STRING"
-              value={getDescricaoTipoRegraExtratoContaCorrente(regra.tipoRegra)}
+              value={getDescricaoTipoMapeamentoExtratoBancario(mapeamento.tipoRegra)}
               editable={false}
             />
             <FieldValue
@@ -59,13 +59,13 @@ const RegraExtratoContaCorrenteViewPage: React.FC = () => {
             <FieldValue
               description="Descrição Match"
               type="STRING"
-              value={regra.descricaoMatch}
+              value={mapeamento.descricaoMatch}
               editable={false}
             />
             <FieldValue
               description="Descrição Destino"
               type="STRING"
-              value={regra.descricaoDestino}
+              value={mapeamento.descricaoDestino}
               editable={false}
             />
           </Stack>
@@ -74,13 +74,13 @@ const RegraExtratoContaCorrenteViewPage: React.FC = () => {
             <FieldValue
               description="Prioridade"
               type="STRING"
-              value={regra.prioridade}
+              value={mapeamento.prioridade}
               editable={false}
             />
             <FieldValue
               description="Ativo"
               type="STRING"
-              value={regra.ativo ? "Sim" : "Não"}
+              value={mapeamento.ativo ? "Sim" : "Não"}
               editable={false}
             />
           </Stack>
@@ -90,4 +90,4 @@ const RegraExtratoContaCorrenteViewPage: React.FC = () => {
   );
 };
 
-export default RegraExtratoContaCorrenteViewPage;
+export default MapeamentoExtratoBancarioViewPage;

@@ -2,9 +2,9 @@ import { RouteObject } from 'react-router-dom';
 import FluxoCaixaConfigPage from '../pages/fluxocaixa/configuracao/FluxoCaixaConfigPage';
 import MovimentacaoCategoriaListPage from '../pages/fluxocaixa/configuracao/movimentacaocategoria/MovimentacaoCategoriaListPage';
 import ParametroFormPage from '../pages/fluxocaixa/configuracao/parametro/ParametroFormPage';
-import RegraExtratoContaCorrenteListPage from '../pages/fluxocaixa/configuracao/regraextratocontacorrente/RegraExtratoContaCorrenteListPage';
-import RegraExtratoContaCorrenteFormPage from '../pages/fluxocaixa/configuracao/regraextratocontacorrente/RegraExtratoContaCorrenteFormPage';
-import RegraExtratoContaCorrenteViewPage from '../pages/fluxocaixa/configuracao/regraextratocontacorrente/RegraExtratoContaCorrenteViewPage';
+import MapeamentoExtratoBancarioListPage from '../pages/fluxocaixa/configuracao/mapeamentoextratobancario/MapeamentoExtratoBancarioListPage';
+import MapeamentoExtratoBancarioFormPage from '../pages/fluxocaixa/configuracao/mapeamentoextratobancario/MapeamentoExtratoBancarioFormPage';
+import MapeamentoExtratoBancarioViewPage from '../pages/fluxocaixa/configuracao/mapeamentoextratobancario/MapeamentoExtratoBancarioViewPage';
 import FluxoCaixaResumo from '../pages/fluxocaixa/resumo/FluxoCaixaResumo';
 import SimpleModuleLayout from '../layouts/SimpleModuleLayout';
 import LancamentoListPage from '../pages/fluxocaixa/lancamento/LancamentoListPage';
@@ -41,26 +41,26 @@ const FluxoCaixaRoutes: RouteObject[] = [
             handle: { breadcrumb: "Categorias" },
           },
           {
-            path: "regra-extrato-conta-corrente",
-            handle: { breadcrumb: "Regras Extrato" },
+            path: "mapeamento-extrato-bancario",
+            handle: { breadcrumb: "Mapeamentos Extrato" },
             children: [
               {
                 index: true,
-                element: <RegraExtratoContaCorrenteListPage />,
+                element: <MapeamentoExtratoBancarioListPage />,
               },
               {
                 path: "novo",
-                element: <RegraExtratoContaCorrenteFormPage />,
+                element: <MapeamentoExtratoBancarioFormPage />,
                 handle: { breadcrumb: "Novo" },
               },
               {
                 path: "editar/:id",
-                element: <RegraExtratoContaCorrenteFormPage />,
+                element: <MapeamentoExtratoBancarioFormPage />,
                 handle: { breadcrumb: "Editar" },
               },
               {
                 path: "resumo/:id",
-                element: <RegraExtratoContaCorrenteViewPage />,
+                element: <MapeamentoExtratoBancarioViewPage />,
                 handle: { breadcrumb: "Resumo" },
               },
             ],

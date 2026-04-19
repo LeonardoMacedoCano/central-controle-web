@@ -14,7 +14,7 @@ const buttonStyle: React.CSSProperties = {
 const configButtons = [
   { label: "Parâmetros", path: "/fluxocaixa/config/parametro" },
   { label: "Categorias", path: "/fluxocaixa/config/categoria" },
-  { label: "Regras Extrato Conta Corrente", path: "/fluxocaixa/config/regra-extrato-conta-corrente" },
+  { label: "Mapeamentos Extrato Bancário", path: "/fluxocaixa/config/mapeamento-extrato-bancario" },
 ];
 
 const FluxoCaixaConfigPage: React.FC = () => {

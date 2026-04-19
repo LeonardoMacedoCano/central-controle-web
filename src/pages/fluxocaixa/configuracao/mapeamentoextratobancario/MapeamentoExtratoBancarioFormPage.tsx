@@ -4,12 +4,12 @@ import { FaCheck } from "react-icons/fa";
 
 import { useAuth } from "../../../../contexts";
 import {
-  getCodigoTipoRegraExtratoContaCorrente,
-  getDescricaoTipoRegraExtratoContaCorrente,
-  getTipoRegraExtratoContaCorrenteByCodigo,
-  initialRegraExtratoContaCorrenteState,
-  RegraExtratoContaCorrente,
-  tipoRegraExtratoContaCorrenteOptions,
+  getCodigoTipoMapeamentoExtratoBancario,
+  getDescricaoTipoMapeamentoExtratoBancario,
+  getTipoMapeamentoExtratoBancarioByCodigo,
+  initialMapeamentoExtratoBancarioState,
+  MapeamentoExtratoBancario,
+  tipoMapeamentoExtratoBancarioOptions,
 } from "../../../../types";
 import {
   ActionButton,
@@ -20,18 +20,18 @@ import {
   Stack,
   useMessage,
 } from "lcano-react-ui";
-import { RegraExtratoContaCorrenteService } from "../../../../service";
-import { TipoRegraExtratoContaCorrenteEnum } from "../../../../types/fluxocaixa/TipoRegraExtratoContaCorrenteEnum";
+import { MapeamentoExtratoBancarioService } from "../../../../service";
+import { TipoMapeamentoExtratoBancarioEnum } from "../../../../types/fluxocaixa/TipoMapeamentoExtratoBancarioEnum";
 import { useCategoriaSelectAdapter } from "../../../../utils";
 import { TipoMovimentoEnum } from "../../../../types";
 
-const TIPOS_COM_CATEGORIA: TipoRegraExtratoContaCorrenteEnum[] = [
+const TIPOS_COM_CATEGORIA: TipoMapeamentoExtratoBancarioEnum[] = [
   "CLASSIFICAR_DESPESA",
   "CLASSIFICAR_RENDA",
   "CLASSIFICAR_ATIVO",
 ];
 
-const getTipoMovimentoFromRegra = (tipoRegra: TipoRegraExtratoContaCorrenteEnum): TipoMovimentoEnum | undefined => {
+const getTipoMovimentoFromMapeamento = (tipoRegra: TipoMapeamentoExtratoBancarioEnum): TipoMovimentoEnum | undefined => {
   switch (tipoRegra) {
     case "CLASSIFICAR_DESPESA": return "DESPESA";
     case "CLASSIFICAR_RENDA":   return "RENDA";
@@ -40,51 +40,51 @@ const getTipoMovimentoFromRegra = (tipoRegra: TipoRegraExtratoContaCorrenteEnum)
   }
 };
 
-const RegraExtratoContaCorrenteFormPage: React.FC = () => {
+const MapeamentoExtratoBancarioFormPage: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
   const { usuario } = useAuth();
   const navigate = useNavigate();
   const message = useMessage();
 
-  const [regra, setRegra] = useState<RegraExtratoContaCorrente>(initialRegraExtratoContaCorrenteState);
+  const [mapeamento, setMapeamento] = useState<MapeamentoExtratoBancario>(initialMapeamentoExtratoBancarioState);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!usuario?.token || !id) return;
 
     setIsLoading(true);
-    RegraExtratoContaCorrenteService
-      .getRegra(usuario.token, id)
-      .then((result) => result && setRegra(result))
-      .catch((error) => message.showErrorWithLog("Erro ao carregar a regra.", error))
+    MapeamentoExtratoBancarioService
+      .getMapeamento(usuario.token, id)
+      .then((result) => result && setMapeamento(result))
+      .catch((error) => message.showErrorWithLog("Erro ao carregar o mapeamento.", error))
       .finally(() => setIsLoading(false));
   }, [usuario?.token, id, message]);
 
-  const updateRegra = (fields: Partial<RegraExtratoContaCorrente>) =>
-    setRegra((prev) => ({ ...prev, ...fields }));
+  const updateMapeamento = (fields: Partial<MapeamentoExtratoBancario>) =>
+    setMapeamento((prev) => ({ ...prev, ...fields }));
 
   const updateField =
-    <K extends keyof RegraExtratoContaCorrente>(field: K) =>
+    <K extends keyof MapeamentoExtratoBancario>(field: K) =>
     (value: unknown) =>
-      updateRegra({ [field]: value } as Pick<RegraExtratoContaCorrente, K>);
+      updateMapeamento({ [field]: value } as Pick<MapeamentoExtratoBancario, K>);
 
-  const temCategoria = TIPOS_COM_CATEGORIA.includes(regra.tipoRegra);
-  const tipoMovimento = getTipoMovimentoFromRegra(regra.tipoRegra);
+  const temCategoria = TIPOS_COM_CATEGORIA.includes(mapeamento.tipoRegra);
+  const tipoMovimento = getTipoMovimentoFromMapeamento(mapeamento.tipoRegra);
 
   const getCategoriaValue = () => {
-    switch (regra.tipoRegra) {
-      case "CLASSIFICAR_DESPESA": return regra.despesaCategoriaDestino;
-      case "CLASSIFICAR_RENDA":   return regra.rendaCategoriaDestino;
-      case "CLASSIFICAR_ATIVO":   return regra.ativoCategoriaDestino;
+    switch (mapeamento.tipoRegra) {
+      case "CLASSIFICAR_DESPESA": return mapeamento.despesaCategoriaDestino;
+      case "CLASSIFICAR_RENDA":   return mapeamento.rendaCategoriaDestino;
+      case "CLASSIFICAR_ATIVO":   return mapeamento.ativoCategoriaDestino;
       default:                    return undefined;
     }
   };
 
   const handleCategoriaUpdate = (v: ReturnType<typeof getCategoriaValue>) => {
-    switch (regra.tipoRegra) {
-      case "CLASSIFICAR_DESPESA": updateRegra({ despesaCategoriaDestino: v }); break;
-      case "CLASSIFICAR_RENDA":   updateRegra({ rendaCategoriaDestino: v });   break;
-      case "CLASSIFICAR_ATIVO":   updateRegra({ ativoCategoriaDestino: v });   break;
+    switch (mapeamento.tipoRegra) {
+      case "CLASSIFICAR_DESPESA": updateMapeamento({ despesaCategoriaDestino: v }); break;
+      case "CLASSIFICAR_RENDA":   updateMapeamento({ rendaCategoriaDestino: v });   break;
+      case "CLASSIFICAR_ATIVO":   updateMapeamento({ ativoCategoriaDestino: v });   break;
     }
   };
 
@@ -95,16 +95,16 @@ const RegraExtratoContaCorrenteFormPage: React.FC = () => {
     handleCategoriaUpdate
   );
 
-  const saveRegra = async () => {
+  const saveMapeamento = async () => {
     if (!usuario?.token) return;
 
     try {
-      const response = await RegraExtratoContaCorrenteService.saveRegra(usuario.token, regra, message);
+      const response = await MapeamentoExtratoBancarioService.saveMapeamento(usuario.token, mapeamento, message);
       if (response?.id) {
-        navigate(`/fluxocaixa/config/regra-extrato-conta-corrente/resumo/${response.id}`);
+        navigate(`/fluxocaixa/config/mapeamento-extrato-bancario/resumo/${response.id}`);
       }
     } catch (error) {
-      message.showErrorWithLog("Erro ao salvar regra.", error);
+      message.showErrorWithLog("Erro ao salvar mapeamento.", error);
     }
   };
 
@@ -112,13 +112,13 @@ const RegraExtratoContaCorrenteFormPage: React.FC = () => {
     <Container>
       <Loading isLoading={isLoading} />
 
-      <ActionButton icon={<FaCheck />} hint="Salvar" onClick={saveRegra} />
+      <ActionButton icon={<FaCheck />} hint="Salvar" onClick={saveMapeamento} />
 
       <Stack direction="column" divider="y">
         <FieldValue
           description="Descrição"
           type="STRING"
-          value={regra.descricao}
+          value={mapeamento.descricao}
           editable
           onUpdate={updateField("descricao")}
         />
@@ -128,14 +128,14 @@ const RegraExtratoContaCorrenteFormPage: React.FC = () => {
             description="Tipo"
             type="SELECT"
             value={{
-              key: getCodigoTipoRegraExtratoContaCorrente(regra.tipoRegra),
-              value: getDescricaoTipoRegraExtratoContaCorrente(regra.tipoRegra),
+              key: getCodigoTipoMapeamentoExtratoBancario(mapeamento.tipoRegra),
+              value: getDescricaoTipoMapeamentoExtratoBancario(mapeamento.tipoRegra),
             }}
             editable
-            options={tipoRegraExtratoContaCorrenteOptions}
+            options={tipoMapeamentoExtratoBancarioOptions}
             onUpdate={(v) =>
-              updateRegra({
-                tipoRegra: getTipoRegraExtratoContaCorrenteByCodigo(String(v)),
+              updateMapeamento({
+                tipoRegra: getTipoMapeamentoExtratoBancarioByCodigo(String(v)),
                 despesaCategoriaDestino: undefined,
                 rendaCategoriaDestino: undefined,
                 ativoCategoriaDestino: undefined,
@@ -155,14 +155,14 @@ const RegraExtratoContaCorrenteFormPage: React.FC = () => {
           <FieldValue
             description="Descrição Match"
             type="STRING"
-            value={regra.descricaoMatch}
+            value={mapeamento.descricaoMatch}
             editable
             onUpdate={updateField("descricaoMatch")}
           />
           <FieldValue
             description="Descrição Destino"
             type="STRING"
-            value={regra.descricaoDestino}
+            value={mapeamento.descricaoDestino}
             editable
             onUpdate={updateField("descricaoDestino")}
           />
@@ -172,7 +172,7 @@ const RegraExtratoContaCorrenteFormPage: React.FC = () => {
           <FieldValue
             description="Prioridade"
             type="NUMBER"
-            value={regra.prioridade}
+            value={mapeamento.prioridade}
             editable
             minValue={0}
             maxValue={99}
@@ -181,7 +181,7 @@ const RegraExtratoContaCorrenteFormPage: React.FC = () => {
           <FieldValue
             description="Ativo"
             type="BOOLEAN"
-            value={regra.ativo}
+            value={mapeamento.ativo}
             editable
             onUpdate={updateField("ativo")}
           />
@@ -191,4 +191,4 @@ const RegraExtratoContaCorrenteFormPage: React.FC = () => {
   );
 };
 
-export default RegraExtratoContaCorrenteFormPage;
+export default MapeamentoExtratoBancarioFormPage;

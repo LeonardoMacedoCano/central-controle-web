@@ -4,7 +4,7 @@ export * as TemaService from './Usuario/TemaService';
 export * as UsuarioService from './Usuario/UsuarioService';
 export * as MovimentacaoCategoriaService from './fluxocaixa/MovimentacaoCategoriaService';
 export * as ParametroService from './fluxocaixa/ParametroService';
-export * as RegraExtratoContaCorrenteService from './fluxocaixa/RegraExtratoContaCorrenteService';
+export * as MapeamentoExtratoBancarioService from './fluxocaixa/MapeamentoExtratoBancarioService';
 export * as LancamentoService from './fluxocaixa/LancamentoService';
 export * as ExtratoFluxoCaixaService from './fluxocaixa/ExtratoFluxoCaixaService';
 export * as NotificacaoService from './Usuario/NotificacaoService';

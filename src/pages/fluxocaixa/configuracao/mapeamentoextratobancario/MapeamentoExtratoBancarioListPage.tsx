@@ -13,35 +13,35 @@ import {
   useMessage,
 } from "lcano-react-ui";
 import {
-  getDescricaoTipoRegraExtratoContaCorrente,
-  RegraExtratoContaCorrente,
-  tipoRegraExtratoContaCorrenteOptions,
+  getDescricaoTipoMapeamentoExtratoBancario,
+  MapeamentoExtratoBancario,
+  tipoMapeamentoExtratoBancarioOptions,
 } from "../../../../types";
-import { RegraExtratoContaCorrenteService } from "../../../../service";
+import { MapeamentoExtratoBancarioService } from "../../../../service";
 import { useAuth } from "../../../../contexts";
 import { useNavigate } from "react-router-dom";
 import { usePagedData } from "../../../../utils";
 
-const RegraExtratoContaCorrenteListPage: React.FC = () => {
+const MapeamentoExtratoBancarioListPage: React.FC = () => {
   const { usuario } = useAuth();
   const message = useMessage();
   const { confirm, ConfirmModalComponent } = useConfirmModal();
   const navigate = useNavigate();
 
-  const { data: regras, isLoading, load, loadPage } = usePagedData(
+  const { data: mapeamentos, isLoading, load, loadPage } = usePagedData(
     usuario?.token,
-    RegraExtratoContaCorrenteService.getRegras,
-    "Erro ao carregar as regras."
+    MapeamentoExtratoBancarioService.getMapeamentos,
+    "Erro ao carregar os mapeamentos."
   );
 
-  const handleDelete = async (regra: RegraExtratoContaCorrente) => {
+  const handleDelete = async (mapeamento: MapeamentoExtratoBancario) => {
     const confirmado = await confirm(
-      "Exclusão de Regra",
-      "Tem certeza de que deseja excluir esta regra? Esta ação não pode ser desfeita."
+      "Exclusão de Mapeamento",
+      "Tem certeza de que deseja excluir este mapeamento? Esta ação não pode ser desfeita."
     );
     if (!confirmado || !usuario?.token) return;
 
-    await RegraExtratoContaCorrenteService.deleteRegra(usuario.token, regra.id, message);
+    await MapeamentoExtratoBancarioService.deleteMapeamento(usuario.token, mapeamento.id, message);
     load();
   };
 
@@ -49,8 +49,8 @@ const RegraExtratoContaCorrenteListPage: React.FC = () => {
     <Container>
       <ActionButton
         icon={<FaPlus />}
-        hint="Adicionar regra"
-        onClick={() => navigate('/fluxocaixa/config/regra-extrato-conta-corrente/novo')}
+        hint="Adicionar mapeamento"
+        onClick={() => navigate('/fluxocaixa/config/mapeamento-extrato-bancario/novo')}
       />
 
       {ConfirmModalComponent}
@@ -60,22 +60,22 @@ const RegraExtratoContaCorrenteListPage: React.FC = () => {
       <SearchFilterRSQL
         fields={[
           { name: "descricao", label: "Descrição", type: "STRING" },
-          { name: "tipoRegra", label: "Tipo", type: "SELECT", options: tipoRegraExtratoContaCorrenteOptions },
+          { name: "tipoRegra", label: "Tipo", type: "SELECT", options: tipoMapeamentoExtratoBancarioOptions },
           { name: "ativo", label: "Ativo", type: "BOOLEAN" }
         ]}
         onSearch={async (rsqlString) => load(0, PAGE_SIZE_DEFAULT, rsqlString)}
       />
 
-      <Table<RegraExtratoContaCorrente>
-        values={regras || []}
-        messageEmpty="Nenhuma regra encontrada."
+      <Table<MapeamentoExtratoBancario>
+        values={mapeamentos || []}
+        messageEmpty="Nenhum mapeamento encontrado."
         keyExtractor={item => item.id.toString()}
-        onView={(item) => navigate(`/fluxocaixa/config/regra-extrato-conta-corrente/resumo/${item.id}`)}
-        onEdit={(item) => navigate(`/fluxocaixa/config/regra-extrato-conta-corrente/editar/${item.id}`)}
+        onView={(item) => navigate(`/fluxocaixa/config/mapeamento-extrato-bancario/resumo/${item.id}`)}
+        onEdit={(item) => navigate(`/fluxocaixa/config/mapeamento-extrato-bancario/editar/${item.id}`)}
         onDelete={handleDelete}
         loadPage={loadPage}
         columns={[
-          <Column<RegraExtratoContaCorrente>
+          <Column<MapeamentoExtratoBancario>
             header="Ativo"
             width="60px"
             align="center"
@@ -85,14 +85,14 @@ const RegraExtratoContaCorrenteListPage: React.FC = () => {
               </HighlightBox>
             )}
           />,
-          <Column<RegraExtratoContaCorrente>
+          <Column<MapeamentoExtratoBancario>
             key="tipo"
             header="Tipo"
             width="150px"
             align="center"
-            value={(item) => getDescricaoTipoRegraExtratoContaCorrente(item.tipoRegra)}
+            value={(item) => getDescricaoTipoMapeamentoExtratoBancario(item.tipoRegra)}
           />,
-          <Column<RegraExtratoContaCorrente>
+          <Column<MapeamentoExtratoBancario>
             key="descricao"
             header="Descrição"
             value={item => item.descricao}
@@ -103,4 +103,4 @@ const RegraExtratoContaCorrenteListPage: React.FC = () => {
   );
 };
 
-export default RegraExtratoContaCorrenteListPage;
+export default MapeamentoExtratoBancarioListPage;

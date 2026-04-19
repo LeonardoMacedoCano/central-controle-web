@@ -3,7 +3,7 @@ export type { Dashboard, CategoriaTotais } from './fluxocaixa/Dashboard';
 export type { Usuario, UsuarioForm } from './usuario/Usuario';
 export type { TipoMovimentoEnum } from './fluxocaixa/TipoMovimentacaoEnum';
 export type { Parametro } from './fluxocaixa/Parametro';
-export type { RegraExtratoContaCorrente } from './fluxocaixa/RegraExtratoContaCorrente';
+export type { MapeamentoExtratoBancario } from './fluxocaixa/MapeamentoExtratoBancario';
 export type { RouteHandle } from './RouteHandle';
 export type { NotificacaoDTO, TipoNotificacaoEnum } from './usuario/Notificacao';
 export type { ImportacaoExtrato, TipoExtratoEnum, StatusImportacaoEnum } from './fluxocaixa/ImportacaoExtrato';
@@ -25,12 +25,12 @@ export {
 } from './fluxocaixa/TipoMovimentacaoEnum';
 export { initialParametroState } from './fluxocaixa/Parametro';
 export {
-  getDescricaoTipoRegraExtratoContaCorrente,
-  getCodigoTipoRegraExtratoContaCorrente,
-  getTipoRegraExtratoContaCorrenteByCodigo,
-  tipoRegraExtratoContaCorrenteOptions
-} from './fluxocaixa/TipoRegraExtratoContaCorrenteEnum';
-export { initialRegraExtratoContaCorrenteState } from './fluxocaixa/RegraExtratoContaCorrente';
+  getDescricaoTipoMapeamentoExtratoBancario,
+  getCodigoTipoMapeamentoExtratoBancario,
+  getTipoMapeamentoExtratoBancarioByCodigo,
+  tipoMapeamentoExtratoBancarioOptions
+} from './fluxocaixa/TipoMapeamentoExtratoBancarioEnum';
+export { initialMapeamentoExtratoBancarioState } from './fluxocaixa/MapeamentoExtratoBancario';
 export { initialAtivoState } from './fluxocaixa/Ativo';
 export { initialDespesaState } from './fluxocaixa/Despesa';
 export { initialRendaState } from './fluxocaixa/Renda';
