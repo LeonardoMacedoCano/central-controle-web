@@ -6,6 +6,7 @@ export type ImportacaoExtrato = {
   tipo: TipoExtratoEnum;
   status: StatusImportacaoEnum;
   mensagemErro: string | null;
+  nomeArquivo?: string;
   dataCriacao: string;
   dataInicio: string | null;
   dataConclusao: string | null;
@@ -13,6 +14,8 @@ export type ImportacaoExtrato = {
   linhasProcessadas: number | null;
   linhasIgnoradas: number | null;
   linhasErro: number | null;
+  dataInicioPeriodo?: string;
+  dataFimPeriodo?: string;
 };
 
 export const tipoExtratoOptions = [
@@ -23,3 +26,13 @@ export const tipoExtratoOptions = [
 
 export const getDescricaoTipoExtrato = (tipo: TipoExtratoEnum): string =>
   tipoExtratoOptions.find(o => o.key === tipo)?.value ?? tipo;
+
+export const statusExtratoFilters = [
+  { key: 'PENDENTE',     value: 'Pendente' },
+  { key: 'PROCESSANDO', value: 'Processando' },
+  { key: 'CONCLUIDO',   value: 'Concluído' },
+  { key: 'ERRO',        value: 'Erro' },
+];
+
+export const getDescricaoStatusExtrato = (status: StatusImportacaoEnum): string =>
+  statusExtratoFilters.find(s => s.key === status)?.value ?? status;

@@ -9,3 +9,4 @@ export * as LancamentoService from './fluxocaixa/LancamentoService';
 export * as ExtratoFluxoCaixaService from './fluxocaixa/ExtratoFluxoCaixaService';
 export * as NotificacaoService from './Usuario/NotificacaoService';
 export * as DashboardService from './fluxocaixa/DashboardService';
+export * as ArquivoExtratoService from './fluxocaixa/ArquivoExtratoService';

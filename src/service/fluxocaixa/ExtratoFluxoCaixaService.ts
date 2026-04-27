@@ -22,3 +22,6 @@ export const importarMovimentacaoB3 = (token: string, file: File, contextMessage
 
 export const getStatus = (token: string, id: number, contextMessage?: ContextMessageProps) =>
   request<ImportacaoExtrato>('fluxocaixa', 'get', `extrato-fluxo-caixa/${id}/status`, token, contextMessage);
+
+export const downloadArquivoExtrato = (token: string, id: number, contextMessage?: ContextMessageProps) =>
+  request<Blob>('fluxocaixa', 'get', `extrato-fluxo-caixa/${id}/arquivo`, token, contextMessage, undefined, 'blob');

@@ -1,17 +1,20 @@
 import React from 'react';
+import { FaDownload } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../../contexts';
-import { LancamentoService } from '../../../service';
+import { ExtratoFluxoCaixaService, LancamentoService } from '../../../service';
 import { Lancamento } from '../../../types/fluxocaixa/Lancamento';
 import {
   Ativo,
   Despesa,
   Renda,
   getDescricaoDespesaFormaPagamento,
+  getDescricaoTipoExtrato,
   getDescricaoTipoMovimento,
   getDescricaoTipoOperacaoExtratoMovimentacaoB3,
 } from '../../../types';
 import {
+  ActionButton,
   Container,
   FieldValue,
   formatDateToYMDString,
@@ -31,6 +34,18 @@ const LancamentoViewPage: React.FC = () => {
     LancamentoService.getLancamento,
     'Erro ao carregar o lançamento.'
   );
+
+  const handleDownloadArquivo = async () => {
+    if (!usuario?.token || !lancamento?.idArquivoExtrato) return;
+    const blob = await ExtratoFluxoCaixaService.downloadArquivoExtrato(usuario.token, lancamento.idArquivoExtrato);
+    if (!blob) return;
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = lancamento.nomeArquivoImportacao ?? 'arquivo';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   const renderItemSection = () => {
     if (!lancamento?.tipo || !lancamento.itemDTO) return null;
@@ -147,6 +162,14 @@ const LancamentoViewPage: React.FC = () => {
     <Container>
       <Loading isLoading={isLoading} />
 
+      {lancamento?.idArquivoExtrato && (
+        <ActionButton
+          icon={<FaDownload />}
+          hint="Baixar arquivo extrato"
+          onClick={handleDownloadArquivo}
+        />
+      )}
+
       {lancamento && (
         <Stack direction="column" divider="top">
           <FieldValue
@@ -169,6 +192,25 @@ const LancamentoViewPage: React.FC = () => {
               editable={false}
             />
           </Stack>
+
+          {lancamento.idArquivoExtrato && (
+            <Stack direction="column" divider="top">
+              <Stack direction="row" divider="x">
+                <FieldValue
+                  description="Arquivo de Importação"
+                  type="STRING"
+                  value={getDescricaoTipoExtrato(lancamento.tipoImportacao!) + ' / ' + lancamento.nomeArquivoImportacao}
+                  editable={false}
+                />
+                <FieldValue
+                  description="Período"
+                  type="STRING"
+                  value={`${formatIsoDateToBrDate(lancamento.dataInicioPeriodo ?? '')} – ${formatIsoDateToBrDate(lancamento.dataFimPeriodo ?? '')}`}
+                  editable={false}
+                />
+              </Stack>
+            </Stack>
+          )}
 
           {renderItemSection()}
         </Stack>

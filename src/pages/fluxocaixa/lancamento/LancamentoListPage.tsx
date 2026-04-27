@@ -1,6 +1,6 @@
 import React from 'react';
-import { FaBars, FaFileImport, FaPlus } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { FaBars, FaFileImport, FaFolderOpen, FaPlus } from 'react-icons/fa';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../../contexts';
 import { LancamentoService } from '../../../service';
 import {
@@ -19,7 +19,7 @@ import {
   VariantColor,
 } from 'lcano-react-ui';
 import { Lancamento } from '../../../types/fluxocaixa/Lancamento';
-import { getDescricaoTipoMovimento, TipoMovimentoEnum, tipoMovimentoFilters } from '../../../types';
+import { getDescricaoTipoExtrato, getDescricaoTipoMovimento, tipoExtratoOptions, TipoMovimentoEnum, tipoMovimentoFilters } from '../../../types';
 import { usePagedData } from '../../../utils';
 
 const getTipoVariant = (tipo: TipoMovimentoEnum): VariantColor => {
@@ -35,11 +35,13 @@ const LancamentoListPage: React.FC = () => {
   const { usuario } = useAuth();
   const message = useMessage();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const { data: lancamentos, isLoading, load, loadPage } = usePagedData(
     usuario?.token,
     LancamentoService.getLancamentos,
-    'Erro ao carregar os lançamentos.'
+    'Erro ao carregar os lançamentos.',
+    searchParams.get('filter') ?? undefined
   );
 
   const handleNavigation = (path: string) => navigate(path);
@@ -65,7 +67,9 @@ const LancamentoListPage: React.FC = () => {
           fields={[
             { label: 'Data', name: 'dataLancamento', type: 'DATE' },
             { label: 'Tipo', name: 'tipo', type: 'SELECT', options: tipoMovimentoFilters },
-            { label: 'Descrição', name: 'descricao', type: 'STRING' }
+            { label: 'Descrição', name: 'descricao', type: 'STRING' },
+            { label: 'Número Arquivo', name: 'importacao.id', type: 'NUMBER' },
+            { label: 'Tipo Arquivo', name: 'importacao.tipo', type: 'SELECT', options: tipoExtratoOptions },
           ]}
           onSearch={async (rsqlString) => load(0, PAGE_SIZE_DEFAULT, rsqlString)}
         />
@@ -95,6 +99,16 @@ const LancamentoListPage: React.FC = () => {
               )}
             />,
             <Column<Lancamento>
+              header="Nº/Tipo Arquivo"
+              value={(item) =>
+                item.idArquivoExtrato ? (
+                    item.idArquivoExtrato + '/' + getDescricaoTipoExtrato(item.tipoImportacao!) 
+                ) : (
+                  'Manual'
+                )
+              }
+            />,
+            <Column<Lancamento>
               header="Data"
               align="center"
               width="100px"
@@ -103,7 +117,7 @@ const LancamentoListPage: React.FC = () => {
             <Column<Lancamento>
               header="Descrição"
               value={(item) => item.descricao}
-            />
+            />,
           ]}
         />
       </Stack>
@@ -115,6 +129,11 @@ const LancamentoListPage: React.FC = () => {
             icon: <FaFileImport />,
             hint: 'Importar Extrato',
             action: () => handleNavigation('/fluxocaixa/lancamento/extrato-fluxo-caixa')
+          },
+          {
+            icon: <FaFolderOpen />,
+            hint: 'Arquivos Importados',
+            action: () => handleNavigation('/fluxocaixa/lancamento/arquivo-extrato')
           },
           {
             icon: <FaPlus />,

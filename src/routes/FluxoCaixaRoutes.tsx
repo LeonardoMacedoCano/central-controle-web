@@ -11,6 +11,8 @@ import LancamentoListPage from '../pages/fluxocaixa/lancamento/LancamentoListPag
 import LancamentoFormPage from '../pages/fluxocaixa/lancamento/LancamentoFormPage';
 import LancamentoViewPage from '../pages/fluxocaixa/lancamento/LancamentoViewPage';
 import ImportacaoExtratoFormPage from '../pages/fluxocaixa/lancamento/ImportacaoExtratoFormPage';
+import ArquivoExtratoListPage from '../pages/fluxocaixa/arquivo-extrato/ArquivoExtratoListPage';
+import ArquivoExtratoViewPage from '../pages/fluxocaixa/arquivo-extrato/ArquivoExtratoViewPage';
 
 const FluxoCaixaRoutes: RouteObject[] = [
     {
@@ -94,6 +96,21 @@ const FluxoCaixaRoutes: RouteObject[] = [
             path: "extrato-fluxo-caixa",
             element: <ImportacaoExtratoFormPage />,
             handle: { breadcrumb: "Importação de Extrato" },
+          },
+          {
+            path: "arquivo-extrato",
+            handle: { breadcrumb: "Arquivos Importados" },
+            children: [
+              {
+                index: true,
+                element: <ArquivoExtratoListPage />,
+              },
+              {
+                path: ":id",
+                element: <ArquivoExtratoViewPage />,
+                handle: { breadcrumb: "Resumo" },
+              },
+            ],
           },
         ],
       },

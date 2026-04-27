@@ -7,7 +7,7 @@ export type { MapeamentoExtratoBancario } from './fluxocaixa/MapeamentoExtratoBa
 export type { RouteHandle } from './RouteHandle';
 export type { NotificacaoDTO, TipoNotificacaoEnum } from './usuario/Notificacao';
 export type { ImportacaoExtrato, TipoExtratoEnum, StatusImportacaoEnum } from './fluxocaixa/ImportacaoExtrato';
-export { tipoExtratoOptions, getDescricaoTipoExtrato } from './fluxocaixa/ImportacaoExtrato';
+export { tipoExtratoOptions, getDescricaoTipoExtrato, statusExtratoFilters, getDescricaoStatusExtrato } from './fluxocaixa/ImportacaoExtrato';
 export type { Ativo } from './fluxocaixa/Ativo';
 export type { Despesa } from './fluxocaixa/Despesa';
 export type { Renda } from './fluxocaixa/Renda';

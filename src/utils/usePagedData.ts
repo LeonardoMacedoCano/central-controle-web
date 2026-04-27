@@ -11,7 +11,8 @@ type PagedFetcher<T> = (
 export function usePagedData<T>(
   token: string | undefined,
   fetcher: PagedFetcher<T>,
-  errorMessage: string
+  errorMessage: string,
+  initialRsql?: string
 ) {
   const [data, setData] = useState<PagedResponse<T>>();
   const [pageIndex, setPageIndex] = useState(0);
@@ -25,9 +26,11 @@ export function usePagedData<T>(
   messageRef.current = message;
   const errorMessageRef = useRef(errorMessage);
   errorMessageRef.current = errorMessage;
+  const activeRsqlRef = useRef(initialRsql ?? '');
 
-  const load = async (page = pageIndex, size = pageSize, rsql = '') => {
+  const load = async (page = pageIndex, size = pageSize, rsql = activeRsqlRef.current) => {
     if (!token) return;
+    activeRsqlRef.current = rsql;
     setIsLoading(true);
     try {
       const result = await fetcherRef.current(token, page, size, rsql);
@@ -42,10 +45,12 @@ export function usePagedData<T>(
   useEffect(() => {
     if (!token) return;
     setIsLoading(true);
-    fetcherRef.current(token, pageIndex, pageSize)
+    fetcherRef.current(token, pageIndex, pageSize, activeRsqlRef.current)
       .then(result => setData(result))
       .catch(error => messageRef.current.showErrorWithLog(errorMessageRef.current, error))
       .finally(() => setIsLoading(false));
+  // activeRsqlRef é um ref — não precisa estar nas deps; load() o atualiza antes de qualquer mudança de página
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, pageIndex, pageSize]);
 
   const loadPage = (page: number, size: number) => {
