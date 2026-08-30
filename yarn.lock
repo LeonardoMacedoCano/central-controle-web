@@ -1482,10 +1482,12 @@ keyv@^4.5.3:
   dependencies:
     json-buffer "3.0.1"
 
-"lcano-react-ui@git+https://github.com/LeonardoMacedoCano/lcano-react-ui.git":
-  version "1.0.0"
-  resolved "git+https://github.com/LeonardoMacedoCano/lcano-react-ui.git#8824f5de9529d4546b402152abbc875b5d95da3d"
+lcano-react-ui@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/lcano-react-ui/-/lcano-react-ui-2.2.0.tgz#79496a3786932daa00c8a96d58672d5ac6601cb9"
+  integrity sha512-wwTAM395byFEB8cl/ktgXz5W2/19tnwq09soYHBc9TikhPpUiqtQrfUF0mjCuuUWJvWf4+gA2RvMpFsphpercA==
   dependencies:
+    qrcode-generator "^2.0.4"
     react-dropzone "^15.0.0"
     react-icons "^5.5.0"
     styled-components "^6.1.19"
@@ -1710,6 +1712,11 @@ punycode@^2.1.0:
   version "2.3.1"
   resolved "https://registry.npmjs.org/punycode/-/punycode-2.3.1.tgz"
   integrity sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==
+
+qrcode-generator@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/qrcode-generator/-/qrcode-generator-2.0.4.tgz#e8b3f30922577eba52078aa9c0d5a2a74fe1fd94"
+  integrity sha512-mZSiP6RnbHl4xL2Ap5HfkjLnmxfKcPWpWe/c+5XxCuetEenqmNFf1FH/ftXPCtFG5/TDobjsjz6sSNL0Sr8Z9g==
 
 queue-microtask@^1.2.2:
   version "1.2.3"
