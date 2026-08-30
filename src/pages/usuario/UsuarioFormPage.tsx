@@ -164,10 +164,19 @@ export const UsuarioFormPage: React.FC = () => {
             </Panel>
 
             <Panel title="Temas" transparent style={{ marginTop: '20px' }}>
-              <ThemeSelector
-                themes={temas}
-                currentTheme={usuarioForm.idTema}
-                onThemeChange={(idTema) => update({ idTema })}
+              <ThemeSelector<number>
+                options={temas.map((tema) => ({
+                  id: tema.id,
+                  title: tema.title,
+                  swatch: [
+                    tema.primaryColor,
+                    tema.secondaryColor,
+                    tema.tertiaryColor,
+                    tema.quaternaryColor,
+                  ],
+                }))}
+                value={usuarioForm.idTema ?? 0}
+                onChange={(idTema) => update({ idTema })}
               />
             </Panel>
           </Stack>
