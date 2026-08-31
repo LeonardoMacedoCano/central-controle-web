@@ -51,11 +51,11 @@ export const AppLayout: React.FC = () => {
 
       <Header unreadCount={unreadCount} />
 
-      <PageContent $sectionOpen={inFluxoCaixa}>
-        {inFluxoCaixa && (
-          <SectionNav title="Fluxo Caixa" items={fluxoCaixaSection} />
-        )}
+      {inFluxoCaixa && (
+        <SectionNav title="Fluxo Caixa" items={fluxoCaixaSection} />
+      )}
 
+      <PageContent>
         <Panel maxWidth="1000px" title={<RouterBreadcrumb />}>
           <Outlet />
         </Panel>

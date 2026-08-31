@@ -25,14 +25,9 @@ export const AppRoot = styled.div`
   }
 `;
 
-export const PageContent = styled.main<{ $sectionOpen?: boolean }>`
+export const PageContent = styled.main`
   flex: 1;
   padding: 20px;
-
-  @media ${DESKTOP} {
-    padding-left: ${({ $sectionOpen }) =>
-      $sectionOpen ? `${SECTION_MENU_WIDTH + 32}px` : '20px'};
-  }
 
   @media ${LANDSCAPE} {
     padding-top: 12px;
@@ -118,13 +113,12 @@ export const UserMenuItem = styled.div`
   }
 `;
 
-/* Submenu de seção: caixa independente, lista vertical (uma opção por linha).
-   Desktop: fixa ao lado do rail. Mobile: sticky no topo do conteúdo. */
+/* Submenu de seção: caixinha que renderiza SEMPRE por cima (overlay), nunca
+   ocupa espaço nem empurra a página. Fica alinhada onde está o menu:
+   ao lado do rail no desktop, acima das abas no celular em pé. */
 export const SectionMenuBox = styled.nav`
-  position: sticky;
-  top: 8px;
-  z-index: 18;
-  margin-bottom: 20px;
+  position: fixed;
+  z-index: 19;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -132,20 +126,19 @@ export const SectionMenuBox = styled.nav`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.colors.secondary};
   border: 1px solid ${({ theme }) => theme.colors.tertiary};
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
 
-  /* mobile: caixa à esquerda, sem invadir o sino/avatar do canto */
   @media ${MOBILE} {
+    left: 12px;
+    bottom: ${TAB_BAR_HEIGHT + 12}px;
     min-width: 180px;
-    max-width: calc(100% - 72px);
+    max-width: calc(100% - 24px);
   }
 
   @media ${DESKTOP} {
-    position: fixed;
     top: 12px;
     left: ${RAIL_WIDTH + 12}px;
     width: ${SECTION_MENU_WIDTH}px;
-    margin-bottom: 0;
   }
 `;
 
