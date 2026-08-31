@@ -7,8 +7,6 @@ export type Usuario = {
 
 export type UsuarioForm = {
   username: string;
-  currentPassword?: string;
-  newPassword?: string;
   idTema?: number;
   file?: File;
 }

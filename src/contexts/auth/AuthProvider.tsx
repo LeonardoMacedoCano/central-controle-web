@@ -31,17 +31,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     validateToken();
   }, []);
 
-  const login = async (username: string, senha: string) => {
-    const usuario = await AuthService.login(username, senha, message);
-    
+  const loginWithGoogle = async (credential: string) => {
+    const usuario = await AuthService.loginWithGoogle(credential, message);
+
     if (usuario) {
       setUsuario(usuario);
       setToken(usuario.token);
-      
+
       if (usuario.idTema) {
         loadUserTheme(usuario.idTema, usuario.token);
       }
-      
+
       return true;
     }
     return false;
@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ usuario, login, signout }}>
+    <AuthContext.Provider value={{ usuario, loginWithGoogle, signout }}>
       {children}
     </AuthContext.Provider>
   );

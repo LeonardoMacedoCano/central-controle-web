@@ -11,8 +11,6 @@ export const updateUsuario = (
 ) => {
   const formData = new FormData();
   formData.append("username", data.username);
-  formData.append("currentPassword", data.currentPassword || "");
-  formData.append("newPassword", data.newPassword || "");
   formData.append("idTema", data.idTema?.toString() || "");
 
   if (data.file) {
