@@ -1,24 +1,21 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { AppContainer, MainContent, PageContent } from './styles';
-import { Header } from './Header';
-import { Sidebar } from './Sidebar';
-import { Outlet } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Panel, RailTabsNav, type RailTabsNavItem } from 'lcano-react-ui';
+import { AppRoot, PageContent } from './styles';
+import { primaryNav } from './navConfig';
+import { AvatarIcon, NotificationIcon } from './menuIcons';
 import { RouterBreadcrumb } from '../routes/RouterBreadcrumb';
-import { Panel } from 'lcano-react-ui';
 import { useAuth } from '../contexts';
 import { NotificacaoService } from '../service';
 
 const POLLING_INTERVAL_MS = 10000;
 
 export const AppLayout: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  const sidebarRef = useRef<HTMLDivElement>(null);
-  const menuButtonRef = useRef<HTMLDivElement>(null);
-
-  const { usuario } = useAuth();
+  const { usuario, signout } = useAuth();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!usuario?.token) return;
@@ -32,51 +29,79 @@ export const AppLayout: React.FC = () => {
     return () => clearInterval(interval);
   }, [usuario?.token]);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(prev => !prev);
-    if (!isMenuOpen) setActiveSubmenu(null);
-  };
+  const avatarPhoto = usuario?.icone
+    ? `data:image/png;base64,${usuario.icone}`
+    : undefined;
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        sidebarRef.current &&
-        !sidebarRef.current.contains(event.target as Node) &&
-        !(menuButtonRef.current && menuButtonRef.current.contains(event.target as Node))
-      ) {
-        setIsMenuOpen(false);
-        setActiveSubmenu(null);
+  const navItems: RailTabsNavItem[] = useMemo(() => {
+    const routed = primaryNav.map((item): RailTabsNavItem => {
+      const active = item.isActive(pathname);
+      const icon =
+        item.id === 'notificacoes' ? (
+          <NotificationIcon lit={unreadCount > 0} />
+        ) : (
+          item.icon
+        );
+
+      if (!item.submenu) {
+        return {
+          id: item.id,
+          icon,
+          label: item.label,
+          active,
+          onClick: () => {
+            if (item.to) navigate(item.to);
+          },
+        };
       }
+
+      return {
+        id: item.id,
+        icon,
+        label: item.label,
+        active,
+        submenu: item.submenu.map((sub) => ({
+          id: sub.id,
+          label: sub.label,
+          active: sub.isActive(pathname),
+          onClick: () => navigate(sub.to),
+        })),
+      };
+    });
+
+    const userItem: RailTabsNavItem = {
+      id: 'usuario',
+      icon: <AvatarIcon photo={avatarPhoto} />,
+      label: 'Usuário',
+      active: pathname === '/usuario',
+      submenu: [
+        {
+          id: 'perfil',
+          label: 'Ver Perfil',
+          active: pathname === '/usuario',
+          onClick: () => navigate('/usuario'),
+        },
+        {
+          id: 'sair',
+          label: 'Sair',
+          onClick: signout,
+        },
+      ],
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    return [...routed, userItem];
+  }, [pathname, navigate, unreadCount, avatarPhoto, signout]);
 
   return (
-    <AppContainer>
-      <div ref={sidebarRef}>
-        <Sidebar
-          isOpen={isMenuOpen}
-          activeSubmenu={activeSubmenu}
-          setActiveSubmenu={setActiveSubmenu}
-          handleLinkClick={() => { setIsMenuOpen(false); setActiveSubmenu(null); }}
-        />
-      </div>
-      <MainContent $isMenuOpen={isMenuOpen}>
-        <div ref={menuButtonRef}>
-          <Header
-            toggleMenu={toggleMenu}
-            unreadCount={unreadCount}
-          />
-        </div>
-        <PageContent>
-          <Panel maxWidth="1000px" title={<RouterBreadcrumb />}>
-            <Outlet />
-          </Panel>
-        </PageContent>
-      </MainContent>
-    </AppContainer>
+    <AppRoot>
+      <RailTabsNav items={navItems} ariaLabel="Navegação principal" />
+
+      <PageContent>
+        <Panel maxWidth="1000px" title={<RouterBreadcrumb />}>
+          <Outlet />
+        </Panel>
+      </PageContent>
+    </AppRoot>
   );
 };
 
