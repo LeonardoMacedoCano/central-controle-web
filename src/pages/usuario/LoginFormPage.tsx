@@ -23,8 +23,10 @@ export const LoginFormPage: React.FC = () => {
 
   return (
     <StyledPage theme={theme}>
-      <StyledGlow theme={theme} data-corner="top" aria-hidden />
-      <StyledGlow theme={theme} data-corner="bottom" aria-hidden />
+      <StyledBackdrop aria-hidden>
+        <StyledGlow theme={theme} data-corner="top" />
+        <StyledGlow theme={theme} data-corner="bottom" />
+      </StyledBackdrop>
 
       <StyledCard theme={theme}>
         <StyledBrand>
@@ -64,8 +66,8 @@ export const LoginFormPage: React.FC = () => {
 };
 
 const riseIn = keyframes`
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
 `;
 
 const StyledPage = styled.div<{ theme: AppTheme }>`
@@ -75,7 +77,8 @@ const StyledPage = styled.div<{ theme: AppTheme }>`
   min-height: 100vh;
   min-height: 100dvh;
   width: 100%;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   padding: clamp(16px, 4vw, 40px);
   background: radial-gradient(
       circle at 20% 15%,
@@ -89,6 +92,13 @@ const StyledPage = styled.div<{ theme: AppTheme }>`
     );
 `;
 
+const StyledBackdrop = styled.div`
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+`;
+
 const StyledGlow = styled.span<{ theme: AppTheme }>`
   position: absolute;
   width: 42vmax;
@@ -96,7 +106,6 @@ const StyledGlow = styled.span<{ theme: AppTheme }>`
   border-radius: 50%;
   filter: blur(90px);
   opacity: 0.35;
-  pointer-events: none;
 
   &[data-corner='top'] {
     top: -18vmax;
