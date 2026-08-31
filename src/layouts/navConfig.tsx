@@ -12,7 +12,7 @@ export interface PrimaryNavItem {
   id: string;
   label: string;
   icon: ReactNode;
-  to: string;
+  to?: string;
   isActive: (pathname: string) => boolean;
   submenu?: SubNavItem[];
 }
@@ -29,7 +29,6 @@ export const primaryNav: PrimaryNavItem[] = [
     id: 'fluxocaixa',
     label: 'Fluxo Caixa',
     icon: <FaDollarSign />,
-    to: '/fluxocaixa',
     isActive: (p) => p === '/fluxocaixa' || p.startsWith('/fluxocaixa/'),
     submenu: [
       {

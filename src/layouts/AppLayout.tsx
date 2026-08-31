@@ -49,7 +49,9 @@ export const AppLayout: React.FC = () => {
           icon,
           label: item.label,
           active,
-          onClick: () => navigate(item.to),
+          onClick: () => {
+            if (item.to) navigate(item.to);
+          },
         };
       }
 
@@ -58,9 +60,6 @@ export const AppLayout: React.FC = () => {
         icon,
         label: item.label,
         active,
-        onClick: () => {
-          if (!active) navigate(item.to);
-        },
         submenu: item.submenu.map((sub) => ({
           id: sub.id,
           label: sub.label,
