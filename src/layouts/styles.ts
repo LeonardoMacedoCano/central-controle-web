@@ -3,7 +3,6 @@ import { getVariantColor } from 'lcano-react-ui';
 
 const RAIL_WIDTH = 76;
 const TAB_BAR_HEIGHT = 64;
-const SECTION_MENU_WIDTH = 208;
 const DESKTOP = '(min-width: 700px)';
 const MOBILE = '(max-width: 699px)';
 const LANDSCAPE = '(max-height: 500px)';
@@ -107,58 +106,5 @@ export const UserMenuItem = styled.div`
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.tertiary};
-  }
-`;
-
-export const SectionMenuBox = styled.nav`
-  position: fixed;
-  z-index: 19;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 8px;
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.colors.secondary};
-  border: 1px solid ${({ theme }) => theme.colors.tertiary};
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
-
-  @media ${MOBILE} {
-    left: 12px;
-    bottom: ${TAB_BAR_HEIGHT + 12}px;
-    min-width: 180px;
-    max-width: calc(100% - 24px);
-  }
-
-  @media ${DESKTOP} {
-    top: 12px;
-    left: ${RAIL_WIDTH + 12}px;
-    width: ${SECTION_MENU_WIDTH}px;
-  }
-`;
-
-export const SectionMenuTitle = styled.span`
-  padding: 6px 12px 4px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.tertiary};
-`;
-
-export const SectionMenuItem = styled.button<{ $active: boolean }>`
-  width: 100%;
-  text-align: left;
-  padding: 10px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: ${({ $active }) => ($active ? 700 : 500)};
-  color: ${({ theme }) => theme.colors.white};
-  background-color: ${({ theme, $active }) =>
-    $active ? theme.colors.quaternary : 'transparent'};
-  transition: background-color 0.15s ease;
-
-  &:hover {
-    background-color: ${({ theme, $active }) =>
-      $active ? theme.colors.quaternary : theme.colors.tertiary};
   }
 `;

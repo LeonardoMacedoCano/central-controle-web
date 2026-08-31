@@ -1,20 +1,17 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Panel, RailTabsNav, type RailTabsNavItem } from 'lcano-react-ui';
 import { AppRoot, PageContent } from './styles';
 import { Header } from './Header';
-import { SectionNav } from './SectionNav';
-import { PRIMARY_NAV_LABEL, fluxoCaixaSection, primaryNav } from './navConfig';
+import { primaryNav } from './navConfig';
 import { RouterBreadcrumb } from '../routes/RouterBreadcrumb';
 import { useAuth } from '../contexts';
 import { NotificacaoService } from '../service';
 
 const POLLING_INTERVAL_MS = 10000;
-const SECTION_ID = 'fluxocaixa';
 
 export const AppLayout: React.FC = () => {
   const [unreadCount, setUnreadCount] = useState(0);
-  const [sectionOpen, setSectionOpen] = useState(false);
 
   const { usuario } = useAuth();
   const { pathname } = useLocation();
@@ -32,52 +29,45 @@ export const AppLayout: React.FC = () => {
     return () => clearInterval(interval);
   }, [usuario?.token]);
 
-  const inFluxoCaixa =
-    pathname === '/fluxocaixa' || pathname.startsWith('/fluxocaixa/');
-
-  useEffect(() => {
-    if (!inFluxoCaixa) setSectionOpen(false);
-  }, [inFluxoCaixa]);
-
-  const closeSection = useCallback(() => setSectionOpen(false), []);
-
   const navItems: RailTabsNavItem[] = useMemo(
     () =>
-      primaryNav.map((item) => ({
-        id: item.id,
-        icon: item.icon,
-        label: item.label,
-        active: item.isActive(pathname),
-        onClick: () => {
-          if (item.id !== SECTION_ID) {
-            navigate(item.to);
-            setSectionOpen(false);
-            return;
-          }
-          if (inFluxoCaixa) {
-            setSectionOpen((open) => !open);
-          } else {
-            navigate(item.to);
-            setSectionOpen(true);
-          }
-        },
-      })),
-    [pathname, navigate, inFluxoCaixa]
+      primaryNav.map((item): RailTabsNavItem => {
+        const active = item.isActive(pathname);
+
+        if (!item.submenu) {
+          return {
+            id: item.id,
+            icon: item.icon,
+            label: item.label,
+            active,
+            onClick: () => navigate(item.to),
+          };
+        }
+
+        return {
+          id: item.id,
+          icon: item.icon,
+          label: item.label,
+          active,
+          onClick: () => {
+            if (!active) navigate(item.to);
+          },
+          submenu: item.submenu.map((sub) => ({
+            id: sub.id,
+            label: sub.label,
+            active: sub.isActive(pathname),
+            onClick: () => navigate(sub.to),
+          })),
+        };
+      }),
+    [pathname, navigate]
   );
 
   return (
     <AppRoot>
-      <RailTabsNav items={navItems} ariaLabel={PRIMARY_NAV_LABEL} />
+      <RailTabsNav items={navItems} ariaLabel="Navegação principal" />
 
       <Header unreadCount={unreadCount} />
-
-      {inFluxoCaixa && sectionOpen && (
-        <SectionNav
-          title="Fluxo Caixa"
-          items={fluxoCaixaSection}
-          onClose={closeSection}
-        />
-      )}
 
       <PageContent>
         <Panel maxWidth="1000px" title={<RouterBreadcrumb />}>

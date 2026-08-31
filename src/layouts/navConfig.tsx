@@ -1,7 +1,12 @@
 import type { ReactNode } from 'react';
 import { FaBell, FaDollarSign, FaHome } from 'react-icons/fa';
 
-export const PRIMARY_NAV_LABEL = 'Navegação principal';
+export interface SubNavItem {
+  id: string;
+  label: string;
+  to: string;
+  isActive: (pathname: string) => boolean;
+}
 
 export interface PrimaryNavItem {
   id: string;
@@ -9,12 +14,7 @@ export interface PrimaryNavItem {
   icon: ReactNode;
   to: string;
   isActive: (pathname: string) => boolean;
-}
-
-export interface SectionNavItem {
-  label: string;
-  to: string;
-  isActive: (pathname: string) => boolean;
+  submenu?: SubNavItem[];
 }
 
 export const primaryNav: PrimaryNavItem[] = [
@@ -31,6 +31,26 @@ export const primaryNav: PrimaryNavItem[] = [
     icon: <FaDollarSign />,
     to: '/fluxocaixa',
     isActive: (p) => p === '/fluxocaixa' || p.startsWith('/fluxocaixa/'),
+    submenu: [
+      {
+        id: 'resumo',
+        label: 'Resumo',
+        to: '/fluxocaixa',
+        isActive: (p) => p === '/fluxocaixa',
+      },
+      {
+        id: 'lancamento',
+        label: 'Lançamentos',
+        to: '/fluxocaixa/lancamento',
+        isActive: (p) => p.startsWith('/fluxocaixa/lancamento'),
+      },
+      {
+        id: 'config',
+        label: 'Configuração',
+        to: '/fluxocaixa/config',
+        isActive: (p) => p.startsWith('/fluxocaixa/config'),
+      },
+    ],
   },
   {
     id: 'notificacoes',
@@ -38,23 +58,5 @@ export const primaryNav: PrimaryNavItem[] = [
     icon: <FaBell />,
     to: '/notificacoes',
     isActive: (p) => p === '/notificacoes' || p.startsWith('/notificacoes/'),
-  },
-];
-
-export const fluxoCaixaSection: SectionNavItem[] = [
-  {
-    label: 'Resumo',
-    to: '/fluxocaixa',
-    isActive: (p) => p === '/fluxocaixa',
-  },
-  {
-    label: 'Lançamentos',
-    to: '/fluxocaixa/lancamento',
-    isActive: (p) => p.startsWith('/fluxocaixa/lancamento'),
-  },
-  {
-    label: 'Configuração',
-    to: '/fluxocaixa/config',
-    isActive: (p) => p.startsWith('/fluxocaixa/config'),
   },
 ];
