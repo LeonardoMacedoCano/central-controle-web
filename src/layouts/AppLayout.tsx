@@ -7,7 +7,6 @@ import { AvatarIcon, NotificationIcon } from './menuIcons';
 import { RouterBreadcrumb } from '../routes/RouterBreadcrumb';
 import { useAuth } from '../contexts';
 import { NotificacaoService } from '../service';
-import { IMG_PERFIL_PADRAO } from '../utils';
 
 const POLLING_INTERVAL_MS = 10000;
 
@@ -30,9 +29,9 @@ export const AppLayout: React.FC = () => {
     return () => clearInterval(interval);
   }, [usuario?.token]);
 
-  const avatarSrc = usuario?.icone
+  const avatarPhoto = usuario?.icone
     ? `data:image/png;base64,${usuario.icone}`
-    : IMG_PERFIL_PADRAO;
+    : undefined;
 
   const navItems: RailTabsNavItem[] = useMemo(() => {
     const routed = primaryNav.map((item): RailTabsNavItem => {
@@ -73,7 +72,7 @@ export const AppLayout: React.FC = () => {
 
     const userItem: RailTabsNavItem = {
       id: 'usuario',
-      icon: <AvatarIcon src={avatarSrc} />,
+      icon: <AvatarIcon photo={avatarPhoto} />,
       label: 'Usuário',
       active: pathname === '/usuario',
       submenu: [
@@ -92,7 +91,7 @@ export const AppLayout: React.FC = () => {
     };
 
     return [...routed, userItem];
-  }, [pathname, navigate, unreadCount, avatarSrc, signout]);
+  }, [pathname, navigate, unreadCount, avatarPhoto, signout]);
 
   return (
     <AppRoot>
