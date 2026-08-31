@@ -10,9 +10,7 @@ export const NotificationIcon: React.FC<{ lit: boolean }> = ({ lit }) => (
 );
 
 export const AvatarIcon: React.FC<{ src: string }> = ({ src }) => (
-  <Avatar>
-    <img src={src} alt="" />
-  </Avatar>
+  <Avatar src={src} alt="" />
 );
 
 const Wrap = styled.span`
@@ -22,27 +20,19 @@ const Wrap = styled.span`
 
 const Dot = styled.span<{ $lit: boolean }>`
   position: absolute;
-  top: -1px;
+  top: -2px;
   right: -3px;
-  width: 9px;
-  height: 9px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  border: 2px solid ${({ theme }) => theme.colors.black};
   background-color: ${({ theme, $lit }) =>
     $lit ? theme.colors.quaternary : theme.colors.gray};
 `;
 
-const Avatar = styled.span`
-  display: inline-flex;
-  width: 26px;
-  height: 26px;
+const Avatar = styled.img`
+  display: block;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid ${({ theme }) => theme.colors.tertiary};
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  object-fit: cover;
 `;
