@@ -10,7 +10,6 @@ import { MdCameraAlt } from 'react-icons/md';
 export const UsuarioFormPage: React.FC = () => {
   const [temas, setTemas] = useState<Tema[]>([]);
   const [usuarioForm, setUsuarioForm] = useState<UsuarioForm | null>(null);
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [imagemPerfil, setImagemPerfil] = useState<string>(IMG_PERFIL_PADRAO);
   const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
   
@@ -78,32 +77,15 @@ export const UsuarioFormPage: React.FC = () => {
   const convertAndSetUsuarioForm = (usuario: Usuario) => {
     setUsuarioForm({
       username: usuario.username,
-      currentPassword: '',
-      newPassword: '',
       idTema: usuario.idTema,
     });
   };
-  
+
   const handleSubmit = async () => {
-    if (!usuarioForm) return;
-  
-    const { currentPassword, newPassword } = usuarioForm;
-  
-    if ((currentPassword || newPassword || confirmPassword) && 
-        (!currentPassword || !newPassword || !confirmPassword)) {
-      message.showError('Todos os campos de senha devem ser preenchidos.');
-      return;
-    }
-  
-    if (newPassword && confirmPassword && newPassword !== confirmPassword) {
-      message.showError('A nova senha e a confirmação não coincidem.');
-      return;
-    }
-  
-    if (!auth.usuario?.token) return;
-  
+    if (!usuarioForm || !auth.usuario?.token) return;
+
     await UsuarioService.updateUsuario(auth.usuario.token, usuarioForm, message);
-};
+  };
 
 
   const update = (updatedFields: Partial<UsuarioForm>) => {
@@ -138,27 +120,6 @@ export const UsuarioFormPage: React.FC = () => {
                   value={usuarioForm.username}
                   description="Nome"
                   editable={false}
-                />
-                <FieldValue
-                  type="STRING"
-                  value={usuarioForm.currentPassword}
-                  description="Senha Atual"
-                  onUpdate={(v) => update({ currentPassword: v })}
-                  placeholder="Digite sua senha atual"
-                />
-                <FieldValue
-                  type="STRING"
-                  value={usuarioForm.newPassword}
-                  description="Nova Senha"
-                  onUpdate={(v) => update({ newPassword: v })}
-                  placeholder="Digite sua nova senha"
-                />
-                <FieldValue
-                  type="STRING"
-                  value={confirmPassword}
-                  description="Confirmar Nova Senha"
-                  onUpdate={setConfirmPassword}
-                  placeholder="Confirme sua nova senha"
                 />
               </Stack>
             </Panel>

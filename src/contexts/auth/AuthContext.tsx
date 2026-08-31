@@ -3,7 +3,7 @@ import { Usuario } from '../../types';
 
 type AuthContextType = {
   usuario: Usuario | null;
-  login: (username: string, senha: string) => Promise<boolean>;
+  loginWithGoogle: (credential: string) => Promise<boolean>;
   signout: () => void;
 }
 
