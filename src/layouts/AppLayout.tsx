@@ -49,11 +49,22 @@ export const AppLayout: React.FC = () => {
         label: item.label,
         active: item.isActive(pathname),
         onClick: () => {
-          navigate(item.to);
-          setSectionOpen(item.id === SECTION_ID ? (open) => !open : false);
+          if (item.id !== SECTION_ID) {
+            navigate(item.to);
+            setSectionOpen(false);
+            return;
+          }
+          // item com submenu: se já está na seção, só abre/fecha o submenu
+          // sem trocar de tela; se está fora, entra na seção e abre.
+          if (inFluxoCaixa) {
+            setSectionOpen((open) => !open);
+          } else {
+            navigate(item.to);
+            setSectionOpen(true);
+          }
         },
       })),
-    [pathname, navigate]
+    [pathname, navigate, inFluxoCaixa]
   );
 
   return (
