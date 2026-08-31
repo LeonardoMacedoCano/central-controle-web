@@ -54,8 +54,6 @@ export const AppLayout: React.FC = () => {
             setSectionOpen(false);
             return;
           }
-          // item com submenu: se já está na seção, só abre/fecha o submenu
-          // sem trocar de tela; se está fora, entra na seção e abre.
           if (inFluxoCaixa) {
             setSectionOpen((open) => !open);
           } else {

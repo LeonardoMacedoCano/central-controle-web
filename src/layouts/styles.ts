@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import { getVariantColor } from 'lcano-react-ui';
 
-/* Alinhado com o RailTabsNav da lib: rail lateral no desktop (>= 700px),
-   barra de abas embaixo no mobile, rail denso no celular deitado. */
 const RAIL_WIDTH = 76;
 const TAB_BAR_HEIGHT = 64;
 const SECTION_MENU_WIDTH = 208;
@@ -35,7 +33,6 @@ export const PageContent = styled.main`
   }
 `;
 
-/* Sino + avatar: cluster flutuante no canto, sem barra. */
 export const TopControls = styled.div`
   position: fixed;
   top: 12px;
@@ -113,9 +110,6 @@ export const UserMenuItem = styled.div`
   }
 `;
 
-/* Submenu de seção: caixinha que renderiza SEMPRE por cima (overlay), nunca
-   ocupa espaço nem empurra a página. Fica alinhada onde está o menu:
-   ao lado do rail no desktop, acima das abas no celular em pé. */
 export const SectionMenuBox = styled.nav`
   position: fixed;
   z-index: 19;

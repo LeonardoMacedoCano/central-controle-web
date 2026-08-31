@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
 import { FaBell, FaDollarSign, FaHome } from 'react-icons/fa';
 
-/** aria-label do RailTabsNav; usado também pra detectar clique no menu principal. */
 export const PRIMARY_NAV_LABEL = 'Navegação principal';
 
 export interface PrimaryNavItem {

@@ -19,7 +19,6 @@ export const SectionNav: React.FC<SectionNavProps> = ({ title, items, onClose })
       const target = event.target as Element | null;
       if (!target) return;
       if (boxRef.current?.contains(target)) return;
-      // cliques no menu principal são tratados pelo próprio menu (abre/fecha)
       if (target.closest(`[aria-label="${PRIMARY_NAV_LABEL}"]`)) return;
       onClose();
     };
