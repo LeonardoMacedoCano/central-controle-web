@@ -1,67 +1,55 @@
 import styled from 'styled-components';
-import { Link as RouterLink } from 'react-router-dom';
 import { getVariantColor } from 'lcano-react-ui';
 
-export const AppContainer = styled.div`
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-`;
+/* Alinhado com o RailTabsNav da lib: rail lateral no desktop (>= 700px),
+   barra de abas embaixo no mobile, rail denso no celular deitado. */
+const RAIL_WIDTH = 76;
+const TAB_BAR_HEIGHT = 64;
+const DESKTOP = '(min-width: 700px)';
+const MOBILE = '(max-width: 699px)';
+const LANDSCAPE = '(max-height: 500px)';
 
-export const MainContent = styled.div<{ $isMenuOpen: boolean }>`
-  flex: 1;
+export const AppRoot = styled.div`
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  transition: margin-left 0.3s ease-in-out;
+
+  @media ${DESKTOP} {
+    padding-left: ${RAIL_WIDTH}px;
+  }
+
+  @media ${MOBILE} {
+    padding-bottom: ${TAB_BAR_HEIGHT}px;
+  }
+`;
+
+export const TopBar = styled.header`
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+  padding: 0 20px;
+  color: ${({ theme }) => theme.colors.tertiary};
+  background-color: ${({ theme }) => theme.colors.secondary};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.tertiary};
+
+  @media ${LANDSCAPE} {
+    height: 44px;
+  }
 `;
 
 export const PageContent = styled.main`
   flex: 1;
-  overflow-y: auto;
   padding: 20px;
-`;
 
-export const AppHeader = styled.div`
-  height: 60px;
-  display: flex;
-  align-items: center;
-  color: ${({ theme }) => theme.colors.tertiary};
-  background-color: ${({ theme }) => theme.colors.secondary};
-  box-shadow: 0 2px 5px ${({ theme }) => theme.colors.tertiary};
-  padding: 0 20px;
-  flex-shrink: 0;
-`;
-
-export const MenuIconContainer = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: flex-start;
-`;
-
-export const TitleHeaderContainer = styled.div`
-  flex: 2;
-  display: flex;
-  justify-content: center;
-`;
-
-export const UserMenuContainer = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 15px;
-`;
-
-export const MenuIcon = styled.div`
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-
-  svg {
-    font-size: 25px;
+  @media ${LANDSCAPE} {
+    padding: 12px;
   }
 `;
 
@@ -69,7 +57,6 @@ export const MessageIconWrapper = styled.div`
   position: relative;
   font-size: 20px;
   cursor: pointer;
-  top: 5px;
 `;
 
 export const UnreadBadge = styled.div<{ $hasUnread: boolean }>`
@@ -90,23 +77,25 @@ export const UnreadBadge = styled.div<{ $hasUnread: boolean }>`
 `;
 
 export const UserAvatar = styled.div`
+  position: relative;
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  overflow: hidden;
+  overflow: visible;
   cursor: pointer;
   border: 2px solid ${({ theme }) => theme.colors.tertiary};
 
   img {
     width: 100%;
     height: 100%;
+    border-radius: 50%;
     object-fit: cover;
   }
 `;
 
 export const UserMenuDropdown = styled.div`
   position: absolute;
-  top: 40px;
+  top: 44px;
   right: 0;
   background-color: ${({ theme }) => theme.colors.secondary};
   box-shadow: 0 2px 5px ${({ theme }) => theme.colors.tertiary};
@@ -123,73 +112,4 @@ export const UserMenuItem = styled.div`
   &:hover {
     background-color: ${({ theme }) => theme.colors.tertiary};
   }
-`;
-
-export const TitleHeader = styled.div`
-  font-size: 18px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.white};
-`;
-
-export const AppSidebarContainer = styled.div<{ $isActive: boolean }>`
-  z-index: 1000;
-  position: fixed;
-  left: 0;
-  top: 60px;
-  height: 100%;
-  width: ${({ $isActive }) => ($isActive ? '250px' : '0')};
-  color: ${({ theme }) => theme.colors.tertiary};
-  background-color: ${({ theme }) => theme.colors.secondary};
-  box-shadow: 0 2px 5px ${({ theme }) => theme.colors.tertiary};
-  transition: width 0.3s ease-in-out;
-  overflow-x: hidden;
-`;
-
-export const AppSidebar = styled.div`
-  height: 100vh;
-  overflow-y: auto;
-  border-top: 1px solid ${({ theme }) => theme.colors.tertiary};
-`;
-
-export const LinkSidebar = styled(RouterLink)`
-  text-decoration: none;
-  color: inherit;
-`;
-
-export const MenuItem = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  height: 60px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.tertiary};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.tertiary};
-  }
-
-  > svg {
-    font-size: 20px;
-    margin-right: 15px;
-  }
-
-  > span {
-    white-space: nowrap;
-  }
-`;
-
-export const SubmenuContainer = styled.div`
-  text-decoration: none;
-  color: inherit;
-`;
-
-export const SubmenuContent = styled.div`
-  background-color: ${({ theme }) => theme.colors.secondary};
-`;
-
-export const SubMenuItem = styled(MenuItem)`
-  height: 50px;
-  padding-left: 15px;
-  background-color: ${({ theme }) => theme.colors.primary};
 `;

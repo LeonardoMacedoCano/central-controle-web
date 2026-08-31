@@ -1,28 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaBars, FaBell } from 'react-icons/fa';
+import { FaBell } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts';
 import { IMG_PERFIL_PADRAO } from '../utils';
 import {
-  AppHeader,
-  MenuIconContainer,
-  TitleHeaderContainer,
-  UserMenuContainer,
-  MenuIcon,
+  TopBar,
   MessageIconWrapper,
   UnreadBadge,
   UserAvatar,
   UserMenuDropdown,
   UserMenuItem,
-  TitleHeader,
 } from './styles';
 
 interface HeaderProps {
-  toggleMenu: () => void;
   unreadCount: number;
 }
 
-export const Header: React.FC<HeaderProps> = ({ toggleMenu, unreadCount }) => {
+export const Header: React.FC<HeaderProps> = ({ unreadCount }) => {
   const [imagemPerfil, setImagemPerfil] = useState<string>(IMG_PERFIL_PADRAO);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
@@ -48,39 +42,29 @@ export const Header: React.FC<HeaderProps> = ({ toggleMenu, unreadCount }) => {
     }
   }, [auth.usuario?.icone]);
 
-  const toggleUserMenu = () => setIsUserMenuOpen(!isUserMenuOpen);
+  const toggleUserMenu = () => setIsUserMenuOpen((prev) => !prev);
   const handleLogout = () => auth.signout();
   const handleProfileClick = () => navigate('/usuario');
   const handleNotificationClick = () => navigate('/notificacoes');
 
   return (
-    <AppHeader>
-      <MenuIconContainer>
-        <MenuIcon onClick={toggleMenu}><FaBars /></MenuIcon>
-      </MenuIconContainer>
+    <TopBar>
+      <MessageIconWrapper onClick={handleNotificationClick}>
+        <FaBell />
+        <UnreadBadge $hasUnread={unreadCount > 0}>
+          {unreadCount > 0 ? unreadCount : ''}
+        </UnreadBadge>
+      </MessageIconWrapper>
 
-      <TitleHeaderContainer>
-        <TitleHeader>Central de Controle</TitleHeader>
-      </TitleHeaderContainer>
-
-      <UserMenuContainer>
-        <MessageIconWrapper onClick={handleNotificationClick}>
-          <FaBell />
-          <UnreadBadge $hasUnread={unreadCount > 0}>
-            {unreadCount > 0 ? unreadCount : ''}
-          </UnreadBadge>
-        </MessageIconWrapper>
-
-        <UserAvatar onClick={toggleUserMenu}>
-          <img src={imagemPerfil} alt="Avatar" />
-          {isUserMenuOpen && (
-            <UserMenuDropdown ref={userMenuRef}>
-              <UserMenuItem onClick={handleProfileClick}>Ver Perfil</UserMenuItem>
-              <UserMenuItem onClick={handleLogout}>Sair</UserMenuItem>
-            </UserMenuDropdown>
-          )}
-        </UserAvatar>
-      </UserMenuContainer>
-    </AppHeader>
+      <UserAvatar ref={userMenuRef} onClick={toggleUserMenu}>
+        <img src={imagemPerfil} alt="Avatar" />
+        {isUserMenuOpen && (
+          <UserMenuDropdown>
+            <UserMenuItem onClick={handleProfileClick}>Ver Perfil</UserMenuItem>
+            <UserMenuItem onClick={handleLogout}>Sair</UserMenuItem>
+          </UserMenuDropdown>
+        )}
+      </UserAvatar>
+    </TopBar>
   );
 };

@@ -1,24 +1,22 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { AppContainer, MainContent, PageContent } from './styles';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Panel, RailTabsNav, type RailTabsNavItem } from 'lcano-react-ui';
+import { AppRoot, PageContent } from './styles';
 import { Header } from './Header';
-import { Sidebar } from './Sidebar';
-import { Outlet } from 'react-router-dom';
+import { SectionNav } from './SectionNav';
+import { fluxoCaixaSection, primaryNav } from './navConfig';
 import { RouterBreadcrumb } from '../routes/RouterBreadcrumb';
-import { Panel } from 'lcano-react-ui';
 import { useAuth } from '../contexts';
 import { NotificacaoService } from '../service';
 
 const POLLING_INTERVAL_MS = 10000;
 
 export const AppLayout: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  const sidebarRef = useRef<HTMLDivElement>(null);
-  const menuButtonRef = useRef<HTMLDivElement>(null);
-
   const { usuario } = useAuth();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!usuario?.token) return;
@@ -32,51 +30,34 @@ export const AppLayout: React.FC = () => {
     return () => clearInterval(interval);
   }, [usuario?.token]);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(prev => !prev);
-    if (!isMenuOpen) setActiveSubmenu(null);
-  };
+  const navItems: RailTabsNavItem[] = useMemo(
+    () =>
+      primaryNav.map((item) => ({
+        id: item.id,
+        icon: item.icon,
+        label: item.label,
+        active: item.isActive(pathname),
+        onClick: () => navigate(item.to),
+      })),
+    [pathname, navigate]
+  );
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        sidebarRef.current &&
-        !sidebarRef.current.contains(event.target as Node) &&
-        !(menuButtonRef.current && menuButtonRef.current.contains(event.target as Node))
-      ) {
-        setIsMenuOpen(false);
-        setActiveSubmenu(null);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  const inFluxoCaixa =
+    pathname === '/fluxocaixa' || pathname.startsWith('/fluxocaixa/');
 
   return (
-    <AppContainer>
-      <div ref={sidebarRef}>
-        <Sidebar
-          isOpen={isMenuOpen}
-          activeSubmenu={activeSubmenu}
-          setActiveSubmenu={setActiveSubmenu}
-          handleLinkClick={() => { setIsMenuOpen(false); setActiveSubmenu(null); }}
-        />
-      </div>
-      <MainContent $isMenuOpen={isMenuOpen}>
-        <div ref={menuButtonRef}>
-          <Header
-            toggleMenu={toggleMenu}
-            unreadCount={unreadCount}
-          />
-        </div>
-        <PageContent>
-          <Panel maxWidth="1000px" title={<RouterBreadcrumb />}>
-            <Outlet />
-          </Panel>
-        </PageContent>
-      </MainContent>
-    </AppContainer>
+    <AppRoot>
+      <RailTabsNav items={navItems} ariaLabel="Navegação principal" />
+
+      <Header unreadCount={unreadCount} />
+
+      <PageContent>
+        <Panel maxWidth="1000px" title={<RouterBreadcrumb />}>
+          {inFluxoCaixa && <SectionNav items={fluxoCaixaSection} />}
+          <Outlet />
+        </Panel>
+      </PageContent>
+    </AppRoot>
   );
 };
 
