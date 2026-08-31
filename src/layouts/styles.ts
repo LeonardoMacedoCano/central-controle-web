@@ -5,6 +5,7 @@ import { getVariantColor } from 'lcano-react-ui';
    barra de abas embaixo no mobile, rail denso no celular deitado. */
 const RAIL_WIDTH = 76;
 const TAB_BAR_HEIGHT = 64;
+const SECTION_MENU_WIDTH = 208;
 const DESKTOP = '(min-width: 700px)';
 const MOBILE = '(max-width: 699px)';
 const LANDSCAPE = '(max-height: 500px)';
@@ -24,32 +25,34 @@ export const AppRoot = styled.div`
   }
 `;
 
-export const TopBar = styled.header`
-  position: sticky;
-  top: 0;
-  z-index: 15;
-  height: 56px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 15px;
-  padding: 0 20px;
-  color: ${({ theme }) => theme.colors.tertiary};
-  background-color: ${({ theme }) => theme.colors.secondary};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.tertiary};
-
-  @media ${LANDSCAPE} {
-    height: 44px;
-  }
-`;
-
-export const PageContent = styled.main`
+export const PageContent = styled.main<{ $sectionOpen?: boolean }>`
   flex: 1;
   padding: 20px;
 
+  @media ${DESKTOP} {
+    padding-left: ${({ $sectionOpen }) =>
+      $sectionOpen ? `${SECTION_MENU_WIDTH + 32}px` : '20px'};
+  }
+
   @media ${LANDSCAPE} {
-    padding: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+`;
+
+/* Sino + avatar: cluster flutuante no canto, sem barra. */
+export const TopControls = styled.div`
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  @media ${LANDSCAPE} {
+    top: 8px;
+    right: 8px;
   }
 `;
 
@@ -57,6 +60,7 @@ export const MessageIconWrapper = styled.div`
   position: relative;
   font-size: 20px;
   cursor: pointer;
+  color: ${({ theme }) => theme.colors.white};
 `;
 
 export const UnreadBadge = styled.div<{ $hasUnread: boolean }>`
@@ -81,7 +85,6 @@ export const UserAvatar = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  overflow: visible;
   cursor: pointer;
   border: 2px solid ${({ theme }) => theme.colors.tertiary};
 
@@ -98,10 +101,11 @@ export const UserMenuDropdown = styled.div`
   top: 44px;
   right: 0;
   background-color: ${({ theme }) => theme.colors.secondary};
-  box-shadow: 0 2px 5px ${({ theme }) => theme.colors.tertiary};
-  border-radius: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 1px solid ${({ theme }) => theme.colors.tertiary};
+  border-radius: 6px;
   min-width: 150px;
-  padding: 10px 0;
+  padding: 6px 0;
   z-index: 100;
 `;
 
@@ -111,5 +115,63 @@ export const UserMenuItem = styled.div`
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.tertiary};
+  }
+`;
+
+/* Submenu de seção: caixa independente, lista vertical (uma opção por linha).
+   Desktop: fixa ao lado do rail. Mobile: sticky no topo do conteúdo. */
+export const SectionMenuBox = styled.nav`
+  position: sticky;
+  top: 8px;
+  z-index: 18;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.colors.secondary};
+  border: 1px solid ${({ theme }) => theme.colors.tertiary};
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+
+  /* mobile: caixa à esquerda, sem invadir o sino/avatar do canto */
+  @media ${MOBILE} {
+    min-width: 180px;
+    max-width: calc(100% - 72px);
+  }
+
+  @media ${DESKTOP} {
+    position: fixed;
+    top: 12px;
+    left: ${RAIL_WIDTH + 12}px;
+    width: ${SECTION_MENU_WIDTH}px;
+    margin-bottom: 0;
+  }
+`;
+
+export const SectionMenuTitle = styled.span`
+  padding: 6px 12px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.tertiary};
+`;
+
+export const SectionMenuItem = styled.button<{ $active: boolean }>`
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: ${({ $active }) => ($active ? 700 : 500)};
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme, $active }) =>
+    $active ? theme.colors.quaternary : 'transparent'};
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: ${({ theme, $active }) =>
+      $active ? theme.colors.quaternary : theme.colors.tertiary};
   }
 `;

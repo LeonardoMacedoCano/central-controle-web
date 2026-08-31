@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts';
 import { IMG_PERFIL_PADRAO } from '../utils';
 import {
-  TopBar,
+  TopControls,
   MessageIconWrapper,
   UnreadBadge,
   UserAvatar,
@@ -48,7 +48,7 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount }) => {
   const handleNotificationClick = () => navigate('/notificacoes');
 
   return (
-    <TopBar>
+    <TopControls>
       <MessageIconWrapper onClick={handleNotificationClick}>
         <FaBell />
         <UnreadBadge $hasUnread={unreadCount > 0}>
@@ -65,6 +65,6 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount }) => {
           </UserMenuDropdown>
         )}
       </UserAvatar>
-    </TopBar>
+    </TopControls>
   );
 };
