@@ -1482,10 +1482,10 @@ keyv@^4.5.3:
   dependencies:
     json-buffer "3.0.1"
 
-lcano-react-ui@^2.2.3:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/lcano-react-ui/-/lcano-react-ui-2.2.3.tgz#0324e821f6b65be4b2c6123874e4913034946eb8"
-  integrity sha512-ubvJrIswoNeFl2QirMeBsywmWX0hErdb/xmlkWveyAw6EHqjBZHvDDv4HDLaRZED29A4HadtsXsN859j8O6Ufw==
+lcano-react-ui@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/lcano-react-ui/-/lcano-react-ui-2.3.0.tgz#c20bc21f9bff86818ae33f4669756af1d838d9ae"
+  integrity sha512-J4+CYeGXrYEivTNRJbPaJMtfGtl572PjCMmvjGkvDBswjh0WWAOr4aYgOOC0P7KwwNKe4lN2TXO80J1aqc45Uw==
   dependencies:
     qrcode-generator "^2.0.4"
     react-dropzone "^15.0.0"
