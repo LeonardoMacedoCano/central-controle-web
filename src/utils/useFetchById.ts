@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useMessage } from 'lcano-react-ui';
 
 type FetcherById<T> = (token: string, id: string) => Promise<T | undefined>;
@@ -13,14 +13,21 @@ export function useFetchById<T>(
   const [isLoading, setIsLoading] = useState(false);
   const message = useMessage();
 
+  const fetcherRef = useRef(fetcher);
+  fetcherRef.current = fetcher;
+  const messageRef = useRef(message);
+  messageRef.current = message;
+  const errorMessageRef = useRef(errorMessage);
+  errorMessageRef.current = errorMessage;
+
   useEffect(() => {
     if (!token || !id) return;
     setIsLoading(true);
-    fetcher(token, id)
+    fetcherRef.current(token, id)
       .then(result => { if (result) setData(result); })
-      .catch(error => message.showErrorWithLog(errorMessage, error))
+      .catch(error => messageRef.current.showErrorWithLog(errorMessageRef.current, error))
       .finally(() => setIsLoading(false));
-  }, [token, id, fetcher, errorMessage, message]);
+  }, [token, id]);
 
   return { data, isLoading };
 }
