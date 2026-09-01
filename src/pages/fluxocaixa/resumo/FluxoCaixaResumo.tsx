@@ -64,6 +64,8 @@ const FluxoCaixaResumo: React.FC = () => {
             optionB={MODO_OPTION_B}
             value={modo}
             onChange={setModo}
+            bordered={false}
+            transparent
           />
           <FieldValue
             description="Ano"
