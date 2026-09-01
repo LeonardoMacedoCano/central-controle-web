@@ -12,12 +12,15 @@ export const AppRoot = styled.div`
   display: flex;
   flex-direction: column;
 
+  --lcano-action-button-inset-bottom: 0px;
+
   @media ${DESKTOP} {
     padding-left: ${RAIL_WIDTH}px;
   }
 
   @media ${MOBILE} {
     padding-bottom: ${TAB_BAR_HEIGHT}px;
+    --lcano-action-button-inset-bottom: ${TAB_BAR_HEIGHT}px;
   }
 `;
 
