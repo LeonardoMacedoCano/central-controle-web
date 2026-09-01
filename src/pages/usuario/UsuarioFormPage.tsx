@@ -31,6 +31,8 @@ export const UsuarioFormPage: React.FC = () => {
       loadTemas();
       convertAndSetUsuarioForm(auth.usuario);
     }
+    // roda apenas quando o usuario autenticado muda; loadTemas/convertAndSetUsuarioForm sao estaveis o suficiente
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth.usuario]);
   
   useEffect(() => {
@@ -61,7 +63,9 @@ export const UsuarioFormPage: React.FC = () => {
     return () => {
       cleanupBlobUrl();
     };
-  }, [auth.usuario?.icone, usuarioForm?.file]);
+    // 'message' tem identidade nova a cada render; incluir causaria loop de efeito
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth.usuario?.icone, auth.usuario?.token, usuarioForm?.file]);
   
   const loadTemas = async () => {
     if (!auth.usuario?.token) return;

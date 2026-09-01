@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- contexto + hook + provider convivem no mesmo arquivo por padrao do projeto */
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { TemaService } from '../../service';
