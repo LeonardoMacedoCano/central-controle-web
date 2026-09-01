@@ -7,6 +7,7 @@ import { useMessage } from "lcano-react-ui";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { loadUserTheme } = useThemeControl();
   const message = useMessage();
 
@@ -18,14 +19,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const validateToken = async () => {
       const storageData = localStorage.getItem('authToken');
-      if (!storageData) return;
+      if (!storageData) {
+        setIsLoading(false);
+        return;
+      }
 
-      const u = await AuthService.validateToken(storageData, messageRef.current);
-      if (u) {
-        setUsuario(u);
-        if (u.idTema) loadUserThemeRef.current(u.idTema, u.token);
-      } else {
-        clearToken();
+      try {
+        const u = await AuthService.validateToken(storageData, messageRef.current);
+        if (u) {
+          setUsuario(u);
+          if (u.idTema) loadUserThemeRef.current(u.idTema, u.token);
+        } else {
+          clearToken();
+        }
+      } finally {
+        setIsLoading(false);
       }
     };
     validateToken();
@@ -61,7 +69,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ usuario, loginWithGoogle, signout }}>
+    <AuthContext.Provider value={{ usuario, isLoading, loginWithGoogle, signout }}>
       {children}
     </AuthContext.Provider>
   );
