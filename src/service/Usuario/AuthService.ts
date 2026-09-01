@@ -8,4 +8,10 @@ export const loginWithGoogle = (credential: string, contextMessage?: ContextMess
   request<Usuario>('usuario', 'post', 'auth/google', undefined, contextMessage, { credential });
 
 export const validateToken = (token: string, contextMessage?: ContextMessageProps) =>
-  request<Usuario>('usuario', 'get', `auth/validateToken?token=${token}`, undefined, contextMessage);
+  request<Usuario>(
+    'usuario',
+    'get',
+    `auth/validateToken?token=${encodeURIComponent(token)}`,
+    undefined,
+    contextMessage
+  );

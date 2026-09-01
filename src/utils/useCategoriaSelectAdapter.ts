@@ -11,11 +11,12 @@ export function useCategoriaSelectAdapter(
   return buildSearchSelectAdapter<MovimentacaoCategoria>({
     searchOptions: async (query, page, pageSize) => {
       if (!token || !tipo) return [];
+      const safeQuery = query.replace(/['\\]/g, '');
       const response = await MovimentacaoCategoriaService.getCategorias(
         token,
         page,
         pageSize,
-        `tipo==${tipo};descricao=ilike='${query}'`
+        `tipo==${tipo};descricao=ilike='${safeQuery}'`
       );
       return response?.content || [];
     },
