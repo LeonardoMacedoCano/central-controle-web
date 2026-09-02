@@ -649,9 +649,9 @@
     "@types/react-dom" "^18.0.0"
 
 "@testing-library/user-event@^14.5.2":
-  version "14.6.6"
-  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-14.6.6.tgz#ecd5614fe2dbb76a1744a9b5a96e305b8591ceac"
-  integrity sha512-Jbs9FpkkIDw8FgSc6kOVsOv8JuuqGAL7J4X1oot77JxAoDlkNn2GRkd0aYRVuQ+pVQAiHWVkE4rX/dkF5fBiCw==
+  version "14.6.7"
+  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-14.6.7.tgz#c453ccfcaffed110cc79048ed18fccb0f4224f3b"
+  integrity sha512-MPCpX8bxe8zS+JmmTwLp8jd0dy1rAm60Te/SL8JrQM3qvQJcBOs1d7IefJMyZzqM3EWBrDn/LWDt1BCGu4ASfg==
 
 "@types/aria-query@^5.0.1":
   version "5.0.4"
@@ -2183,10 +2183,10 @@ keyv@^4.5.3:
   dependencies:
     json-buffer "3.0.1"
 
-lcano-react-ui@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/lcano-react-ui/-/lcano-react-ui-2.4.1.tgz#73f902af157eed4f0b72c920323691eed02efdcc"
-  integrity sha512-Thg84nWmBc2m+lyH44tK/WUDmUzYuBtxhXgzGnyinAm6EU4AvRr8hI1urXKJ3N1D00GriMa1HZz5wuRYWcxt+w==
+lcano-react-ui@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/lcano-react-ui/-/lcano-react-ui-2.4.2.tgz#a9f4fc2ecd3787c7415d3f7b3a5d73d5df355a3d"
+  integrity sha512-bumSvoKdaIuVR2jX+97fuSY2BRIeRjt5hsB7ucmkbfuED0A7NHNH9TV6Lhun+Wm/ZKfjH1KaslpaTXqfjcVRSA==
   dependencies:
     qrcode-generator "^2.0.4"
     react-dropzone "^15.0.0"
