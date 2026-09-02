@@ -49,7 +49,6 @@ export function usePagedData<T>(
       .then(result => setData(result))
       .catch(error => messageRef.current.showErrorWithLog(errorMessageRef.current, error))
       .finally(() => setIsLoading(false));
-  // fetcher/message/errorMessage/activeRsql são acessados via ref e não entram nas deps de propósito
   }, [token, pageIndex, pageSize]);
 
   const loadPage = (page: number, size: number) => {

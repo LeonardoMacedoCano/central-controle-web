@@ -16,7 +16,6 @@ describe('AuthService', () => {
     await validateToken('meu-jwt');
 
     expect(request).toHaveBeenCalledWith('usuario', 'post', 'auth/validateToken', 'meu-jwt', undefined);
-    // sem token na URL
     expect(request.mock.calls[0][2]).toBe('auth/validateToken');
   });
 

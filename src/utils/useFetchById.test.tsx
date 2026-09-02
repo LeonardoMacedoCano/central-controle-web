@@ -3,8 +3,6 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { useFetchById } from './useFetchById';
 
 vi.mock('lcano-react-ui', () => ({
-  // nova instancia a cada chamada: se o hook dependesse dela nas deps do effect,
-  // entraria em loop de re-render / refetch.
   useMessage: () => ({ showError: vi.fn(), showErrorWithLog: vi.fn(), showSuccess: vi.fn() }),
 }));
 

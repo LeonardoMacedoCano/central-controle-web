@@ -18,7 +18,6 @@ type Adapter = {
   mapFromOption: (o: { key: string; value: string }) => { id: number; descricao: string };
 };
 
-// prefixo "use" satisfaz o rules-of-hooks do eslint; o hook nao usa outros hooks internamente
 const useAdapter = (token?: string, tipo: TipoMovimentoEnum | undefined = 'DESPESA') =>
   useCategoriaSelectAdapter(tipo, token, undefined, vi.fn()) as unknown as Adapter;
 
