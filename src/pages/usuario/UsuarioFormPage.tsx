@@ -31,6 +31,7 @@ export const UsuarioFormPage: React.FC = () => {
       loadTemas();
       convertAndSetUsuarioForm(auth.usuario);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth.usuario]);
   
   useEffect(() => {
@@ -61,7 +62,8 @@ export const UsuarioFormPage: React.FC = () => {
     return () => {
       cleanupBlobUrl();
     };
-  }, [auth.usuario?.icone, usuarioForm?.file]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth.usuario?.icone, auth.usuario?.token, usuarioForm?.file]);
   
   const loadTemas = async () => {
     if (!auth.usuario?.token) return;

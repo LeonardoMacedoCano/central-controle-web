@@ -49,8 +49,6 @@ export function usePagedData<T>(
       .then(result => setData(result))
       .catch(error => messageRef.current.showErrorWithLog(errorMessageRef.current, error))
       .finally(() => setIsLoading(false));
-  // activeRsqlRef é um ref — não precisa estar nas deps; load() o atualiza antes de qualquer mudança de página
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, pageIndex, pageSize]);
 
   const loadPage = (page: number, size: number) => {

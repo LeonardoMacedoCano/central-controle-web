@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Container, FieldValue, Loading, Stack, SummaryCard, ToggleSwitch, ToggleSwitchOption, useMessage, VariantColor } from "lcano-react-ui";
 import { useAuth } from "../../../contexts";
@@ -38,6 +38,8 @@ const isDashboardVazio = (dados: Dashboard) =>
 const FluxoCaixaResumo: React.FC = () => {
   const { usuario } = useAuth();
   const message = useMessage();
+  const messageRef = useRef(message);
+  messageRef.current = message;
 
   const [modo, setModo] = useState<Modo>('mensal');
   const [ano, setAno] = useState(ANO_ATUAL);
@@ -49,7 +51,7 @@ const FluxoCaixaResumo: React.FC = () => {
     if (!usuario?.token) return;
     setIsLoading(true);
     const mesFiltro = modo === 'mensal' ? mes : null;
-    DashboardService.getDashboard(usuario.token, ano, mesFiltro, message)
+    DashboardService.getDashboard(usuario.token, ano, mesFiltro, messageRef.current)
       .then(resultado => setDados(resultado ?? null))
       .finally(() => setIsLoading(false));
   }, [usuario?.token, ano, mes, modo]);

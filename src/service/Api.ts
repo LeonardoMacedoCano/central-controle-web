@@ -5,7 +5,7 @@ export interface MicroserviceConfig {
 
 export const MICROSERVICES: Record<string, MicroserviceConfig> = {
   usuario: { url: '/api/usuario', port: 8080 },
-  fluxocaixa: { url: '/api/fluxocaixa', port: 8081 },
+  fluxocaixa: { url: '/api/fluxocaixa', port: 8082 },
 };
 
 export type MicroserviceKey = keyof typeof MICROSERVICES;
